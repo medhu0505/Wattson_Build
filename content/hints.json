@@ -1,0 +1,39 @@
+{
+  "_readme": "Three hints per stage, from a gentle nudge to almost the answer. They point only at things in the case files. Reword them in your own voice if you like, but keep three per stage. Words in {curly brackets} are filled in by the site from the data, so the hints stay correct: {keyDetails}, {surgeLabel}, {surgeKwh}, {mismatchLabel}, {reported}, {metered}, {machineId}, {key}.",
+
+  "intake": [
+    "Pick a codename: 2 to 24 letters, numbers or spaces. A couple of names are already taken by agents in the case files.",
+    "Tick the box under the codename before pressing Issue credentials.",
+    "Once your ID card is stamped, read the briefing and press Accept assignment."
+  ],
+
+  "files": [
+    "Underlined words in the documents can be pinned to the board. You need the details that connect the arcade, the machine and POI-1.",
+    "Look at where and what in the Case Debrief (the arcade, its power draw, the machine and its ID), and at when, who and what happened next in Transcript A.",
+    "The key details are: {keyDetails}. The Asset Integrity Report has none."
+  ],
+
+  "forensics": [
+    "Each day's real usage is that day's meter reading minus the day before. Run the forensic analysis to work it out for every day.",
+    "Look for one day where the meter jumps far above a normal day, and another where the reported usage doesn't match what the meter recorded.",
+    "Surge: {surgeLabel}, {surgeKwh} kWh. Mismatch: {mismatchLabel}, reported {reported} kWh, metered {metered} kWh."
+  ],
+
+  "signal": [
+    "The Machine ID in the Case Debrief is encoded. Load it into the worksheet and try Auto-detect.",
+    "It uses only capital letters and the digits 2 to 7. That alphabet is Base32.",
+    "Base32 decodes {machineId} to {key}. Enter that as the access key."
+  ],
+
+  "machine": [
+    "Type help, or press the cabinet's buttons. The field notes list three checks.",
+    "Run logs, diff and render. The diff compares the two versions of the game's code: look at what is missing.",
+    "Once logs, diff and render have all been run, the screen shows what happened."
+  ],
+
+  "report": [
+    "The report is written from what you did in each folder. Read it through.",
+    "Press Print, then choose Save as PDF in the print window if you want a file.",
+    "Or press Download for a plain-text copy. Either one files the report."
+  ]
+}
