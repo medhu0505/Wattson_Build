@@ -78,7 +78,8 @@ export function renderMachine(main, { store, go }) {
   // ---------- Commands ----------
 
   function boot(instant) {
-    const key = store.get().answers.signal?.key ?? '';
+    // In supervisor mode the decoder may have been skipped, so there's no key.
+    const key = store.get().answers.signal?.key ?? 'SUPERVISOR OVERRIDE';
     return print([
       el('span', { class: 'crt__title' }, canon.machine.name.toUpperCase()),
       `MACHINE ID ....... ${canon.machine.id}`,
@@ -217,9 +218,11 @@ export function renderMachine(main, { store, go }) {
     });
   }
 
-  // When every check has been run (and the reveal hasn't happened yet), reveal.
+  // When every check has been run (and the reveal hasn't been seen yet), reveal.
+  // This goes by "revealed", not by the stage being cleared, so a supervisor
+  // who marked every folder cleared still gets to see the reveal.
   function maybeReveal() {
-    if (isCompleted(store.get(), 'machine') || !CHECKS.every((check) => hasRun(check.command))) return;
+    if (saved().revealed || !CHECKS.every((check) => hasRun(check.command))) return;
     reveal(false).then(() => {
       if (closed) return;
       store.update((p) => completeStage({
@@ -305,7 +308,7 @@ export function renderMachine(main, { store, go }) {
       print([`> ${check.command}`], { instant: true, className: 'crt__line--echo' });
       ACTIONS[check.command](true);
     });
-    if (isCompleted(store.get(), 'machine')) reveal(true);
+    if (saved().revealed) reveal(true);
     else maybeReveal();
   }
   queue.then(() => { if (!closed) input.focus({ preventScroll: true }); });
