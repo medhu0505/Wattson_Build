@@ -46,6 +46,8 @@
 .switch[aria-pressed='true'] { border-color: var(--crt-green); color: var(--crt-green); }
 .switch[disabled] { opacity: 0.5; cursor: not-allowed; }
 .switch__state { font-weight: 700; }
+.switch--hints { border-color: var(--marker); color: var(--marker); }
+.switch--hints:hover { border-color: #fff3a6; color: #fff3a6; }
 
 /* The typed stand-in for the agency mark (until the team's artwork is added).
    Blue word block with a dark year tab, like the header on the PDFs. */

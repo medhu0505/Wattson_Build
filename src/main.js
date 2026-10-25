@@ -14,9 +14,12 @@ import './styles/bleed.css';
 import './styles/print.css';
 
 import { createStore } from './state/store.js';
+import { getBrowserStorage, completeStage } from './state/progress.js';
+import { STAGE_IDS } from './state/stages.js';
 import { createRouter } from './router.js';
 import { renderShell } from './ui/shell.js';
 import { views } from './ui/views.js';
+import { openHints } from './ui/hints.js';
 import { applyEffects, onReducedMotionChange } from './ui/effects.js';
 import { setAudioEnabled } from './ui/audio.js';
 
@@ -24,12 +27,30 @@ import { setAudioEnabled } from './ui/audio.js';
 // jumps back to wherever the page was scrolled before a reload.
 history.scrollRestoration = 'manual';
 
-const store = createStore();
+// Supervisor mode for judges: add ?supervisor=1 to the address, e.g.
+//   https://<site>/?supervisor=1#/forensics
+// Every folder opens, and progress is saved separately from the agent's.
+const supervisor = new URLSearchParams(window.location.search).get('supervisor') === '1';
 
-// What the Glitch and Sound switches in the top bar do.
+const store = createStore(getBrowserStorage(), { supervisor });
+
+// What the buttons in the top bar do.
 const controls = {
   toggleGlitch: () => store.update((p) => ({ ...p, settings: { ...p.settings, glitch: !p.settings.glitch } })),
   toggleAudio: () => store.update((p) => ({ ...p, settings: { ...p.settings, audio: !p.settings.audio } })),
+  openHints: (stageId) => openHints(store, stageId),
+
+  // Supervisor bar only:
+  markAllCleared: () => {
+    store.update((p) => STAGE_IDS.reduce((progress, id) => completeStage(progress, id), p));
+    router.show(); // redraw the open screen so it shows its cleared state
+  },
+  resetSupervisor: () => {
+    store.reset();
+    router.show();
+  },
+  // The current page without "?supervisor=1".
+  exitSupervisorHref: () => `${window.location.pathname}${window.location.hash}`,
 };
 
 // Redraw the top bar and tabs, and apply the glitch and sound settings.

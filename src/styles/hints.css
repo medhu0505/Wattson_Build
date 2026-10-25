@@ -1,0 +1,65 @@
+/* ==========================================================================
+   hints.css: the hints window (an index card on a dimmed desk), and the
+   supervisor bar shown in ?supervisor=1 mode.
+   ========================================================================== */
+
+.hints {
+  width: min(520px, calc(100vw - 32px));
+  max-height: calc(100vh - 48px);
+  margin: 12vh auto auto clamp(16px, 8vw, 140px); /* towards the left, not dead centre */
+  padding: 26px 24px 22px;
+  background-color: #fdfcf7;
+  /* index card: red rule near the top, faint blue lines */
+  background-image:
+    linear-gradient(transparent 58px, rgba(210, 59, 54, 0.45) 58px 59px, transparent 59px),
+    repeating-linear-gradient(transparent 0 23px, rgba(42, 111, 240, 0.13) 23px 24px);
+  border: 1px solid rgba(28, 38, 43, 0.6);
+  box-shadow: 6px 7px 0 rgba(0, 0, 0, 0.55);
+  color: var(--ink);
+  font-family: var(--font-agency);
+  transform: rotate(-0.8deg);
+}
+.hints::backdrop { background: rgba(10, 13, 15, 0.7); }
+
+@media (max-width: 560px) {
+  .hints { margin-left: 16px; margin-top: 8vh; }
+}
+
+.hints .sheet__ref { margin-bottom: 4px; }
+.hints__title { margin-bottom: 18px; font-size: 19px; font-weight: 700; }
+.hints__intro { font-size: 13px; color: var(--ink-soft); }
+
+.hints__list { margin: 0; padding-left: 1.4em; line-height: 1.5; }
+.hints__list li { padding: 2px 0; }
+.hints__list li + li { margin-top: 10px; }
+.hints__list li:focus { outline: none; background: rgba(255, 228, 92, 0.45); }
+
+.hints__actions { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; margin-top: 22px; }
+.hints__done { font-size: 13px; font-weight: 700; color: var(--stamp); }
+
+/* ---------- Supervisor bar ---------- */
+
+.supervisor-bar {
+  flex-basis: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin: 4px -16px -14px;
+  padding: 8px 16px;
+  background: #3a1513;
+  border-top: 1px solid #6e2a26;
+  color: #f3d3cf;
+  font-size: 12px;
+}
+.supervisor-bar__label {
+  padding: 1px 8px;
+  border: 2px solid #ff6b61;
+  color: #ff6b61;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.supervisor-bar__note { flex: 1 1 260px; }
+.supervisor-bar .switch { border-color: #a0544e; color: #f3d3cf; text-decoration: none; }
+.supervisor-bar .switch:hover { border-color: #fff; color: #fff; }

@@ -1,22 +1,25 @@
 // The parts of the page that stay put on every screen: the dark case strip
-// along the top (with the Glitch and Sound switches) and the row of folder
-// tabs, one tab per stage.
+// along the top (with the Hints, Glitch and Sound buttons, and the
+// supervisor bar in ?supervisor=1 mode) and the row of folder tabs.
 
 import { el } from './dom.js';
 import { artSlot } from './artSlot.js';
 import { STAGES } from '../state/stages.js';
 import { isUnlocked, isCompleted } from '../state/progress.js';
+import { hintsUsed, HINTS_PER_STAGE } from '../lib/hints.js';
 import { prefersReducedMotion } from './effects.js';
 
-// controls: { toggleGlitch(), toggleAudio() } from main.js
+// controls (from main.js):
+//   toggleGlitch(), toggleAudio(), openHints(stageId),
+//   markAllCleared(), resetSupervisor(), exitSupervisorHref
 export function renderShell(progress, activeId, controls) {
-  renderStrip(progress, controls);
+  renderStrip(progress, activeId, controls);
   renderTabs(progress, activeId);
 }
 
-function renderStrip(progress, controls) {
+function renderStrip(progress, activeId, controls) {
   const strip = document.getElementById('case-strip');
-  // Redrawing replaces the switches, so remember which one had the keyboard.
+  // Redrawing replaces the buttons, so remember which one had the keyboard.
   const focusedSetting = document.activeElement?.dataset?.setting;
 
   // Until the team adds their artwork, the mark is set in type.
@@ -35,19 +38,29 @@ function renderStrip(progress, controls) {
       el('span', { class: 'strip__label' }, 'Agent'),
       ' ', progress.codename || 'unassigned'
     ),
-    settingsSwitches(progress, controls)
+    settingsSwitches(progress, activeId, controls),
+    progress.supervisor && supervisorBar(controls)
   );
 
   if (focusedSetting) strip.querySelector(`[data-setting="${focusedSetting}"]`)?.focus();
 }
 
-// Two on/off switches. aria-pressed tells screen readers whether each is on.
-function settingsSwitches(progress, controls) {
+// The Hints button, then two on/off switches. aria-pressed tells screen
+// readers whether each switch is on.
+function settingsSwitches(progress, activeId, controls) {
   const reduced = prefersReducedMotion();
   const glitchOn = progress.settings.glitch && !reduced;
   const audioOn = progress.settings.audio;
+  const used = activeId ? hintsUsed(progress, activeId) : 0;
 
-  return el('div', { class: 'strip__settings', role: 'group', 'aria-label': 'Display settings' },
+  return el('div', { class: 'strip__settings', role: 'group', 'aria-label': 'Hints and display settings' },
+    activeId && el('button', {
+      class: 'switch switch--hints',
+      type: 'button',
+      'data-setting': 'hints',
+      'aria-haspopup': 'dialog',
+      onClick: () => controls.openHints(activeId),
+    }, 'Hints ', el('span', { class: 'switch__state' }, `${used}/${HINTS_PER_STAGE}`)),
     el('button', {
       class: 'switch',
       type: 'button',
@@ -66,6 +79,19 @@ function settingsSwitches(progress, controls) {
       onClick: controls.toggleAudio,
     }, 'Sound ', el('span', { class: 'switch__state' }, audioOn ? 'on' : 'off'))
   );
+}
+
+// Shown only in supervisor mode (?supervisor=1), for judges.
+function supervisorBar(controls) {
+  return el('div', { class: 'supervisor-bar', role: 'region', 'aria-label': 'Supervisor mode' },
+    el('span', { class: 'supervisor-bar__label' }, 'Supervisor access'),
+    el('span', { class: 'supervisor-bar__note' },
+      'Every folder is open. This session is saved apart from the agent’s own progress.'),
+    el('button', { class: 'switch', type: 'button', 'data-setting': 'mark-all', onClick: controls.markAllCleared },
+      'Mark every folder cleared'),
+    el('button', { class: 'switch', type: 'button', 'data-setting': 'reset-supervisor', onClick: controls.resetSupervisor },
+      'Reset this session'),
+    el('a', { class: 'switch', href: controls.exitSupervisorHref() }, 'Leave supervisor mode'));
 }
 
 function renderTabs(progress, activeId) {
