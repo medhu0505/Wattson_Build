@@ -1,0 +1,259 @@
+/* ==========================================================================
+   signal.css: Stage 03. The decoding worksheet (method tabs, signal input,
+   ticker-tape readout) and the manila cabinet access card.
+   ========================================================================== */
+
+.signal {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 34px;
+  align-items: start;
+}
+
+/* ---------- Method tabs (real radio buttons, styled) ---------- */
+
+.methods,
+.direction {
+  margin: 22px 0 0;
+  padding: 0;
+  border: 0;
+}
+.methods legend,
+.direction legend,
+.signal-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.methods__list { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.method { position: relative; cursor: pointer; }
+/* The radio button itself is invisible but still there for the keyboard
+   (arrow keys move between methods) and for screen readers. */
+.method input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  margin: 0;
+  cursor: pointer;
+}
+.method span {
+  display: block;
+  padding: 5px 11px;
+  border: 1.5px solid var(--ink);
+  background: var(--paper-shade);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.method:hover span { background: #efece4; }
+.method input:checked + span { background: var(--ink); color: var(--paper); }
+.method input:focus-visible + span { outline: 3px solid var(--exun); outline-offset: 2px; }
+.method--auto span { border-style: dashed; }
+.method--auto input:checked + span { border-style: solid; }
+
+.signal-options { display: flex; flex-wrap: wrap; gap: 10px 26px; align-items: flex-end; }
+.direction .methods__list { gap: 0; }
+.direction .method + .method span { border-left: 0; }
+
+.shift { margin-top: 22px; }
+.shift input {
+  width: 5.5em;
+  padding: 4px 6px;
+  border: 0;
+  border-bottom: 2px solid var(--ink);
+  background: transparent;
+  font-size: 18px;
+}
+
+/* ---------- Signal input ---------- */
+
+.signal-input-wrap { margin-top: 24px; }
+.signal-input-row { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: baseline; justify-content: space-between; }
+
+#signal-input {
+  display: block;
+  width: 100%;
+  min-height: 84px;
+  padding: 10px 12px;
+  resize: vertical;
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  background: #fff;
+  color: var(--ink-memo);
+  font-size: 17px;
+  letter-spacing: 0.06em;
+  word-break: break-all;
+}
+
+.link-btn {
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--exun);
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+/* ---------- Readout: a strip of ticker tape ---------- */
+
+.readout { margin-top: 24px; }
+
+.tape {
+  position: relative;
+  padding: 14px 26px;
+  background-color: #fff6c9;
+  background-image:
+    radial-gradient(circle, var(--paper) 2.5px, transparent 3px),
+    radial-gradient(circle, var(--paper) 2.5px, transparent 3px);
+  background-position: 7px 6px, calc(100% - 7px) 6px;
+  background-size: 8px 12px;
+  background-repeat: repeat-y;
+  border-top: 1px solid #d9c98a;
+  border-bottom: 1px solid #d9c98a;
+  transform: rotate(-0.4deg);
+}
+.tape__label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #7c6d33;
+}
+.tape__text {
+  margin-top: 4px;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--ink);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.tape__text--empty { font-size: 14px; font-weight: 400; color: var(--ink-soft); }
+.tape__error { margin-top: 4px; font-weight: 700; color: var(--stamp); }
+
+.readout__actions { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 10px; }
+
+/* Auto-detect results */
+.guesses { margin: 0; padding: 0; list-style: none; }
+.guess {
+  display: grid;
+  grid-template-columns: 2.2em minmax(0, 1fr) auto;
+  gap: 4px 12px;
+  align-items: center;
+  padding: 10px 0;
+  border-top: 1px dashed #c9b973;
+}
+.guess:first-child { border-top: 0; }
+.guess__rank { font-size: 12px; color: #7c6d33; }
+.guess__method { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #7c6d33; }
+.guess__output { display: block; font-size: 17px; font-weight: 500; word-break: break-all; }
+.guess--best .guess__output { font-size: 21px; }
+.guess__side { display: grid; justify-items: end; gap: 4px; }
+
+/* A score bar: --score goes from 0 to 1 */
+.score {
+  display: block;
+  width: 90px;
+  height: 7px;
+  border: 1px solid var(--ink);
+  background: #fff;
+}
+.score__fill {
+  display: block;
+  height: 100%;
+  width: calc(var(--score) * 100%);
+  background: var(--ink);
+}
+.guess--best .score__fill { background: var(--stamp); }
+
+.all-shifts { margin-top: 14px; font-size: 13px; }
+.all-shifts summary { cursor: pointer; font-weight: 700; }
+.all-shifts ol {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  columns: 2 220px;
+  column-gap: 26px;
+}
+.all-shifts li { padding: 2px 0; word-break: break-all; }
+.all-shifts b { display: inline-block; width: 4.5em; font-weight: 500; color: var(--ink-soft); }
+
+/* ---------- Cabinet access card (manila) ---------- */
+
+.access {
+  position: relative;
+  padding: 34px 22px 24px;
+  background-color: #e8d6ac;
+  background-image: var(--tex-grain);
+  border: 1px solid #a08a5b;
+  box-shadow: 4px 5px 0 rgba(28, 38, 43, 0.5);
+  transform: rotate(-0.9deg);
+}
+
+/* The string-and-button clasp of an internal mail envelope */
+.access::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  margin-left: -8px;
+  border: 2px solid #8a2622;
+  border-radius: 50%;
+  background: #b8443e;
+}
+.access::after {
+  content: '';
+  position: absolute;
+  top: 17px;
+  left: calc(50% + 8px);
+  width: 46px;
+  border-top: 2px solid #8a2622;
+  transform: rotate(14deg);
+  transform-origin: left;
+}
+
+.access__title { margin-bottom: 14px; font-size: 20px; font-weight: 700; }
+.access .form-fixed { margin-bottom: 18px; }
+.access .form-fixed dd { color: var(--ink); }
+.access__id { letter-spacing: 0.06em; font-weight: 700; }
+.access .link-btn { margin: -8px 0 18px; }
+
+#access-key {
+  display: block;
+  width: 100%;
+  padding: 6px 4px;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid var(--ink);
+  border-radius: 0;
+  font-size: 20px;
+  letter-spacing: 0.08em;
+}
+#access-key[aria-invalid='true'] { border-bottom-color: var(--stamp); }
+.access .field { margin-bottom: 18px; }
+
+.access__stamp { margin: 4px 0 14px 4px; font-size: 22px; transform: rotate(-6deg); }
+.access__key { margin-bottom: 14px; font-size: 13px; }
+.access__key b { letter-spacing: 0.08em; }
+.access > p + .btn,
+.access > .btn { margin-top: 14px; }
+
+/* ---------- Narrow screens ---------- */
+
+@media (max-width: 1100px) {
+  .signal { grid-template-columns: minmax(0, 1fr); }
+  .access { max-width: 520px; margin-left: clamp(0px, 3vw, 48px); }
+}
+@media (max-width: 560px) {
+  .access { margin-left: 0; transform: rotate(-0.5deg); }
+  .guess { grid-template-columns: minmax(0, 1fr) auto; }
+  .guess__rank { display: none; }
+}

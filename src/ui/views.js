@@ -4,12 +4,13 @@ import { pendingView } from './pending.js';
 import { renderIntake } from './intake.js';
 import { renderCaseFiles } from './casefiles.js';
 import { renderForensics } from './forensics.js';
+import { renderSignal } from './signal.js';
 
 export const views = {
   intake: renderIntake,
   files: renderCaseFiles,
   forensics: renderForensics,
-  signal: pendingView('M4'),
+  signal: renderSignal,
   machine: pendingView('M5'),
   report: pendingView('M6'),
 };
