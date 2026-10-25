@@ -9,7 +9,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "todo": "node scripts/list-todos.js"
   },
   "devDependencies": {
     "vite": "^8.3.5",
