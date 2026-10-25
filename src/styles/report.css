@@ -1,0 +1,100 @@
+/* ==========================================================================
+   report.css: Stage 05. The case report (styled like the official PDFs)
+   and the "out tray" panel for printing and downloading it.
+   Print layout is in print.css.
+   ========================================================================== */
+
+.report-desk {
+  display: grid;
+  grid-template-columns: minmax(0, 860px) minmax(240px, 300px);
+  gap: 34px;
+  align-items: start;
+}
+
+.report { max-width: 860px; }
+.report .doc__header { padding-right: 150px; }
+
+.report__stamp {
+  position: absolute;
+  top: 30px;
+  right: 28px;
+  font-size: 20px;
+  transform: rotate(8deg);
+}
+
+.report__section { margin-top: 28px; break-inside: avoid; }
+.report__heading {
+  margin-bottom: 10px;
+  font-size: 15px;
+  font-weight: 700;
+}
+.report__section p + p { margin-top: 6px; }
+
+.report__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.report__table th {
+  padding: 4px 8px;
+  border-bottom: 1.5px solid var(--ink);
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: left;
+}
+.report__table td { padding: 5px 8px; border-bottom: 1px dotted #b9b4a8; }
+
+.report__list { margin: 6px 0 0; padding-left: 1.4em; }
+.report__list li + li { margin-top: 3px; }
+.report__source { color: var(--ink-soft); }
+.report__key {
+  margin-left: 6px;
+  padding: 0 4px;
+  border: 1px solid var(--stamp);
+  color: var(--stamp);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.report__pending { color: var(--ink-soft); font-style: italic; }
+.report__referral { margin-top: 12px; font-size: 13px; }
+
+.report__signature {
+  margin-top: 40px;
+  padding-top: 8px;
+  max-width: 320px;
+  border-top: 1.5px solid var(--ink);
+  font-size: 13px;
+}
+.report__signature span { font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+
+/* ---------- Out tray ---------- */
+
+.dispatch {
+  padding: 22px 20px;
+  background-color: #e8d6ac;
+  background-image: var(--tex-grain);
+  border: 1px solid #a08a5b;
+  box-shadow: 4px 5px 0 rgba(28, 38, 43, 0.5);
+  transform: rotate(-1deg);
+  font-size: 13px;
+}
+.dispatch .sheet__ref { margin-bottom: 6px; }
+.dispatch__title { margin-bottom: 10px; font-size: 19px; font-weight: 700; }
+.dispatch__buttons { display: grid; gap: 10px; margin-top: 16px; }
+.dispatch__stamp { margin: 18px 0 6px 6px; font-size: 22px; transform: rotate(-6deg); }
+.dispatch__note { color: var(--ink-soft); }
+
+@media (max-width: 1000px) {
+  .report-desk { grid-template-columns: minmax(0, 1fr); }
+  .dispatch { max-width: 420px; margin-left: clamp(0px, 3vw, 48px); }
+}
+@media (max-width: 560px) {
+  .report .doc__header { padding-right: 0; }
+  .report__stamp { position: static; display: inline-block; margin-bottom: 12px; transform: rotate(-4deg); font-size: 16px; }
+  .report__table { font-size: 12px; }
+  .report__table td, .report__table th { padding: 4px; }
+  .dispatch { margin-left: 0; }
+}

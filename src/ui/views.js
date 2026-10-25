@@ -1,11 +1,11 @@
-// Which screen draws each stage. Each milestone swaps a stand-in for the real one.
+// Which screen draws each stage.
 
-import { pendingView } from './pending.js';
 import { renderIntake } from './intake.js';
 import { renderCaseFiles } from './casefiles.js';
 import { renderForensics } from './forensics.js';
 import { renderSignal } from './signal.js';
 import { renderMachine } from './terminal.js';
+import { renderReport } from './report.js';
 
 export const views = {
   intake: renderIntake,
@@ -13,5 +13,5 @@ export const views = {
   forensics: renderForensics,
   signal: renderSignal,
   machine: renderMachine,
-  report: pendingView('M6'),
+  report: renderReport,
 };
