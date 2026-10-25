@@ -1,0 +1,152 @@
+{
+  "_readme": "Word-for-word text from the official PDFs. Do not edit the wording: it is canon. Typos in the PDFs are kept on purpose. A paragraph is a list of pieces: a plain string, or an object. {\"pin\": id} makes the words clickable onto the evidence board. {\"redacted\": true} is a black bar that never lifts. {\"strong\": true} is bold. The two code files (OriginalCode.txt, AlteredCode.txt) stay in the project root and are loaded directly by the terminal.",
+
+  "pins": {
+    "location":        { "label": "Wenoti Arcade, 92nd Avenue",                 "doc": "debrief",    "key": true },
+    "power-draw":      { "label": "Drawing multiple times its typical current", "doc": "debrief",    "key": true },
+    "machine-name":    { "label": "Arcade machine: The Reckoning V: Origins",   "doc": "debrief",    "key": true },
+    "machine-id":      { "label": "Machine ID: MJWHKZLTNBUXE5A",                 "doc": "debrief",    "key": true },
+    "owner-claim":     { "label": "Owner claims no modifications",              "doc": "debrief",    "key": false },
+    "sender":          { "label": "Sender: Paul Boiler, Govt. of nuxEland",     "doc": "debrief",    "key": false },
+    "encounter-time":  { "label": "Encounter: 23 October, 22:31",               "doc": "transcript", "key": true },
+    "form-id":         { "label": "Form ID 10E24X10",                           "doc": "transcript", "key": false },
+    "poi-description": { "label": "POI-1: sharp ears, armour, scabbard",        "doc": "transcript", "key": true },
+    "not-working":     { "label": "POI-1: \"It is not working properly.\"",     "doc": "transcript", "key": false },
+    "bare-wrist":      { "label": "POI-1 checks the time on a bare wrist",      "doc": "transcript", "key": false },
+    "warbling":        { "label": "Machine warbling after POI-1 left",          "doc": "transcript", "key": true },
+    "inconclusive":    { "label": "Nano & Mega: \"none of this data seems conclusive\"", "doc": "asset", "key": false },
+    "panel-offset":    { "label": "Lower access panel slightly offset",         "doc": "asset",      "key": false },
+    "vent-darkening":  { "label": "Darkening near a ventilation aperture",      "doc": "asset",      "key": false }
+  },
+
+  "documents": {
+    "debrief": {
+      "title": "Case Debrief",
+      "pdf": "case-debrief.pdf",
+      "blocks": [
+        { "type": "box", "rows": [
+          ["From: ", { "text": "Paul Boiler, Government of nuxEland", "pin": "sender" }],
+          ["To: Conis Nikrobo, Extradigital Exceptions and Unknowns Network"]
+        ]},
+        { "type": "para", "text": ["Congratulations: your team has been selected to be part of the Extradigital Exceptions and Unknowns Network branch of etiNuxe Intelligence Agency! This is a unit specifically designed to examine extradigital anomalies."] },
+        { "type": "para", "text": ["Enclosed are the preliminary findings pertaining to your first assignment."] },
+        { "type": "para", "text": [
+          { "text": "Wenoti arcade on 92nd avenue", "pin": "location" },
+          " has been ",
+          { "text": "drawing multiple times its typical amount of current from the district supply", "pin": "power-draw" },
+          ". The owner reported these inexplicable surges and ",
+          { "text": "claims not to have made any modifications that could have caused them", "pin": "owner-claim" },
+          ". While the source and nature of the anomaly remain undetermined, the mysteriousness of the situation warrants your further investigation."
+        ]},
+        { "type": "para", "text": [
+          "The proceedings of [Transcript 1] suggest a possible connection to the arcade machine ",
+          { "text": "“The Reckoning V: Origins”", "pin": "machine-name" },
+          ". You are advised to run forensics and comparative analysis of the physical and digital evidence after receiving appropriate sanctions."
+        ]},
+        { "type": "box", "rows": [
+          ["Location: Wenoti Arcade, 92nd Avenue, nuxEland"],
+          ["Machine ID: ", { "text": "MJWHKZLTNBUXE5A", "pin": "machine-id" }]
+        ]}
+      ]
+    },
+
+    "transcript": {
+      "title": "Transcript A",
+      "pdf": "transcript-a.pdf",
+      "blocks": [
+        { "type": "box", "rows": [
+          [{ "text": "Date: 23 October", "pin": "encounter-time" }, "    ", { "text": "FORM ID:10E24X10", "pin": "form-id" }],
+          [{ "text": "Time: 22:31", "pin": "encounter-time" }],
+          ["Department: Extradigital Exceptions and Unknowns Network"],
+          ["Participants:"],
+          [{ "redacted": true, "text": "[REDACTED]" }, ", ", { "redacted": true, "text": "[REDACTED]" }, ", POI-1"],
+          [""],
+          ["Two of our undercover agents, referred to here as agent Nano and agent Mega, had the following conversation with a suspicious person, a cosplayer, referred to here as POI-1, in the aforementioned arcade."],
+          [""],
+          ["Transcript submitted at the request of ", { "signature": "transcript" }, "."]
+        ]},
+        { "type": "direction", "text": [
+          "(POI-1 enters the arcade wearing ",
+          { "text": "sharp ears, leather gloves and boots, and “bedazzled armour” with a scabbard slung around his waist", "pin": "poi-description" },
+          ". They step quickly toward the arcade machine and fiddle with it)."
+        ]},
+        { "type": "line", "speaker": "Nano", "text": ["Hey, pal. Cool if I play after you?"] },
+        { "type": "direction", "text": ["(POI-1 flinches, pulls back from the machine)"] },
+        { "type": "line", "speaker": "POI-1", "note": "(with thick accent)", "text": ["Uh, no. ", { "text": "It is not working properly.", "pin": "not-working" }] },
+        { "type": "line", "speaker": "Mega", "text": ["Aw, shucks! I was looking forward to playing that!"] },
+        { "type": "line", "speaker": "Nano", "text": ["What’s wrong with it?"] },
+        { "type": "line", "speaker": "POI-1", "note": "(stuttering)", "text": ["Uh, don’t know."] },
+        { "type": "line", "speaker": "Nano", "text": ["Well, uh… what are you trying to do then?"] },
+        { "type": "line", "speaker": "POI-1", "note": "(stuttering)", "text": [
+          "Uh… ",
+          { "text": "(looking at bare wrist)", "pin": "bare-wrist", "strong": true },
+          " Oh! Look at the time! Really must go."
+        ]},
+        { "type": "direction", "text": ["(POI-1 hurriedly leaves.)"] },
+        { "type": "box", "small": true, "rows": [
+          ["Field Observation: ", { "text": "Machine reportedly began “warbling” and “reverberating” following the interaction.", "pin": "warbling" }, " Agents Nano and Mega are to assigned for further assessment."]
+        ]}
+      ]
+    },
+
+    "asset": {
+      "title": "Asset Integrity Report",
+      "pdf": "asset-integrity-report-2.pdf",
+      "blocks": [
+        { "type": "box", "rows": [
+          [{ "text": "STATUS: PHYSICAL OBSERVATIONS RECORDED; CAUSATION UNDETERMINED", "strong": true }],
+          [""],
+          [
+            "Note from Nano and Mega: Hey! Based on the previous consensus, we went back to the arcade machine in question and conducted a bunch of miscellaneous physical examinations to assess the external damage following the voltage spike on the 23rd. There’s a lot of details to go through, so take your time. Just a heads up, ",
+            { "text": "none of this data seems conclusive or supplies valuable evidence", "strong": true, "pin": "inconclusive" },
+            ", as far as we could tell. Maybe you computer guys could figure something out? ",
+            { "text": "Don’t bash your heads over it though!", "strong": true }
+          ]
+        ]},
+        { "type": "heading", "text": "1. General Condition" },
+        { "type": "para", "text": ["A preliminary physical inspection of The Reckoning V: Origins was conducted following the reported operational irregularities. The machine remained identifiable and structurally intact at the time of inspection. No evidence of catastrophic structural failure, major enclosure displacement, or widespread fragmentation was recorded during the visual assessment. The external housing exhibited several minor surface irregularities, including localised scuffing near the lower access panel, superficial abrasions along the right-side casing, and a small area of discolouration adjacent to a ventilation opening. These findings were confined to the exterior surfaces and did not, on visual examination alone, establish damage to any internal assembly."] },
+        { "type": "heading", "text": "2. Recorded Physical Observations" },
+        { "type": "para", "text": ["The following conditions were documented during the inspection:"] },
+        { "type": "para", "text": ["a. Enclosure surface damage: Fine scratches and shallow abrasions were observed on the outer casing. Their distribution was irregular, and no distinctive pattern was identified that would establish a particular impact direction or mechanism."] },
+        { "type": "para", "text": ["b. Access-panel alignment: ", { "text": "A slight, visually perceptible offset was noted along one edge of the lower access panel.", "pin": "panel-offset" }, " The panel remained attached, and no conclusion regarding interference with internal components could be drawn from its external position alone."] },
+        { "type": "para", "text": ["c. Ventilation grille: A small accumulation of dust and fibrous debris was present along portions of the ventilation grille. No verified airflow restriction or associated thermal consequence was established."] },
+        { "type": "para", "text": ["d. Surface discolouration: ", { "text": "Localised darkening was observed near one ventilation aperture.", "pin": "vent-darkening" }, " The material's composition and the origin of the discolouration were not determined. The observation cannot independently be classified as evidence of overheating, combustion, or electrical arcing."] },
+        { "type": "para", "text": ["e. Fastener condition: Minor cosmetic wear was visible around two externally accessible fastener heads. No verified loss of fastening integrity or corresponding structural instability was recorded."] },
+        { "type": "heading", "text": "3. Correlation with Electrical Observations" },
+        { "type": "para", "text": ["The physical findings do not independently establish a connection with the electrical irregularities documented in the accompanying report. In particular, the recorded compressor-controller startup and elevated harmonic content remain observations of undetermined significance. No verified physical evidence currently links either observation to the enclosure abrasions, surface discolouration, or panel misalignment."] },
+        { "type": "para", "text": ["Similarly, no specific physical defect was identified as the initiating cause of the reported operational event. The available observations are insufficient to determine whether the superficial conditions predated the incident, developed during normal operation, or arose in connection with the event itself."] },
+        { "type": "heading", "text": "4. Preliminary Assessment" },
+        { "type": "para", "text": ["The inspection documented limited external wear and several minor surface anomalies. Within the scope of the preliminary visual assessment, no major external structural failure was established. The condition of concealed components, internal supports, electrical insulation, and load-bearing assemblies remains unverified and should not be inferred from the exterior findings."] },
+        { "type": "heading", "text": "5. Conclusion" },
+        { "type": "para", "text": ["The physical inspection produced a record of superficial enclosure irregularities but did not establish a specific mechanical failure, a causal sequence, or a definitive relationship between the observed surface conditions and the reported electrical anomalies. All findings remain preliminary and are limited to the conditions actually documented during inspection."] },
+        { "type": "photos", "items": [
+          { "caption": "Photo 1: External casing exhibiting superficial abrasions and localised surface discolouration near the ventilation assembly." },
+          { "caption": "Photo 2: Lower access-panel junction showing minor alignment irregularities and cosmetic wear around the exposed fasteners." }
+        ]}
+      ]
+    },
+
+    "dossier": {
+      "title": "Energy Usage Dossier",
+      "pdf": "EnergyUsageDossier.pdf",
+      "blocks": [
+        { "type": "box", "rows": [
+          ["From: Department of Electricity, Government of nuxEland"],
+          ["To: Extradigital Exceptions and Unknowns Network"],
+          [""],
+          ["The Department of Electricity hereby furnishes the enclosed electricity consumption records and associated meter readings for Wenoti Arcade, pursuant to the formal request submitted by Agents Nano and Mega of EXUN. These figures have been compiled from the available metering records and are provided to support the ongoing investigation into the reported anomalies."],
+          [""],
+          ["Records submitted at the request of ", { "signature": "dossier" }, "."]
+        ]},
+        { "type": "para", "text": ["The following observations were noted during data review but have not been established:"] },
+        { "type": "list", "items": [
+          ["HVAC startup coincidence: The facility's compressor controller recorded a startup."],
+          ["Elevated harmonic content: The readings are compatible with switching electronics operating under changing load conditions."],
+          ["Minor phase imbalance: A small phase increase was recorded, although no single phase accounts for the total demand excursion."]
+        ]},
+        { "type": "para", "text": ["No substantial thermal excursion was observed at the accessible measurement points during the event. The short duration of the peak may limit the extent to which a thermal response would be apparent at these locations. These findings do not exclude localised heating within inaccessible components. No conclusion can be drawn regarding internal semiconductor temperatures without additional instrumentation."] },
+        { "type": "para", "text": ["It is uncompromisable that any relevant discrepancies identified in the accompanying data should be referred and forwarded with expedience to the Department for further verification."] }
+      ]
+    }
+  }
+}

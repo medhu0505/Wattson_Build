@@ -1,0 +1,29 @@
+{
+  "source": "Energy Usage Dossier — Department of Electricity, Government of nuxEland",
+  "site": "Wenoti Arcade, 92nd Avenue, nuxEland",
+  "year": 2026,
+  "unit": "kWh",
+  "columns": {
+    "day": "Day",
+    "date": "Date (2026)",
+    "meterReading": "Meter reading (kWh)",
+    "reportedUsage": "Daily usage (kWh)"
+  },
+  "note": "Copied row by row from the dossier table. 'highlighted' marks the rows the PDF shades yellow (Oct 25, Oct 26). The PDF gives no reason for the highlight.",
+  "rows": [
+    { "day": 1,  "date": "2026-10-13", "label": "Oct 13", "meterReading": 18477.20, "reportedUsage": 24.6,   "highlighted": false },
+    { "day": 2,  "date": "2026-10-14", "label": "Oct 14", "meterReading": 18505.30, "reportedUsage": 28.1,   "highlighted": false },
+    { "day": 3,  "date": "2026-10-15", "label": "Oct 15", "meterReading": 18528.20, "reportedUsage": 22.9,   "highlighted": false },
+    { "day": 4,  "date": "2026-10-16", "label": "Oct 16", "meterReading": 18559.60, "reportedUsage": 31.4,   "highlighted": false },
+    { "day": 5,  "date": "2026-10-17", "label": "Oct 17", "meterReading": 18586.30, "reportedUsage": 26.7,   "highlighted": false },
+    { "day": 6,  "date": "2026-10-18", "label": "Oct 18", "meterReading": 18621.50, "reportedUsage": 35.2,   "highlighted": false },
+    { "day": 7,  "date": "2026-10-19", "label": "Oct 19", "meterReading": 18651.30, "reportedUsage": 29.8,   "highlighted": false },
+    { "day": 8,  "date": "2026-10-20", "label": "Oct 20", "meterReading": 18674.80, "reportedUsage": 23.5,   "highlighted": false },
+    { "day": 9,  "date": "2026-10-21", "label": "Oct 21", "meterReading": 18702.40, "reportedUsage": 27.6,   "highlighted": false },
+    { "day": 10, "date": "2026-10-22", "label": "Oct 22", "meterReading": 18727.50, "reportedUsage": 25.1,   "highlighted": false },
+    { "day": 11, "date": "2026-10-23", "label": "Oct 23", "meterReading": 21411.50, "reportedUsage": 2684.00, "highlighted": false },
+    { "day": 12, "date": "2026-10-24", "label": "Oct 24", "meterReading": 21442.20, "reportedUsage": 503.2,  "highlighted": false },
+    { "day": 13, "date": "2026-10-25", "label": "Oct 25", "meterReading": 21464.00, "reportedUsage": 21.8,   "highlighted": true },
+    { "day": 14, "date": "2026-10-26", "label": "Oct 26", "meterReading": 21492.90, "reportedUsage": 28.9,   "highlighted": true }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "_readme": "All team-written narrative lives here. Every value that starts with TODO-TEAM is a slot for you to write: replace the whole string, keep the key. Do not contradict the PDFs (content/canon.json). One slot per line so the slot list can point at exact line numbers.",
+
+  "intake": {
+    "heading": "TODO-TEAM: heading on the agent intake form (the first screen a visitor sees)",
+    "briefing1": "TODO-TEAM: briefing paragraph 1, who is addressing the new agent and why they were recruited",
+    "briefing2": "TODO-TEAM: briefing paragraph 2, what the agent is about to investigate (stay within the Case Debrief)",
+    "briefing3": "TODO-TEAM: briefing paragraph 3, what is expected of the agent before they open the case files",
+    "oath": "TODO-TEAM: the line the agent must agree to before entering (e.g. a confidentiality undertaking)",
+    "welcome": "TODO-TEAM: one line shown after the codename is accepted; use {codename} where the name should appear"
+  },
+
+  "files": {
+    "intro": "TODO-TEAM: short note at the top of the case files telling the agent what to look for",
+    "outro": "TODO-TEAM: note shown once every key detail is pinned and the folder is sent to forensics"
+  },
+
+  "forensics": {
+    "intro": "TODO-TEAM: short note introducing the energy records",
+    "outro": "TODO-TEAM: reply from the Department of Electricity after the referral form is accepted"
+  },
+
+  "signal": {
+    "intro": "TODO-TEAM: short note introducing the Machine ID as something that needs decoding",
+    "outro": "TODO-TEAM: line shown when the decoded key opens the machine"
+  },
+
+  "machine": {
+    "intro": "TODO-TEAM: what the agent sees as the cabinet powers up (one or two lines)",
+    "twist1": "TODO-TEAM: terminal log line that starts revealing POI-1 came out of the game",
+    "twist2": "TODO-TEAM: terminal log line that ties the 23 October power surge to the crossing",
+    "twist3": "TODO-TEAM: terminal log line that confirms the crossing",
+    "case2Hook": "TODO-TEAM: the closing line that sets up Case #2"
+  },
+
+  "report": {
+    "closing": "TODO-TEAM: closing statement printed at the bottom of the case report"
+  }
+}
