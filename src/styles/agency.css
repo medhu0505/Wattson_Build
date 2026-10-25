@@ -162,7 +162,7 @@
   margin-top: 3px;
   padding: 0 5px;
   border: 1.5px solid var(--stamp);
-  color: var(--stamp);
+  color: var(--stamp-ink);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.18em;
@@ -173,7 +173,7 @@
 }
 .tab__status--cleared {
   border-color: var(--exun);
-  color: var(--exun);
+  color: var(--exun-ink);
 }
 
 /* ---------- The desk and the sheets of paper on it ---------- */
@@ -344,7 +344,7 @@
   margin-top: 6px;
   font-size: 13px;
   font-weight: 700;
-  color: var(--stamp);
+  color: var(--stamp-ink);
 }
 .field-error:empty { display: none; }
 

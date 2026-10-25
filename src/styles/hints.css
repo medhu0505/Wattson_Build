@@ -35,7 +35,7 @@
 .hints__list li:focus { outline: none; background: rgba(255, 228, 92, 0.45); }
 
 .hints__actions { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; margin-top: 22px; }
-.hints__done { font-size: 13px; font-weight: 700; color: var(--stamp); }
+.hints__done { font-size: 13px; font-weight: 700; color: var(--stamp-ink); }
 
 /* ---------- Supervisor bar ---------- */
 

@@ -70,7 +70,7 @@
   white-space: nowrap;
 }
 .records .num { text-align: right; font-variant-numeric: tabular-nums; }
-.records .num--bad { color: var(--stamp); font-weight: 700; }
+.records .num--bad { color: var(--stamp-ink); font-weight: 700; }
 
 /* As highlighted in the PDF */
 .row--highlight td { background: var(--marker); }
@@ -83,7 +83,7 @@
   margin-right: 4px;
   padding: 0 5px;
   border: 1.5px solid var(--stamp);
-  color: var(--stamp);
+  color: var(--stamp-ink);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.12em;

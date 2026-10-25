@@ -73,7 +73,7 @@
 .start-over__warning {
   width: 100%;
   font-size: 13px;
-  color: var(--stamp);
+  color: var(--stamp-ink);
 }
 
 .btn--danger { background: var(--stamp); border-color: var(--stamp); }

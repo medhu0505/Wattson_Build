@@ -135,7 +135,7 @@ body[data-stage='machine'] {
 .diff-same { color: #2f9e57; }
 .diff-removed { color: #ff6b61; text-shadow: 0 0 6px rgba(255, 90, 79, 0.6); }
 .diff-added { color: #b9ffcf; }
-.diff-skip { color: #1f6e3b; }
+.diff-skip { color: #3a9c5c; }
 
 .crt__world { letter-spacing: 0.25em; color: #2f9e57; }
 .crt__player {
@@ -261,9 +261,9 @@ body[data-stage='machine'] {
   border: 1.5px solid var(--ink);
   font-weight: 700;
   line-height: 1;
-  color: var(--stamp);
+  color: var(--stamp-ink);
 }
-.notes code { font-family: var(--font-agency); font-weight: 700; color: var(--exun); }
+.notes code { font-family: var(--font-agency); font-weight: 700; color: var(--exun-ink); }
 .notes__stamp { margin: 6px 0 16px; font-size: 18px; transform: rotate(-5deg); }
 
 /* ---------- Narrow screens ---------- */

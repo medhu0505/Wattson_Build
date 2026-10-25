@@ -220,7 +220,7 @@
   font-size: 9px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--stamp);
+  color: var(--stamp-ink);
 }
 
 /* ---------- Evidence board ---------- */
@@ -375,7 +375,7 @@
   color: var(--ink-soft);
   cursor: pointer;
 }
-.evidence-card__unpin:hover { color: var(--stamp); }
+.evidence-card__unpin:hover { color: var(--stamp-ink); }
 
 /* ---------- Filing ---------- */
 

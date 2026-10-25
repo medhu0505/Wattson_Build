@@ -12,6 +12,7 @@ import { renderDocument, syncPinned } from './document.js';
 import { createEvidenceBoard } from './evidenceBoard.js';
 import { addPin, removePin, isPinned, keyProgress } from '../lib/evidence.js';
 import { completeStage, isCompleted } from '../state/progress.js';
+import { prefersReducedMotion } from './effects.js';
 
 // The documents in this folder, in tab order, with the stamp each one carries.
 const FOLDER = [
@@ -159,7 +160,8 @@ export function renderCaseFiles(main, { store, go }) {
     class: 'board-jump',
     type: 'button',
     onClick: () => {
-      board.element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Glide there, unless the device asks for reduced motion.
+      board.element.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
       board.element.focus({ preventScroll: true });
     },
   }, 'Go to evidence board');

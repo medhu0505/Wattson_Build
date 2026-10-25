@@ -12,6 +12,11 @@
   --ink-memo: #1f3c88;       /* dark blue text inside the PDF boxes */
   --exun: #2a6ff0;           /* Exun blue */
   --stamp: #d23b36;          /* red stamp ink */
+  /* Slightly darker versions for SMALL TEXT, so it stays readable
+     (at least 4.5:1 contrast on the paper colours). The brighter ones
+     above are for stamps, borders and big type. */
+  --exun-ink: #1f58c9;
+  --stamp-ink: #b02a25;
   --marker: #ffe45c;         /* the yellow highlight in the dossier table */
   --desk: #2b3337;           /* the desk everything sits on */
 
@@ -99,7 +104,9 @@ h1:focus { outline: none; }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;   /* no waiting either: things just appear */
     transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
     scroll-behavior: auto !important;
   }
 }

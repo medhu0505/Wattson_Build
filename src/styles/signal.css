@@ -94,7 +94,7 @@
   padding: 0;
   background: none;
   border: 0;
-  color: var(--exun);
+  color: var(--exun-ink);
   font-size: 12px;
   font-weight: 700;
   text-decoration: underline;
@@ -135,7 +135,7 @@
   word-break: break-all;
 }
 .tape__text--empty { font-size: 14px; font-weight: 400; color: var(--ink-soft); }
-.tape__error { margin-top: 4px; font-weight: 700; color: var(--stamp); }
+.tape__error { margin-top: 4px; font-weight: 700; color: var(--stamp-ink); }
 
 .readout__actions { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 10px; }
 

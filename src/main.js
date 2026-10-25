@@ -15,7 +15,7 @@ import './styles/print.css';
 
 import { createStore } from './state/store.js';
 import { getBrowserStorage, completeStage } from './state/progress.js';
-import { STAGE_IDS } from './state/stages.js';
+import { STAGE_IDS, getStage } from './state/stages.js';
 import { createRouter } from './router.js';
 import { renderShell } from './ui/shell.js';
 import { views } from './ui/views.js';
@@ -68,6 +68,8 @@ const router = createRouter({
   onRoute: (stageId) => {
     // Lets the CSS style a stage's whole page (the machine screen goes dark).
     document.body.dataset.stage = stageId;
+    // The browser tab (and screen readers) say which folder is open.
+    document.title = `${getStage(stageId).title} · EXUN Case Terminal`;
     refreshChrome(stageId);
   },
 });
