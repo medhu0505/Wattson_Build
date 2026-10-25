@@ -11,17 +11,22 @@ export function assetUrl(file) {
   return `${import.meta.env.BASE_URL}${file}`;
 }
 
-export function artSlot(slotId, { fallback = null, className = '' } = {}) {
+// inline: true makes a <span> that sits inside a line of text (used for
+// signatures); otherwise it's a <figure> block.
+export function artSlot(slotId, { fallback = null, className = '', inline = false } = {}) {
   const slot = assets.art[slotId];
-  const frame = el('figure', { class: `art-slot ${className}`.trim(), 'data-slot': slotId });
+  const frame = el(inline ? 'span' : 'figure', {
+    class: `art-slot${inline ? ' art-slot--inline' : ''} ${className}`.trim(),
+    'data-slot': slotId,
+  });
 
   if (!slot) {
-    frame.append(el('figcaption', {}, `Unknown art slot: ${slotId}`));
+    frame.append(`Unknown art slot: ${slotId}`);
     return frame;
   }
 
   // What shows until (or unless) the picture loads.
-  frame.append(fallback ?? el('figcaption', { class: 'art-slot__label' },
+  frame.append(fallback ?? el(inline ? 'span' : 'figcaption', { class: 'art-slot__label' },
     el('span', {}, 'ART SLOT'),
     el('span', {}, slotId),
     el('span', {}, `public/${slot.file}`)

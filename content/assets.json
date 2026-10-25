@@ -11,6 +11,16 @@
       "file": "assets/art/id-photo.png",
       "alt": "Agent ID photo",
       "todo": "TODO-TEAM: portrait or silhouette for the agent ID card, 3:4 ratio, about 240 x 320 px"
+    },
+    "signature-transcript": {
+      "file": "assets/art/signature-transcript.png",
+      "alt": "Signature",
+      "todo": "TODO-TEAM: red handwritten signature on Transcript A's 'submitted at the request of' line, transparent PNG, about 200 x 60 px"
+    },
+    "signature-dossier": {
+      "file": "assets/art/signature-dossier.png",
+      "alt": "Signature",
+      "todo": "TODO-TEAM: handwritten signature on the Energy Dossier's 'submitted at the request of' line, transparent PNG, about 200 x 60 px"
     }
   },
 

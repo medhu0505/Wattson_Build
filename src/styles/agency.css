@@ -338,6 +338,15 @@ p.todo-team { padding: 2px 6px; }
   background: none;
 }
 
+/* An art slot inside a line of text (e.g. a signature). */
+.art-slot--inline {
+  display: inline-block;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
 /* The mark in the strip uses a typed stand-in instead of a dashed frame. */
 .strip__mark {
   min-height: 0;

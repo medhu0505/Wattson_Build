@@ -20,7 +20,8 @@ export function el(tag, attributes = {}, ...children) {
     }
   }
 
-  for (const child of children.flat()) {
+  // flat(Infinity) lets you pass lists, and lists inside lists, as children.
+  for (const child of children.flat(Infinity)) {
     if (child === null || child === undefined || child === false) continue;
     element.append(child instanceof Node ? child : String(child));
   }
