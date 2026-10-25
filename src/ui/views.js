@@ -5,12 +5,13 @@ import { renderIntake } from './intake.js';
 import { renderCaseFiles } from './casefiles.js';
 import { renderForensics } from './forensics.js';
 import { renderSignal } from './signal.js';
+import { renderMachine } from './terminal.js';
 
 export const views = {
   intake: renderIntake,
   files: renderCaseFiles,
   forensics: renderForensics,
   signal: renderSignal,
-  machine: pendingView('M5'),
+  machine: renderMachine,
   report: pendingView('M6'),
 };

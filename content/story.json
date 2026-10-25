@@ -28,9 +28,11 @@
 
   "machine": {
     "intro": "TODO-TEAM: what the agent sees as the cabinet powers up (one or two lines)",
-    "twist1": "TODO-TEAM: terminal log line that starts revealing POI-1 came out of the game",
-    "twist2": "TODO-TEAM: terminal log line that ties the 23 October power surge to the crossing",
-    "twist3": "TODO-TEAM: terminal log line that confirms the crossing",
+    "twist1": "TODO-TEAM: event-log line (with its own timestamp) that starts revealing POI-1 came out of the game",
+    "twist2": "TODO-TEAM: event-log line (with its own timestamp) that ties the 23 October power surge to the crossing",
+    "diffComment": "TODO-TEAM: one line shown after the code comparison, reacting to the missing Character class",
+    "renderComment": "TODO-TEAM: one line shown after the world is drawn without its player",
+    "twist3": "TODO-TEAM: the final reveal line that confirms the crossing",
     "case2Hook": "TODO-TEAM: the closing line that sets up Case #2"
   },
 
