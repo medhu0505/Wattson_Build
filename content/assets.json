@@ -21,8 +21,30 @@
       "file": "assets/art/signature-dossier.png",
       "alt": "Signature",
       "todo": "TODO-TEAM: handwritten signature on the Energy Dossier's 'submitted at the request of' line, transparent PNG, about 200 x 60 px"
+    },
+    "marquee": {
+      "file": "assets/art/marquee.png",
+      "alt": "The Reckoning V: Origins",
+      "todo": "TODO-TEAM: the arcade cabinet's lit marquee for The Reckoning V: Origins, about 1200 x 240 px (5:1)"
     }
   },
 
-  "audio": {}
+  "audio": {
+    "crt-hum": {
+      "file": "assets/audio/crt-hum.mp3",
+      "loop": true,
+      "volume": 0.25,
+      "todo": "TODO-TEAM: quiet looping CRT / cabinet hum while the machine terminal is open, a few seconds long, loops cleanly"
+    },
+    "glitch-burst": {
+      "file": "assets/audio/glitch-burst.mp3",
+      "volume": 0.5,
+      "todo": "TODO-TEAM: short digital glitch / static burst (under 1 second), plays when the screen glitches"
+    },
+    "reveal-sting": {
+      "file": "assets/audio/reveal-sting.mp3",
+      "volume": 0.7,
+      "todo": "TODO-TEAM: the sting for the final reveal in the machine terminal (2 to 5 seconds)"
+    }
+  }
 }

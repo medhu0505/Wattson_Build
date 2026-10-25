@@ -61,9 +61,16 @@ export function currentStageId(progress) {
   return next ?? STAGE_IDS[STAGE_IDS.length - 1];
 }
 
-// How many stages are cleared. The glitch "bleed" grows with this number.
+// How many stages are cleared.
 export function stagesCleared(progress) {
   return STAGE_IDS.filter((id) => isCompleted(progress, id)).length;
+}
+
+// How far the machine's glitches have "bled" into the agency's pages:
+// 0 at the start, then one level for each of these stages cleared.
+export const BLEED_STAGES = ['forensics', 'signal', 'machine'];
+export function glitchLevel(progress) {
+  return BLEED_STAGES.filter((id) => isCompleted(progress, id)).length;
 }
 
 // ---------- Saving and loading ----------

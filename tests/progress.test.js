@@ -4,7 +4,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   createProgress, isUnlocked, isCompleted, completeStage, currentStageId,
-  stagesCleared, loadProgress, saveProgress, clearProgress, cleanProgress, STORAGE_KEY,
+  stagesCleared, glitchLevel, loadProgress, saveProgress, clearProgress, cleanProgress, STORAGE_KEY,
 } from '../src/state/progress.js';
 import { STAGE_IDS } from '../src/state/stages.js';
 import { createStore } from '../src/state/store.js';
@@ -98,6 +98,20 @@ describe('unlocking stages in order', () => {
   it('opens the report only after the machine terminal is cleared', () => {
     expect(isUnlocked(clearUpTo('signal'), 'report')).toBe(false);
     expect(isUnlocked(clearUpTo('machine'), 'report')).toBe(true);
+  });
+});
+
+describe('glitch bleed level', () => {
+  it('stays at 0 through intake and the case files', () => {
+    expect(glitchLevel(createProgress())).toBe(0);
+    expect(glitchLevel(clearUpTo('files'))).toBe(0);
+  });
+
+  it('rises by one for forensics, the decoder and the machine', () => {
+    expect(glitchLevel(clearUpTo('forensics'))).toBe(1);
+    expect(glitchLevel(clearUpTo('signal'))).toBe(2);
+    expect(glitchLevel(clearUpTo('machine'))).toBe(3);
+    expect(glitchLevel(clearUpTo('report'))).toBe(3);
   });
 });
 
