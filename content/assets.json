@@ -6,6 +6,11 @@
       "file": "assets/art/agency-mark.png",
       "alt": "EXUN agency mark",
       "todo": "TODO-TEAM: agency mark for the top-left of every agency page, about 160 x 64 px, transparent PNG"
+    },
+    "id-photo": {
+      "file": "assets/art/id-photo.png",
+      "alt": "Agent ID photo",
+      "todo": "TODO-TEAM: portrait or silhouette for the agent ID card, 3:4 ratio, about 240 x 320 px"
     }
   },
 
