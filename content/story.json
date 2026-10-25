@@ -3,6 +3,7 @@
 
   "intake": {
     "heading": "TODO-TEAM: heading on the agent intake form (the first screen a visitor sees)",
+    "briefingFrom": "TODO-TEAM: who signs the briefing memo (name and title)",
     "briefing1": "TODO-TEAM: briefing paragraph 1, who is addressing the new agent and why they were recruited",
     "briefing2": "TODO-TEAM: briefing paragraph 2, what the agent is about to investigate (stay within the Case Debrief)",
     "briefing3": "TODO-TEAM: briefing paragraph 3, what is expected of the agent before they open the case files",

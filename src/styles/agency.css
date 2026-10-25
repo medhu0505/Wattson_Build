@@ -74,6 +74,7 @@
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: thin;
+  scrollbar-color: var(--ink-soft) transparent;
 }
 
 .tabs {
@@ -297,6 +298,16 @@
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
+
+/* ---------- Story text the team hasn't written yet ---------- */
+
+.todo-team {
+  outline: 1.5px dashed var(--stamp);
+  outline-offset: 2px;
+  background: rgba(255, 228, 92, 0.35);
+  color: var(--ink-soft);
+}
+p.todo-team { padding: 2px 6px; }
 
 /* ---------- Art slots (team artwork goes here) ---------- */
 
