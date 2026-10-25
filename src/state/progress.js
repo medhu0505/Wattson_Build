@@ -8,11 +8,15 @@
 import { STAGE_IDS } from './stages.js';
 
 export const STORAGE_KEY = 'exun-case-1-progress';
+// Supervisor mode (?supervisor=1) saves here instead, so a judge looking
+// around never touches the agent's real progress.
+export const SUPERVISOR_KEY = 'exun-case-1-supervisor';
 
 // A brand-new agent with nothing done yet.
 export function createProgress() {
   return {
     version: 1,
+    supervisor: false, // true in supervisor mode: every folder is open
     codename: '',
     startedAt: null,   // when the agent signed in (ISO date text)
     completed: {},     // stage id -> when it was cleared, e.g. { intake: '2026-10-25T10:00:00.000Z' }
@@ -29,10 +33,11 @@ export function createProgress() {
 // ---------- Unlock rules ----------
 
 // The first stage is always open. Every other stage opens once the stage
-// before it has been cleared.
+// before it has been cleared. In supervisor mode every stage is open.
 export function isUnlocked(progress, stageId) {
   const index = STAGE_IDS.indexOf(stageId);
   if (index === -1) return false; // not a real stage
+  if (progress.supervisor) return true;
   if (index === 0) return true;
   const previousId = STAGE_IDS[index - 1];
   return Boolean(progress.completed[previousId]);
@@ -87,10 +92,11 @@ export function getBrowserStorage() {
 
 // Read saved progress. Anything missing, broken or blocked falls back to a
 // fresh start instead of crashing the site.
-export function loadProgress(storage) {
+// key: which save to read (the agent's, or the supervisor's).
+export function loadProgress(storage, key = STORAGE_KEY) {
   if (!storage) return createProgress();
   try {
-    const text = storage.getItem(STORAGE_KEY);
+    const text = storage.getItem(key);
     if (!text) return createProgress();
     return cleanProgress(JSON.parse(text));
   } catch {
@@ -99,10 +105,10 @@ export function loadProgress(storage) {
 }
 
 // Save progress. Returns true if it worked, false if the browser refused.
-export function saveProgress(storage, progress) {
+export function saveProgress(storage, progress, key = STORAGE_KEY) {
   if (!storage) return false;
   try {
-    storage.setItem(STORAGE_KEY, JSON.stringify(progress));
+    storage.setItem(key, JSON.stringify(progress));
     return true;
   } catch {
     return false;
@@ -110,10 +116,10 @@ export function saveProgress(storage, progress) {
 }
 
 // Wipe saved progress (used by the "start over" button).
-export function clearProgress(storage) {
+export function clearProgress(storage, key = STORAGE_KEY) {
   if (!storage) return false;
   try {
-    storage.removeItem(STORAGE_KEY);
+    storage.removeItem(key);
     return true;
   } catch {
     return false;
@@ -128,6 +134,7 @@ export function cleanProgress(saved) {
 
   const clean = {
     ...fresh,
+    supervisor: saved.supervisor === true,
     codename: typeof saved.codename === 'string' ? saved.codename : '',
     startedAt: typeof saved.startedAt === 'string' ? saved.startedAt : null,
     pins: Array.isArray(saved.pins) ? saved.pins.filter(isValidPin) : [],
@@ -141,11 +148,12 @@ export function cleanProgress(saved) {
 
   // Keep cleared stages only while they form an unbroken chain from the
   // start. Someone who edits localStorage to mark stage 4 done without
-  // stage 3 gets stopped at stage 3.
+  // stage 3 gets stopped at stage 3. (A supervisor can clear stages in any
+  // order, so their save keeps every real stage.)
   const savedCompleted = isPlainObject(saved.completed) ? saved.completed : {};
   for (const id of STAGE_IDS) {
-    if (typeof savedCompleted[id] !== 'string') break;
-    clean.completed[id] = savedCompleted[id];
+    if (typeof savedCompleted[id] === 'string') clean.completed[id] = savedCompleted[id];
+    else if (!clean.supervisor) break;
   }
 
   return clean;

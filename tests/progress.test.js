@@ -4,7 +4,8 @@
 import { describe, it, expect } from 'vitest';
 import {
   createProgress, isUnlocked, isCompleted, completeStage, currentStageId,
-  stagesCleared, glitchLevel, loadProgress, saveProgress, clearProgress, cleanProgress, STORAGE_KEY,
+  stagesCleared, glitchLevel, loadProgress, saveProgress, clearProgress, cleanProgress,
+  STORAGE_KEY, SUPERVISOR_KEY,
 } from '../src/state/progress.js';
 import { STAGE_IDS } from '../src/state/stages.js';
 import { createStore } from '../src/state/store.js';
@@ -185,6 +186,57 @@ describe('cleaning saved data', () => {
   it('copes with saved data that is not an object', () => {
     expect(cleanProgress(null)).toEqual(createProgress());
     expect(cleanProgress('hello')).toEqual(createProgress());
+  });
+});
+
+describe('supervisor mode (?supervisor=1)', () => {
+  it('opens every stage, even with nothing cleared', () => {
+    const progress = { ...createProgress(), supervisor: true };
+    for (const id of STAGE_IDS) expect(isUnlocked(progress, id)).toBe(true);
+    expect(isUnlocked(progress, 'secret-level')).toBe(false);
+  });
+
+  it('lets stages be cleared in any order', () => {
+    const progress = completeStage({ ...createProgress(), supervisor: true }, 'signal');
+    expect(isCompleted(progress, 'signal')).toBe(true);
+    expect(isCompleted(progress, 'files')).toBe(false);
+  });
+
+  it('keeps out-of-order clears in a supervisor save, but not in an agent save', () => {
+    const saved = { completed: { signal: '2026-10-25T10:00:00.000Z' } };
+    expect(Object.keys(cleanProgress({ ...saved, supervisor: true }).completed)).toEqual(['signal']);
+    expect(Object.keys(cleanProgress(saved).completed)).toEqual([]);
+  });
+
+  it('only counts supervisor: true exactly (not "yes" or 1)', () => {
+    expect(cleanProgress({ supervisor: 'yes' }).supervisor).toBe(false);
+    expect(cleanProgress({ supervisor: 1 }).supervisor).toBe(false);
+  });
+
+  it('saves separately, so the agent’s own progress is untouched', () => {
+    const storage = fakeStorage();
+    const agent = createStore(storage);
+    agent.update((p) => completeStage({ ...p, codename: 'Kestrel' }, 'intake'));
+
+    const judge = createStore(storage, { supervisor: true });
+    judge.update((p) => completeStage(p, 'machine'));
+    judge.reset();
+
+    const agentAgain = createStore(storage);
+    expect(agentAgain.get().codename).toBe('Kestrel');
+    expect(Object.keys(agentAgain.get().completed)).toEqual(['intake']);
+    expect(storage.getItem(SUPERVISOR_KEY)).toBeNull(); // the reset cleared only the supervisor save
+  });
+
+  it('gives the supervisor a name and start time, and never leaks the flag into an agent save', () => {
+    const storage = fakeStorage();
+    const judge = createStore(storage, { supervisor: true });
+    expect(judge.get()).toMatchObject({ supervisor: true, codename: 'Supervisor' });
+    expect(judge.get().startedAt).toEqual(expect.any(String));
+
+    // Even if someone writes supervisor: true into the agent's save by hand...
+    storage.setItem(STORAGE_KEY, JSON.stringify({ supervisor: true }));
+    expect(createStore(storage).get().supervisor).toBe(false);
   });
 });
 
