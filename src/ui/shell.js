@@ -1,18 +1,23 @@
 // The parts of the page that stay put on every screen: the dark case strip
-// along the top and the row of folder tabs, one tab per stage.
+// along the top (with the Glitch and Sound switches) and the row of folder
+// tabs, one tab per stage.
 
 import { el } from './dom.js';
 import { artSlot } from './artSlot.js';
 import { STAGES } from '../state/stages.js';
 import { isUnlocked, isCompleted } from '../state/progress.js';
+import { prefersReducedMotion } from './effects.js';
 
-export function renderShell(progress, activeId) {
-  renderStrip(progress);
+// controls: { toggleGlitch(), toggleAudio() } from main.js
+export function renderShell(progress, activeId, controls) {
+  renderStrip(progress, controls);
   renderTabs(progress, activeId);
 }
 
-function renderStrip(progress) {
+function renderStrip(progress, controls) {
   const strip = document.getElementById('case-strip');
+  // Redrawing replaces the switches, so remember which one had the keyboard.
+  const focusedSetting = document.activeElement?.dataset?.setting;
 
   // Until the team adds their artwork, the mark is set in type.
   const typedMark = el('span', { class: 'mark' },
@@ -29,7 +34,37 @@ function renderStrip(progress) {
     el('p', { class: 'strip__agent' },
       el('span', { class: 'strip__label' }, 'Agent'),
       ' ', progress.codename || 'unassigned'
-    )
+    ),
+    settingsSwitches(progress, controls)
+  );
+
+  if (focusedSetting) strip.querySelector(`[data-setting="${focusedSetting}"]`)?.focus();
+}
+
+// Two on/off switches. aria-pressed tells screen readers whether each is on.
+function settingsSwitches(progress, controls) {
+  const reduced = prefersReducedMotion();
+  const glitchOn = progress.settings.glitch && !reduced;
+  const audioOn = progress.settings.audio;
+
+  return el('div', { class: 'strip__settings', role: 'group', 'aria-label': 'Display settings' },
+    el('button', {
+      class: 'switch',
+      type: 'button',
+      'data-setting': 'glitch',
+      'aria-pressed': String(glitchOn),
+      // With "reduce motion" switched on in the device settings, glitches stay off.
+      disabled: reduced,
+      title: reduced ? 'Off because your device asks for reduced motion' : null,
+      onClick: controls.toggleGlitch,
+    }, 'Glitch ', el('span', { class: 'switch__state' }, glitchOn ? 'on' : 'off')),
+    el('button', {
+      class: 'switch',
+      type: 'button',
+      'data-setting': 'audio',
+      'aria-pressed': String(audioOn),
+      onClick: controls.toggleAudio,
+    }, 'Sound ', el('span', { class: 'switch__state' }, audioOn ? 'on' : 'off'))
   );
 }
 

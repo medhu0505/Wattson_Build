@@ -30,6 +30,23 @@
   text-transform: uppercase;
 }
 
+/* Glitch / Sound switches */
+.strip__settings { display: flex; gap: 6px; }
+.switch {
+  padding: 3px 9px;
+  background: transparent;
+  border: 1px solid #5d6d75;
+  color: #9fb0b8;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.switch:hover { border-color: var(--paper); color: var(--paper); }
+.switch[aria-pressed='true'] { border-color: var(--crt-green); color: var(--crt-green); }
+.switch[disabled] { opacity: 0.5; cursor: not-allowed; }
+.switch__state { font-weight: 700; }
+
 /* The typed stand-in for the agency mark (until the team's artwork is added).
    Blue word block with a dark year tab, like the header on the PDFs. */
 .mark {
@@ -409,7 +426,7 @@ p.todo-team { padding: 2px 6px; }
 @media (max-width: 560px) {
   body { font-size: 14px; }
   .strip { gap: 6px 16px; }
-  .strip__agent { margin-left: 0; width: 100%; }
+  .strip__agent { margin-left: 0; }
   .tab { min-width: 96px; padding: 6px 10px 7px; }
   .sheet { margin-left: 0; transform: rotate(-0.15deg); }
   .sheet::before { right: 28px; }

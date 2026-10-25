@@ -1,0 +1,100 @@
+/* ==========================================================================
+   bleed.css: the machine's glitches "bleeding" into the agency's pages as
+   the case goes on. Everything here only runs when the page root has the
+   class "glitch-on" (the agent hasn't switched glitches off, and the device
+   doesn't ask for reduced motion). See src/ui/effects.js.
+
+   bleed-1: Energy Forensics cleared  – stamps and redaction bars misprint now and then
+   bleed-2: Signal Decoder cleared    – headings tear, folder tabs flicker, faint scanlines
+   bleed-3: Machine Terminal cleared  – a rolling bar and phosphor-green ghosting
+
+   Most of each animation's time is spent doing nothing; the glitch is a
+   short moment near the end, so pages stay readable.
+   ========================================================================== */
+
+/* ---------- Level 1 ---------- */
+
+.glitch-on.bleed-1 .stamp {
+  animation: misprint 7s steps(1) infinite;
+}
+.glitch-on.bleed-1 .stamp:nth-of-type(2n) { animation-delay: -3s; }
+
+@keyframes misprint {
+  0%, 93%, 100% { text-shadow: none; translate: 0 0; }
+  94% { text-shadow: -2px 0 rgba(0, 220, 170, 0.7), 2px 0 rgba(255, 0, 80, 0.6); translate: 2px 0; }
+  96% { text-shadow: 3px 0 rgba(0, 220, 170, 0.5); translate: -1px 0; }
+}
+
+.glitch-on.bleed-1 .redacted {
+  animation: bar-flicker 9s steps(1) infinite;
+}
+@keyframes bar-flicker {
+  0%, 96%, 100% { opacity: 1; }
+  97% { opacity: 0.55; }
+  98% { opacity: 1; }
+  99% { opacity: 0.75; }
+}
+
+/* ---------- Level 2 ---------- */
+
+.glitch-on.bleed-2 .sheet__title,
+.glitch-on.bleed-2 .doc__title {
+  animation: heading-tear 11s steps(1) infinite;
+}
+@keyframes heading-tear {
+  0%, 94%, 100% { transform: none; text-shadow: none; clip-path: none; }
+  95% { transform: skewX(-10deg) translateX(4px); text-shadow: -3px 0 rgba(0, 220, 170, 0.6), 3px 0 rgba(255, 0, 80, 0.5); }
+  96% { transform: translateX(-6px); clip-path: inset(35% 0 30% 0); }
+  97% { transform: translateX(2px); clip-path: none; }
+}
+
+.glitch-on.bleed-2 .tab { animation: tab-flicker 13s steps(1) infinite; }
+.glitch-on.bleed-2 .tabs li:nth-child(2n) .tab { animation-delay: -5s; }
+.glitch-on.bleed-2 .tabs li:nth-child(3n) .tab { animation-delay: -9s; }
+@keyframes tab-flicker {
+  0%, 97%, 100% { filter: none; }
+  98% { filter: brightness(1.6) contrast(1.4); }
+}
+
+/* Faint scanlines over everything (they don't move) */
+.glitch-on.bleed-2 body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  background: repeating-linear-gradient(transparent 0 2px, rgba(0, 0, 0, 0.05) 2px 3px);
+}
+
+/* ---------- Level 3 ---------- */
+
+/* A soft bar rolling slowly down the screen, like an unsynced monitor */
+.glitch-on.bleed-3 body::before {
+  content: '';
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: -20vh;
+  height: 18vh;
+  z-index: 91;
+  pointer-events: none;
+  background: linear-gradient(transparent, rgba(61, 255, 122, 0.06), transparent);
+  animation: roll-bar 14s linear infinite;
+}
+@keyframes roll-bar {
+  to { transform: translateY(140vh); }
+}
+
+.glitch-on.bleed-3 .sheet__ref,
+.glitch-on.bleed-3 .strip__label {
+  text-shadow: 0 0 6px rgba(61, 255, 122, 0.55);
+}
+
+.glitch-on.bleed-3 .redacted {
+  animation: bar-phosphor 8s steps(1) infinite;
+}
+@keyframes bar-phosphor {
+  0%, 95%, 100% { background-color: var(--ink); }
+  96% { background-color: #0c3b1d; }
+  98% { background-color: var(--ink); opacity: 0.6; }
+}

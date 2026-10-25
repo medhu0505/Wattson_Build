@@ -10,11 +10,14 @@ import '@fontsource/vt323/400.css';
 
 import './styles/base.css';
 import './styles/agency.css';
+import './styles/bleed.css';
 
 import { createStore } from './state/store.js';
 import { createRouter } from './router.js';
 import { renderShell } from './ui/shell.js';
 import { views } from './ui/views.js';
+import { applyEffects, onReducedMotionChange } from './ui/effects.js';
+import { setAudioEnabled } from './ui/audio.js';
 
 // The router decides where each screen scrolls to. Without this the browser
 // jumps back to wherever the page was scrolled before a reload.
@@ -22,15 +25,36 @@ history.scrollRestoration = 'manual';
 
 const store = createStore();
 
+// What the Glitch and Sound switches in the top bar do.
+const controls = {
+  toggleGlitch: () => store.update((p) => ({ ...p, settings: { ...p.settings, glitch: !p.settings.glitch } })),
+  toggleAudio: () => store.update((p) => ({ ...p, settings: { ...p.settings, audio: !p.settings.audio } })),
+};
+
+// Redraw the top bar and tabs, and apply the glitch and sound settings.
+function refreshChrome(stageId) {
+  const progress = store.get();
+  renderShell(progress, stageId, controls);
+  applyEffects(progress);
+  setAudioEnabled(progress.settings.audio);
+}
+
 const router = createRouter({
   store,
   views,
   main: document.getElementById('main'),
-  onRoute: (stageId) => renderShell(store.get(), stageId),
+  onRoute: (stageId) => {
+    // Lets the CSS style a stage's whole page (the machine screen goes dark).
+    document.body.dataset.stage = stageId;
+    refreshChrome(stageId);
+  },
 });
 
-// Whenever progress changes (a stage cleared, a pin added...), redraw the tabs.
-store.subscribe((progress) => renderShell(progress, router.activeId()));
+// Whenever progress changes (a stage cleared, a pin added, a switch flipped), redraw.
+store.subscribe(() => refreshChrome(router.activeId()));
+
+// If the device's reduce-motion setting changes while the site is open, follow it.
+onReducedMotionChange(() => refreshChrome(router.activeId()));
 
 // The "skip to folder" link: jump focus to the open folder without
 // changing the address (the address is used for stages).
