@@ -148,6 +148,29 @@ describe('report from a case still in progress', () => {
     expect(blank).not.toMatch(/undefined|null|NaN/);
   });
 
+  it('marks a supervisor report, and copes with folders cleared without answers', () => {
+    // What "Mark every folder cleared" in supervisor mode produces.
+    const progress = {
+      ...createProgress(),
+      supervisor: true,
+      codename: 'Supervisor',
+      startedAt: '2026-10-25T10:00:00.000Z',
+      completed: Object.fromEntries(['intake', 'files', 'forensics', 'signal', 'machine', 'report']
+        .map((id) => [id, '2026-10-25T10:01:00.000Z'])),
+    };
+    const report = buildReport(progress, sources);
+    const supervisorText = reportToText(report, { energy, closing: 'Closed.' });
+    expect(report.supervisor).toBe(true);
+    expect(supervisorText).toContain('MODE:   SUPERVISOR OVERRIDE');
+    expect(supervisorText).toContain('Access key entered: not recorded.');
+    expect(supervisorText).toContain('Checks run: none recorded');
+    expect(supervisorText).not.toMatch(/undefined|null|NaN/);
+  });
+
+  it('does not mark an agent’s own report as supervisor', () => {
+    expect(text).not.toContain('SUPERVISOR');
+  });
+
   it('ignores pins that are not in the case files', () => {
     const progress = { ...newAgent(), pins: [{ id: 'made-up', x: 0, y: 0 }] };
     expect(buildReport(progress, sources).evidence.pins).toEqual([]);

@@ -112,13 +112,15 @@ export function renderReport(main, { store }) {
   const signal = section(4, 'Signal analysis',
     report.signal.done ? [
       el('p', {}, 'Machine ID ', el('strong', {}, report.signal.machineId), ' decodes (Base32) to ', el('strong', {}, report.signal.decodesTo), '.'),
-      el('p', {}, `Access key entered: ${report.signal.keyEntered}. Access granted.`),
+      el('p', {}, report.signal.keyEntered
+        ? `Access key entered: ${report.signal.keyEntered}. Access granted.`
+        : 'Access key entered: not recorded.'),
     ] : notDone());
 
   const m = report.machine;
   const machine = section(5, 'Machine examination',
     m.done ? [
-      el('p', {}, `Checks run: ${m.checksRun.join(', ')}.`),
+      el('p', {}, `Checks run: ${m.checksRun.length ? m.checksRun.join(', ') : 'none recorded'}.`),
       el('p', {}, `Code comparison: ${m.removed} lines removed, ${m.added} added (original lines ${m.removedFrom}–${m.removedTo}).`),
       m.missing.map((c) => el('p', {},
         `Class ${c.name} (original line ${c.line}) is gone; the code still uses it on lines ${c.stillUsedAt.join(', ')}.`)),
@@ -144,8 +146,10 @@ export function renderReport(main, { store }) {
       el('h1', { id: 'report-title', class: 'doc__title' }, 'Case Report')),
     el('p', { class: `stamp report__stamp${report.closed ? '' : ' stamp--blue'}`, 'aria-hidden': 'true' },
       report.closed ? 'Case closed' : 'In progress'),
+    report.supervisor && el('p', { class: 'stamp report__override', 'aria-hidden': 'true' }, 'Supervisor override'),
     el('div', { class: 'doc-box' },
       el('p', {}, el('strong', {}, `STATUS: ${report.closed ? 'CASE #1 CLOSED; CASE #2 PENDING' : 'INVESTIGATION IN PROGRESS'}`)),
+      report.supervisor && el('p', {}, el('strong', {}, 'MODE: SUPERVISOR OVERRIDE (folders opened by a supervisor, not cleared in order)')),
       el('p', {}, ' '),
       el('p', {}, 'To: Extradigital Exceptions and Unknowns Network'),
       el('p', {}, `From: Agent ${report.agent.codename} (${report.agent.number})`),

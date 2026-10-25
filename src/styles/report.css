@@ -22,6 +22,12 @@
   transform: rotate(8deg);
 }
 
+.report__override {
+  margin: -6px 0 16px;
+  font-size: 15px;
+  transform: rotate(-3deg);
+}
+
 .report__section { margin-top: 28px; break-inside: avoid; }
 .report__heading {
   margin-bottom: 10px;

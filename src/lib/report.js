@@ -11,6 +11,7 @@ import { keyProgress } from './evidence.js';
 import { expectedKey } from './machineKey.js';
 import { diffLines, diffSummary } from './diff.js';
 import { missingClasses, readGameSetup } from './arcade.js';
+import { hintsUsed } from './hints.js';
 
 // 3,900,000 ms -> "1 h 05 min"
 export function formatDuration(ms) {
@@ -70,6 +71,7 @@ export function buildReport(progress, { canon, energy, originalCode, alteredCode
     agent: { codename, number: agentNumber(codename) },
     startedAt: progress.startedAt,
     generatedAt: now.toISOString(),
+    supervisor: Boolean(progress.supervisor), // true: made in supervisor mode, not an agent's own run
     closed: isCompleted(progress, 'machine'),
     timeline,
     totalTime: sinceStart(progress.completed.machine),
@@ -107,7 +109,7 @@ export function buildReport(progress, { canon, energy, originalCode, alteredCode
       setup: readGameSetup(originalCode),
     },
 
-    hints: STAGES.map((stage) => ({ title: stage.title, used: Number(progress.hintsUsed[stage.id] ?? 0) })),
+    hints: STAGES.map((stage) => ({ title: stage.title, used: hintsUsed(progress, stage.id) })),
   };
 }
 
@@ -128,6 +130,7 @@ export function reportToText(report, { energy, closing = '' }) {
   line(`CASE REPORT · ${report.caseName.toUpperCase()}`);
   line('='.repeat(56));
   line(`STATUS: ${report.closed ? 'CASE #1 CLOSED; CASE #2 PENDING' : 'INVESTIGATION IN PROGRESS'}`);
+  if (report.supervisor) line('MODE:   SUPERVISOR OVERRIDE (folders opened by a supervisor, not cleared in order)');
   line();
   line('To:      Extradigital Exceptions and Unknowns Network');
   line(`From:    Agent ${report.agent.codename} (${report.agent.number})`);
@@ -176,7 +179,9 @@ export function reportToText(report, { energy, closing = '' }) {
     notDone();
   } else {
     line(`  Machine ID ${report.signal.machineId} decodes (Base32) to: ${report.signal.decodesTo}`);
-    line(`  Access key entered: ${report.signal.keyEntered}. ACCESS GRANTED.`);
+    line(report.signal.keyEntered
+      ? `  Access key entered: ${report.signal.keyEntered}. ACCESS GRANTED.`
+      : '  Access key entered: not recorded.');
   }
 
   heading('5. Machine examination');
@@ -184,7 +189,7 @@ export function reportToText(report, { energy, closing = '' }) {
     notDone();
   } else {
     const m = report.machine;
-    line(`  Checks run: ${m.checksRun.join(', ')}`);
+    line(`  Checks run: ${m.checksRun.length ? m.checksRun.join(', ') : 'none recorded'}`);
     line(`  Code comparison: ${m.removed} lines removed, ${m.added} added (original lines ${m.removedFrom}–${m.removedTo}).`);
     for (const c of m.missing) {
       line(`  Class ${c.name} (original line ${c.line}) is gone; the code still uses it on lines ${c.stillUsedAt.join(', ')}.`);
