@@ -1,0 +1,111 @@
+/* ==========================================================================
+   base.css: colours, fonts, textures and accessibility rules used everywhere.
+   ========================================================================== */
+
+:root {
+  /* Agency colours (taken from the official PDFs) */
+  --paper: #f4f2ec;          /* off-white paper */
+  --paper-shade: #e6e2d8;    /* a sheet underneath, folder tabs */
+  --paper-memo: #eef2fa;     /* the pale blue boxes in the PDFs */
+  --ink: #1c262b;            /* near-black */
+  --ink-soft: #4a565c;
+  --ink-memo: #1f3c88;       /* dark blue text inside the PDF boxes */
+  --exun: #2a6ff0;           /* Exun blue */
+  --stamp: #d23b36;          /* red stamp ink */
+  --marker: #ffe45c;         /* the yellow highlight in the dossier table */
+  --desk: #2b3337;           /* the desk everything sits on */
+
+  /* Machine (arcade cabinet) colours */
+  --crt-bg: #04140a;
+  --crt-green: #3dff7a;
+  --crt-amber: #ffb000;
+
+  /* Fonts. Plain "monospace" is only a last resort if a font fails to load. */
+  --font-agency: 'Roboto Mono', monospace;
+  --font-crt: 'VT323', monospace;
+
+  /* Textures, drawn with SVG noise filters (no image files needed). */
+
+  /* Fine grain for paper */
+  --tex-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.11 0 0 0 0 0.15 0 0 0 0 0.17 0 0 0 0.1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+
+  /* Soft creases, like the crumpled paper behind the PDFs */
+  --tex-crease: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='640'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.006 0.011' numOctaves='4' seed='11' stitchTiles='stitch'/%3E%3CfeDiffuseLighting lighting-color='%23ffffff' surfaceScale='2.4'%3E%3CfeDistantLight azimuth='40' elevation='62'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)'/%3E%3C/svg%3E");
+
+  /* Uneven ink: used as a mask so stamps look worn, not perfect */
+  --tex-ink-wear: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -3.2 2.3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23w)'/%3E%3C/svg%3E");
+}
+
+/* ---------- Basic reset ---------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-agency);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink);
+  background-color: var(--desk);
+  background-image: var(--tex-grain);
+}
+
+h1, h2, h3, p, ol, ul, figure { margin: 0; }
+
+button, input, select, textarea { font: inherit; color: inherit; }
+
+img, svg { display: block; max-width: 100%; }
+
+/* ---------- Accessibility ---------- */
+
+/* A clear, thick outline for whatever the keyboard is on. */
+:focus-visible {
+  outline: 3px solid var(--exun);
+  outline-offset: 3px;
+}
+
+/* Headings get focus when a screen opens; no outline needed for that. */
+h1:focus { outline: none; }
+
+/* Hidden on screen, still read by screen readers. */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* The "skip" link only appears when a keyboard user tabs onto it. */
+.skip-link {
+  position: absolute;
+  left: 12px; top: -60px;
+  z-index: 100;
+  padding: 8px 12px;
+  background: var(--marker);
+  color: var(--ink);
+  font-weight: 700;
+}
+.skip-link:focus { top: 12px; }
+
+/* People who ask their device for less motion get none: every animation
+   and transition is stopped. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.noscript {
+  margin: 24px 16px;
+  padding: 16px;
+  background: var(--paper);
+}
