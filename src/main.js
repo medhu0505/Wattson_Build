@@ -11,6 +11,7 @@ import '@fontsource/vt323/400.css';
 import './styles/base.css';
 import './styles/agency.css';
 import './styles/bleed.css';
+import './styles/print.css';
 
 import { createStore } from './state/store.js';
 import { createRouter } from './router.js';

@@ -1,0 +1,82 @@
+/* ==========================================================================
+   print.css: how pages look on paper (or in "Save as PDF").
+   Only the open document prints: no top bar, tabs, buttons, side panels,
+   glitches or desk. Black text on white, stamps stay red.
+   ========================================================================== */
+
+@media print {
+  @page { margin: 16mm 16mm 18mm; }
+
+  html, body {
+    background: #fff !important;
+    color: #000;
+    font-size: 11pt;
+  }
+
+  /* Nothing moves on paper */
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  /* Hide everything that isn't the document */
+  .skip-link,
+  .strip,
+  .file-tabs,
+  .dispatch,
+  .notes,
+  .board-jump,
+  .btn,
+  #announcer,
+  body::before,
+  body::after {
+    display: none !important;
+  }
+
+  .desk { padding: 0; overflow: visible; }
+
+  /* The report fills the page width */
+  .report-desk { display: block; }
+
+  .sheet {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: #fff;
+    box-shadow: none;
+    transform: none;
+  }
+  .sheet::before,
+  .sheet::after { display: none; }   /* no paperclip */
+
+  /* Stamps: solid red ink, no worn-ink mask (printers handle it badly) */
+  .stamp {
+    -webkit-mask-image: none;
+    mask-image: none;
+    color: #c0201a !important;
+    border-color: #c0201a !important;
+    text-shadow: none !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .stamp--blue { color: #1f5fd6 !important; border-color: #1f5fd6 !important; }
+
+  .doc-box {
+    background: #f1f4fb;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .mark__word, .mark__year {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /* Keep each section of the report together where possible */
+  .report__section { break-inside: avoid; }
+  .report__heading { break-after: avoid; }
+
+  /* Placeholders still show on paper, as a dashed box */
+  .todo-team { background: none; outline: 1px dashed #c0201a; }
+}
