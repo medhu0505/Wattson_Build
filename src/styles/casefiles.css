@@ -1,0 +1,421 @@
+/* ==========================================================================
+   casefiles.css: Stage 01. Routing slip, divider tabs, the documents
+   (styled after the PDFs), and the corkboard evidence board.
+   ========================================================================== */
+
+/* Documents on the left; the board on the right, staying in view while
+   the documents scroll. */
+.files {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(340px, 470px);
+  gap: 34px;
+  align-items: start;
+}
+
+/* ---------- Routing slip (the screen's heading) ---------- */
+
+.files__slip {
+  max-width: 600px;
+  margin: 6px 0 0 clamp(0px, 3vw, 48px);
+  padding: 18px 22px 20px;
+  background-color: var(--paper);
+  background-image: var(--tex-grain);
+  border: 1px solid rgba(28, 38, 43, 0.45);
+  box-shadow: 4px 5px 0 rgba(28, 38, 43, 0.5);
+  transform: rotate(0.7deg);
+}
+.files__slip .sheet__ref { margin-bottom: 8px; }
+.files__slip .sheet__title { margin-bottom: 12px; font-size: clamp(24px, 4vw, 34px); }
+.files__slip p + p { margin-top: 10px; }
+
+.files__help {
+  padding-left: 10px;
+  border-left: 3px solid var(--exun);
+  font-size: 12.5px;
+  color: var(--ink-soft);
+}
+
+.board-jump {
+  display: none; /* only on narrow screens, see the bottom of this file */
+  margin-top: 14px;
+  padding: 6px 12px;
+  background: none;
+  border: 2px solid var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+/* ---------- Divider tabs ---------- */
+
+.doc-tabs {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 4px;
+  margin: 28px 0 -2px;
+  padding-left: calc(clamp(0px, 3vw, 48px) + 18px);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink-soft) transparent;
+}
+
+.doc-tab {
+  flex: none;
+  margin-bottom: 2px;
+  padding: 6px 14px 7px;
+  background: #d9e3f7;
+  border: 1.5px solid var(--ink);
+  border-bottom: 0;
+  border-radius: 3px 3px 0 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.doc-tab:hover { background: #e8eefb; }
+.doc-tab[aria-selected='true'] {
+  margin-bottom: 0;
+  padding-bottom: 9px;
+  background: var(--paper);
+}
+
+/* ---------- The document sheet (styled after the PDFs) ---------- */
+
+.doc { max-width: 860px; }
+.doc:focus-visible { outline-offset: 6px; }
+
+.doc__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 26px;
+  margin-bottom: 26px;
+  padding-right: 120px; /* room for the stamp */
+}
+
+.mark--small { padding-bottom: 7px; }
+.mark--small .mark__word { font-size: 16px; padding: 0 9px; }
+.mark--small .mark__year { right: -10px; font-size: 7px; }
+
+.doc__title {
+  font-size: clamp(22px, 4vw, 34px);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.doc__stamp {
+  position: absolute;
+  top: 26px;
+  right: 24px;
+  font-size: 14px;
+  transform: rotate(9deg);
+}
+
+.doc-box {
+  margin: 18px 0 22px;
+  padding: 14px 20px;
+  background: var(--paper-memo);
+  border: 2px solid var(--ink);
+  color: var(--ink-memo);
+}
+.doc-box p { white-space: pre-wrap; } /* keeps the wide gap before FORM ID */
+.doc-box p + p { margin-top: 2px; }
+.doc-box--small { font-size: 13px; }
+
+.doc-para,
+.doc-direction {
+  margin-bottom: 1em;
+  text-align: justify; /* the PDFs are justified */
+  hyphens: auto;
+}
+
+.doc-line { margin: 0.8em 0; }
+
+.doc-heading {
+  margin: 1.5em 0 0.6em;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.doc-list { margin: 0 0 1em; padding-left: 1.7em; }
+.doc-list li + li { margin-top: 2px; }
+
+/* The redacted photos in the Asset Integrity Report */
+.doc-photos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 200px)) minmax(160px, 1fr);
+  gap: 26px;
+  align-items: end;
+  margin-top: 30px;
+}
+.polaroid {
+  padding: 12px 12px 46px;
+  background: #ececea;
+  box-shadow: 3px 4px 0 rgba(28, 38, 43, 0.35);
+}
+.polaroid:nth-child(1) { transform: rotate(-1.5deg); }
+.polaroid:nth-child(2) { transform: rotate(1.2deg); }
+.polaroid__image {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: #050505;
+  border: 1px solid #b9b9b9;
+}
+.polaroid__sticker {
+  padding: 4px 14px;
+  background: #f05252;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  transform: rotate(-58deg);
+  white-space: nowrap;
+}
+.doc-photos__captions { font-size: 12px; }
+.doc-photos__captions p + p { margin-top: 14px; }
+
+/* ---------- Pinnable details, redactions, signatures ---------- */
+
+.pinnable {
+  cursor: pointer;
+  text-decoration: underline dotted var(--exun) 2px;
+  text-underline-offset: 3px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.pinnable:hover { background: rgba(42, 111, 240, 0.12); }
+.pinnable[aria-pressed='true'] {
+  background: var(--marker);
+  text-decoration-style: solid;
+}
+
+.redacted--canon {
+  padding: 0 0.4em;
+  color: var(--paper);
+  font-size: 0.85em;
+  letter-spacing: 0.08em;
+}
+
+.declassified {
+  background: linear-gradient(transparent 58%, rgba(210, 59, 54, 0.2) 58%);
+}
+
+.signature { vertical-align: bottom; }
+.signature img { height: 2.4em; width: auto; }
+.signature__line {
+  display: inline-block;
+  width: 16ch;
+  border-bottom: 1.5px solid currentColor;
+  line-height: 1;
+  text-align: center;
+}
+.signature__slot {
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--stamp);
+}
+
+/* ---------- Evidence board ---------- */
+
+.files__board {
+  position: sticky;
+  top: 12px;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 10px;
+  height: min(780px, calc(100vh - 24px));
+  min-height: 560px;
+}
+
+.board__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 4px 16px;
+  color: var(--paper);
+}
+.board__title {
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.board__count { font-size: 15px; font-weight: 700; }
+.board__count-label {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #9fb0b8;
+}
+.board__count--complete { color: var(--marker); }
+
+/* Cork in a wooden frame */
+.board__surface {
+  position: relative;
+  overflow: hidden;
+  min-height: 380px;
+  background-color: #a6845b;
+  background-image: var(--tex-grain), var(--tex-grain);
+  background-size: 220px 220px, 70px 70px;
+  border: 10px solid #5a4430;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.35);
+}
+.board__surface:focus { outline: none; }
+
+.board__string {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.board__string polyline {
+  fill: none;
+  stroke: var(--stamp);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+  opacity: 0.85;
+}
+
+.board__cards { margin: 0; padding: 0; list-style: none; }
+
+.board__empty {
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  max-width: 26ch;
+  padding: 8px 10px;
+  background: rgba(28, 38, 43, 0.75);
+  color: var(--paper);
+  font-size: 13px;
+}
+
+/* One index card. --x and --y (0 to 1) say where it sits; the sums keep
+   the whole card inside the board. Its size is fixed so the sums work. */
+.evidence-card {
+  --card-w: 150px;
+  --card-h: 112px;
+  position: absolute;
+  left: calc(var(--x) * (100% - var(--card-w)));
+  top: calc(var(--y) * (100% - var(--card-h)));
+  display: flex;
+  flex-direction: column;
+  width: var(--card-w);
+  height: var(--card-h);
+  padding: 20px 10px 6px;
+  overflow: hidden;
+  background-color: #fdfcf7;
+  /* a red rule near the top, then faint blue lines: an index card */
+  background-image:
+    linear-gradient(transparent 33px, rgba(210, 59, 54, 0.45) 33px 34px, transparent 34px),
+    repeating-linear-gradient(transparent 0 17px, rgba(42, 111, 240, 0.16) 17px 18px);
+  font-size: 11.5px;
+  line-height: 1.45;
+  transform: rotate(var(--tilt));
+  box-shadow: 2px 3px 0 rgba(0, 0, 0, 0.35);
+  cursor: grab;
+  touch-action: none;   /* dragging a card mustn't scroll the page on phones */
+  user-select: none;
+}
+.evidence-card:focus-visible { z-index: 4; outline-offset: 2px; }
+.evidence-card.is-dragging {
+  z-index: 5;
+  cursor: grabbing;
+  transform: rotate(0deg) scale(1.04);
+  box-shadow: 5px 8px 0 rgba(0, 0, 0, 0.35);
+}
+
+/* A card that was just pinned drops onto the board, once. */
+.evidence-card.is-new { animation: card-drop 200ms ease-out both; }
+@keyframes card-drop {
+  from { transform: rotate(var(--tilt)) translateY(-14px) scale(1.06); opacity: 0; }
+}
+
+.evidence-card__pin {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  width: 13px;
+  height: 13px;
+  margin-left: -6px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ff9b8f, var(--stamp) 55%, #6e1a17);
+  box-shadow: 1px 2px 0 rgba(0, 0, 0, 0.35);
+}
+.evidence-card__source {
+  font-size: 8.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.evidence-card__label {
+  flex: 1;
+  margin-top: 3px;
+  font-weight: 500;
+  overflow: hidden;
+}
+.evidence-card__unpin {
+  align-self: flex-end;
+  padding: 0 2px;
+  background: none;
+  border: 0;
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+.evidence-card__unpin:hover { color: var(--stamp); }
+
+/* ---------- Filing ---------- */
+
+.board__filing {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  padding: 14px 16px;
+  background-color: var(--paper);
+  background-image: var(--tex-grain);
+  border: 1px solid rgba(28, 38, 43, 0.45);
+}
+.board__filing-note { font-size: 12px; color: var(--ink-soft); }
+.board__filing > p:not(.stamp) { flex: 1 1 100%; }
+.board__filed-stamp { font-size: 20px; }
+
+/* ---------- Narrow screens: board goes under the documents ---------- */
+
+@media (max-width: 1100px) {
+  .files { grid-template-columns: minmax(0, 1fr); }
+  .files__board {
+    position: static;
+    height: auto;
+    min-height: 0;
+    grid-template-rows: auto 540px auto;
+    margin-left: clamp(0px, 3vw, 48px);
+    max-width: 860px;
+  }
+  .board-jump { display: inline-block; }
+}
+
+@media (max-width: 560px) {
+  .files__slip { margin-left: 0; transform: rotate(0.4deg); }
+  .doc-tabs { padding-left: 12px; }
+  .doc__header { padding-right: 0; }
+  .doc__stamp { position: static; font-size: 12px; transform: rotate(-4deg); } /* sits under the title instead of in the corner */
+  .doc-para, .doc-direction { text-align: left; }
+  .doc-photos { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .doc-photos__captions { grid-column: 1 / -1; }
+  .files__board { margin-left: 0; grid-template-rows: auto 480px auto; }
+  .evidence-card { --card-w: 132px; --card-h: 106px; font-size: 10.5px; }
+}

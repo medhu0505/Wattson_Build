@@ -16,6 +16,10 @@ import { createRouter } from './router.js';
 import { renderShell } from './ui/shell.js';
 import { views } from './ui/views.js';
 
+// The router decides where each screen scrolls to. Without this the browser
+// jumps back to wherever the page was scrolled before a reload.
+history.scrollRestoration = 'manual';
+
 const store = createStore();
 
 const router = createRouter({

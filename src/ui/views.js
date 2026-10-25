@@ -2,10 +2,11 @@
 
 import { pendingView } from './pending.js';
 import { renderIntake } from './intake.js';
+import { renderCaseFiles } from './casefiles.js';
 
 export const views = {
   intake: renderIntake,
-  files: pendingView('M2'),
+  files: renderCaseFiles,
   forensics: pendingView('M3'),
   signal: pendingView('M4'),
   machine: pendingView('M5'),
