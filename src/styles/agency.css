@@ -281,6 +281,54 @@
 }
 .btn--ghost:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 
+/* ---------- Forms (intake form, referral form) ---------- */
+
+/* Pre-filled lines at the top of a form: "Department ....... EXUN" */
+.form-fixed {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 6px 16px;
+  margin: 0 0 30px;
+  font-size: 13px;
+}
+.form-fixed dt {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 11px;
+  color: var(--ink-soft);
+  padding-top: 2px;
+}
+.form-fixed dd {
+  margin: 0;
+  border-bottom: 1px dotted var(--ink-soft);
+  color: var(--ink-memo);
+}
+
+.field { margin-bottom: 26px; }
+
+.field__label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.field__help {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+.field-error {
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--stamp);
+}
+.field-error:empty { display: none; }
+
 /* ---------- Memo boxes and redaction (as in the PDFs) ---------- */
 
 .memo {
