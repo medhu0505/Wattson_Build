@@ -1,6 +1,12 @@
 {
   "_readme": "Word-for-word text from the official PDFs. Do not edit the wording: it is canon. Typos in the PDFs are kept on purpose. A paragraph is a list of pieces: a plain string, or an object. {\"pin\": id} makes the words clickable onto the evidence board. {\"redacted\": true} is a black bar that never lifts (redacted in the PDF too). {\"clearance\": stageId} hides the words behind a bar until that stage is cleared. {\"strong\": true} is bold. {\"signature\": name} is a signature line (art slot). The two code files (OriginalCode.txt, AlteredCode.txt) stay in the project root and are loaded directly by the terminal.",
 
+  "machine": {
+    "name": "The Reckoning V: Origins",
+    "id": "MJWHKZLTNBUXE5A",
+    "location": "Wenoti Arcade, 92nd Avenue, nuxEland"
+  },
+
   "pins": {
     "location":        { "label": "Wenoti Arcade, 92nd Avenue",                 "doc": "debrief",    "key": true },
     "power-draw":      { "label": "Drawing multiple times its typical current", "doc": "debrief",    "key": true },
