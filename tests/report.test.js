@@ -99,7 +99,7 @@ describe('report from a finished case', () => {
 
     it('contains every section', () => {
       for (const heading of ['1. TIMELINE', '2. EVIDENCE FILED', '3. ENERGY FORENSICS', '4. SIGNAL ANALYSIS',
-        '5. MACHINE EXAMINATION', '6. CONCLUSION', '7. ASSISTANCE']) {
+        '5. MACHINE EXAMINATION', '6. CASE TIMELINE', '7. CONCLUSION', '8. ASSISTANCE']) {
         expect(text).toContain(heading);
       }
     });
@@ -114,6 +114,13 @@ describe('report from a finished case', () => {
       expect(text).toContain('Class Character (original line 4) is gone');
       expect(text).toContain('The case is closed.');
       expect(text).toContain('Hints used: 2');
+    });
+
+    it('includes the canon timeline and Agent Nano’s matching finding', () => {
+      expect(text).toContain('24 October');
+      expect(text).toContain('The game source code is obtained: one character class is missing [Progress Assesment Log]');
+      expect(text).toContain('reaches the same finding: "A VIDEO GAME CHARACTER HAS ESCAPED INTO THE REAL WORLD"');
+      expect(text).toContain('Open question from Agent Nano: WHY?');
     });
 
     it('never prints "undefined", "null" or "NaN"', () => {
@@ -136,6 +143,11 @@ describe('report from a case still in progress', () => {
     expect(text.match(/Not completed\./g).length).toBeGreaterThanOrEqual(5);
     expect(text).not.toContain('should not appear');
     expect(text).toContain('Nothing pinned.');
+  });
+
+  it('keeps Agent Nano’s log out of the report until the case is closed', () => {
+    expect(text).not.toContain('VIDEO GAME CHARACTER');
+    expect(text).not.toContain('source code is obtained');
   });
 
   it('never prints "undefined", "null" or "NaN"', () => {

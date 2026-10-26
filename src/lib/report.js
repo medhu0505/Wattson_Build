@@ -109,6 +109,20 @@ export function buildReport(progress, { canon, energy, originalCode, alteredCode
       setup: readGameSetup(originalCode),
     },
 
+    // What happened when, from the case files themselves (canon.json "timeline").
+    caseTimeline: canon.timeline.map((event) => ({
+      when: event.when, what: event.what, source: canon.documents[event.source].title,
+    })),
+
+    // Agent Nano's log, which reaches the same finding as the agent.
+    nanoLog: {
+      title: canon.documents.log.title,
+      author: canon.documents.log.author,
+      written: canon.documents.log.written,
+      concern: canon.documents.log.concern,
+      question: canon.documents.log.question,
+    },
+
     hints: STAGES.map((stage) => ({ title: stage.title, used: hintsUsed(progress, stage.id) })),
   };
 }
@@ -199,15 +213,26 @@ export function reportToText(report, { energy, closing = '' }) {
     }
   }
 
-  heading('6. Conclusion');
+  heading('6. Case timeline');
   if (report.closed) {
-    line(`  ${closing}`);
-    line('  Case #2: pending.');
+    for (const event of report.caseTimeline) {
+      line(`  ${event.when.padEnd(18)} ${event.what} [${event.source}]`);
+    }
   } else {
     notDone();
   }
 
-  heading('7. Assistance');
+  heading('7. Conclusion');
+  if (report.closed) {
+    const log = report.nanoLog;
+    line(`  ${closing}`);
+    line(`  ${log.author}'s ${log.title} (${log.written}) reaches the same finding: "${log.concern}".`);
+    line(`  Case #2: pending. Open question from ${log.author}: ${log.question}`);
+  } else {
+    notDone();
+  }
+
+  heading('8. Assistance');
   const usedHints = report.hints.filter((stage) => stage.used > 0);
   const total = report.hints.reduce((sum, stage) => sum + stage.used, 0);
   line(`  Hints used: ${total}`);

@@ -65,6 +65,7 @@
   text-transform: uppercase;
 }
 .report__pending { color: var(--ink-soft); font-style: italic; }
+.report__why { color: var(--stamp-ink); font-size: 1.3em; }
 .report__referral { margin-top: 12px; font-size: 13px; }
 
 .report__signature {

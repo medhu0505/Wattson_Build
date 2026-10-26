@@ -128,13 +128,30 @@ export function renderReport(main, { store }) {
         `World render: player ${m.setup.playerSymbol} expected at (${m.setup.start.x}, ${m.setup.start.y}): not found.`),
     ] : notDone());
 
-  const conclusion = section(6, 'Conclusion',
+  // What happened when, from the case files (shown once the case is closed,
+  // because it includes what Agent Nano's log revealed).
+  const caseTimeline = section(6, 'Case timeline',
     report.closed
-      ? [storyLine('report.closing', { codename: report.agent.codename }, 'p'), el('p', {}, 'Case #2: pending.')]
+      ? el('table', { class: 'report__table' },
+        el('thead', {}, el('tr', {},
+          el('th', { scope: 'col' }, 'When'), el('th', { scope: 'col' }, 'What'), el('th', { scope: 'col' }, 'Source'))),
+        el('tbody', {}, report.caseTimeline.map((event) => el('tr', {},
+          el('td', {}, event.when), el('td', {}, event.what), el('td', {}, event.source)))))
+      : notDone());
+
+  const log = report.nanoLog;
+  const conclusion = section(7, 'Conclusion',
+    report.closed
+      ? [
+        storyLine('report.closing', { codename: report.agent.codename }, 'p'),
+        el('p', {}, `${log.author}’s ${log.title} (${log.written}) reaches the same finding: “${log.concern}”.`),
+        el('p', {}, 'Case #2: pending. Open question from ', log.author, ': ',
+          el('span', { class: 'hand report__why' }, log.question)),
+      ]
       : notDone());
 
   const totalHints = report.hints.reduce((sum, stage) => sum + stage.used, 0);
-  const assistance = section(7, 'Assistance',
+  const assistance = section(8, 'Assistance',
     el('p', {}, `Hints used: ${totalHints}.`),
     totalHints > 0 && el('ul', { class: 'report__list' },
       report.hints.filter((stage) => stage.used > 0).map((stage) => el('li', {}, `${stage.title}: ${stage.used}`))));
@@ -155,7 +172,7 @@ export function renderReport(main, { store }) {
       el('p', {}, `From: Agent ${report.agent.codename} (${report.agent.number})`),
       el('p', {}, `Re: Case #1, ${report.site}`),
       el('p', {}, `Opened: ${formatDateTime(report.startedAt)}   ·   Report: ${formatDateTime(report.generatedAt)}`)),
-    timeline, evidence, forensics, signal, machine, conclusion, assistance,
+    timeline, evidence, forensics, signal, machine, caseTimeline, conclusion, assistance,
     el('p', { class: 'report__signature' }, 'Signed: ', el('span', {}, `Agent ${report.agent.codename}`)));
 
   main.append(el('div', { class: 'report-desk' }, sheet, dispatch));
