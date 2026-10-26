@@ -28,7 +28,9 @@ function renderStrip(progress, activeId, controls) {
     el('span', { class: 'mark__year' }, '2026')
   );
 
-  strip.replaceChildren(
+  // filter(Boolean) drops the supervisor bar when it's "false": unlike el(),
+  // replaceChildren would print it as the word "false".
+  strip.replaceChildren(...[
     artSlot('agency-mark', { fallback: typedMark, className: 'strip__mark' }),
     el('p', { class: 'strip__case' },
       el('span', { class: 'strip__label' }, 'Case #1'),
@@ -39,8 +41,8 @@ function renderStrip(progress, activeId, controls) {
       ' ', progress.codename || 'unassigned'
     ),
     settingsSwitches(progress, activeId, controls),
-    progress.supervisor && supervisorBar(controls)
-  );
+    progress.supervisor && supervisorBar(controls),
+  ].filter(Boolean));
 
   if (focusedSetting) strip.querySelector(`[data-setting="${focusedSetting}"]`)?.focus();
 }

@@ -111,13 +111,15 @@ export function renderSignal(main, { store, go }) {
       // e.g. "Base32 decode", "Caesar encode, shift 13", or just "Reverse"
       let heading = worksheet.method === 'reverse' ? tool.label : `${tool.label} ${worksheet.direction}`;
       if (worksheet.method === 'caesar') heading += `, shift ${worksheet.shift}`;
-      readout.replaceChildren(
+      // filter(Boolean) drops the parts that don't apply ("false"), which
+      // replaceChildren would otherwise print as the word "false".
+      readout.replaceChildren(...[
         tape(heading, result.ok
           ? el('p', { class: 'tape__text' }, result.output)
           : el('p', { class: 'tape__error' }, result.error)),
         result.ok && actions(result.output),
-        worksheet.method === 'caesar' && allShifts(text)
-      );
+        worksheet.method === 'caesar' && allShifts(text),
+      ].filter(Boolean));
       summary = result.ok ? `${heading}: ${result.output}` : result.error;
     }
 
