@@ -2,41 +2,41 @@
   "_readme": "All team-written narrative lives here. Every value that starts with TODO-TEAM is a slot for you to write: replace the whole string, keep the key. Do not contradict the PDFs (content/canon.json). One slot per line so the slot list can point at exact line numbers. CANON TIMELINE to stay consistent with: 23 Oct, huge energy spike; 23 Oct 22:31, Agents Nano and Mega meet POI-1 at the machine (Transcript A); after he leaves, the machine warbles; 24 Oct, the game source code is obtained and a character class is missing; 25 Oct 23:54, Agent Nano's Progress Assesment Log: POI-1 was not a cosplayer, the character escaped into the real world. Canon does NOT say why he escaped or where he went: leave that open (it is Nano's question, and the Case #2 hook).",
 
   "intake": {
-    "heading": "TODO-TEAM: heading on the agent intake form (the first screen a visitor sees)",
-    "briefingFrom": "TODO-TEAM: who signs the briefing memo (name and title)",
-    "briefing1": "TODO-TEAM: briefing paragraph 1, who is addressing the new agent and why they were recruited",
-    "briefing2": "TODO-TEAM: briefing paragraph 2, what the agent is about to investigate (stay within the Case Debrief)",
-    "briefing3": "TODO-TEAM: briefing paragraph 3, what is expected of the agent before they open the case files",
-    "oath": "TODO-TEAM: the line the agent must agree to before entering (e.g. a confidentiality undertaking)",
-    "welcome": "TODO-TEAM: one line shown after the codename is accepted; use {codename} where the name should appear"
+    "heading": "Request for Field Credentials",
+    "briefingFrom": "Conis Nikrobo, Case Lead, Extradigital Exceptions and Unknowns Network",
+    "briefing1": "Our team has been selected to join the Extradigital Exceptions and Unknowns Network, the branch of the etiNuxe Intelligence Agency that examines extradigital anomalies. You were recruited, Agent {codename}, because you read evidence to the end, where most people stop at the headline.",
+    "briefing2": "Our first assignment comes from Paul Boiler, Government of nuxEland. Wenoti Arcade on 92nd Avenue has been drawing many times its typical current from the district supply, and the owner claims to have made no modifications that could explain it. A transcript from our field agents suggests a connection to one arcade machine: The Reckoning V: Origins.",
+    "briefing3": "Read every document in the case files before you form a theory, and pin each detail that matters to the evidence board. The source and nature of this anomaly remain undetermined. Let the evidence settle them.",
+    "oath": "I undertake to keep everything in this case file confidential, and to report only what the evidence supports.",
+    "welcome": "Credentials issued. Welcome to EXUN, Agent {codename}."
   },
 
   "files": {
-    "intro": "TODO-TEAM: short note at the top of the case files telling the agent what to look for",
-    "outro": "TODO-TEAM: note shown once every key detail is pinned and the folder is sent to forensics"
+    "intro": "Everything we know so far is in these documents. Note every date and time, the machine, the person seen beside it, and anything that doesn’t quite fit.",
+    "outro": "Evidence board filed and sent to forensics, Agent {codename}. If the surges are real, the meters will show them."
   },
 
   "forensics": {
-    "intro": "TODO-TEAM: short note introducing the energy records",
-    "outro": "TODO-TEAM: reply from the Department of Electricity after the referral form is accepted"
+    "intro": "The Department of Electricity has sent Wenoti Arcade’s meter readings for 13 to 26 October. A meter only counts upwards, so the readings cannot hide a surge: find the days that don’t fit, and refer any discrepancy back to the Department, as it has asked.",
+    "outro": "The Department of Electricity hereby acknowledges receipt of the Discrepancy Referral submitted by Agent {codename} of EXUN. The surge recorded on 23 October and the reporting discrepancy of 24 October have been forwarded for further verification. The Department notes, with thanks, the expedience of the referral."
   },
 
   "signal": {
-    "intro": "TODO-TEAM: short note introducing the Machine ID as something that needs decoding",
-    "outro": "TODO-TEAM: line shown when the decoded key opens the machine"
+    "intro": "The Machine ID in the Case Debrief reads MJWHKZLTNBUXE5A. It looks like noise, but noise this tidy is usually a message: decode it, and it may let us into the machine.",
+    "outro": "Key accepted, Agent {codename}. The Reckoning V: Origins is powering up."
   },
 
   "machine": {
-    "intro": "TODO-TEAM: what the agent sees as the cabinet powers up (one or two lines)",
-    "twist1": "TODO-TEAM: event-log line (with its own timestamp, on or before 23 Oct 22:31) that starts revealing POI-1 came out of the game",
-    "twist2": "TODO-TEAM: event-log line (with its own timestamp, 23 Oct) that ties the energy spike on the 23rd to the crossing",
-    "diffComment": "TODO-TEAM: one line shown after the code comparison, reacting to the missing Character class",
-    "renderComment": "TODO-TEAM: one line shown after the world is drawn without its player",
-    "twist3": "TODO-TEAM: the final reveal line that confirms the crossing (must agree with Agent Nano's log: the character escaped)",
-    "case2Hook": "TODO-TEAM: the closing line that sets up Case #2, built on Agent Nano's open question: WHY did the character escape?"
+    "intro": "SYSTEM CHECK COMPLETE. WAITING FOR PLAYER 1 ... NO RESPONSE.",
+    "twist1": "23 OCT 22:19  CHARACTER AT (24, 6), OUTSIDE THE 24 x 12 WORLD. CLAMP FAILED.",
+    "twist2": "23 OCT 22:19  PEAK DRAW FROM DISTRICT SUPPLY. CHARACTER TRANSFER: OUT OF CABINET.",
+    "diffComment": "THE GAME STILL CALLS FOR ITS CHARACTER. NOTHING IN THE CODE ANSWERS.",
+    "renderComment": "THE WORLD IS STILL HERE. WHOEVER LIVED IN IT IS NOT.",
+    "twist3": "POI-1 WAS NEVER IN COSTUME. HE IS THE MISSING CHARACTER, AND ON 23 OCT HE ESCAPED THE GAME INTO THE REAL WORLD.",
+    "case2Hook": "WE KNOW WHEN HE LEFT, AND HOW. NOBODY YET KNOWS WHY."
   },
 
   "report": {
-    "closing": "TODO-TEAM: closing statement printed at the bottom of the case report"
+    "closing": "Agent {codename} finds, on the evidence of the meter records, the decoded Machine ID and the machine’s own code, that the anomaly at Wenoti Arcade was no fault. POI-1 is the character missing from The Reckoning V: Origins, and the surge of 23 October marks his crossing into the real world."
   }
 }
