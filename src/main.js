@@ -22,6 +22,7 @@ import { createRouter } from './router.js';
 import { renderShell } from './ui/shell.js';
 import { views } from './ui/views.js';
 import { openHints } from './ui/hints.js';
+import { renderColophon } from './ui/colophon.js';
 import { applyEffects, onReducedMotionChange } from './ui/effects.js';
 import { setAudioEnabled } from './ui/audio.js';
 
@@ -89,4 +90,5 @@ document.querySelector('.skip-link').addEventListener('click', (event) => {
   document.getElementById('main').focus();
 });
 
+renderColophon();
 router.show();

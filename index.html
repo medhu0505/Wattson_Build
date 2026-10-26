@@ -4,7 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>EXUN Case Terminal · Case #1</title>
-    <meta name="description" content="EXUN Case Terminal, Case #1: Wenoti Arcade. An Exun 2026-27 Hackathon entry." />
+    <meta name="description" content="EXUN Case Terminal, Case #1: Wenoti Arcade. An Exun 2026-27 Hackathon entry by Team AFBBS." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#1c262b" />
+    <!-- What chat apps show when the link is shared -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="EXUN Case Terminal · Case #1: Wenoti Arcade" />
+    <meta property="og:description" content="Work the case: pin the evidence, read the meters, decode the machine, and find out what came out of the arcade. An Exun 2026-27 Hackathon entry by Team AFBBS." />
+    <meta property="og:url" content="https://wattsonbuild.vercel.app/" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to the open folder</a>
@@ -15,6 +22,9 @@
 
     <!-- Each stage draws itself in here (src/router.js) -->
     <main id="main" class="desk" tabindex="-1"></main>
+
+    <!-- Who made the site (src/ui/colophon.js, names in content/team.json) -->
+    <footer class="colophon" id="colophon"></footer>
 
     <!-- Screen readers read out anything put in here -->
     <div id="announcer" class="visually-hidden" aria-live="polite"></div>

@@ -76,6 +76,7 @@
   font-size: 13px;
 }
 .report__signature span { font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+.report__colophon { margin-top: 26px; font-size: 11px; color: var(--ink-soft); }
 
 /* ---------- Out tray ---------- */
 

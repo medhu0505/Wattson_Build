@@ -7,6 +7,7 @@ import { agentNumber } from '../src/lib/codename.js';
 import { createProgress } from '../src/state/progress.js';
 import canon from '../content/canon.json';
 import energy from '../data/energy.json';
+import team from '../content/team.json';
 
 const sources = {
   canon,
@@ -125,6 +126,12 @@ describe('report from a finished case', () => {
 
     it('never prints "undefined", "null" or "NaN"', () => {
       expect(text).not.toMatch(/undefined|null|NaN/);
+    });
+
+    it('ends with who made the case terminal', () => {
+      const credited = reportToText(report, { energy, closing: '', team });
+      expect(credited.trim().split('\n').at(-1))
+        .toBe('EXUN Case Terminal, made by Team AFBBS: Medhansh Sharma, Aryaveer Dalal and Mudit Shakya.');
     });
   });
 });

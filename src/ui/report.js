@@ -7,6 +7,8 @@ import '../styles/report.css';
 import canon from '../../content/canon.json';
 import energy from '../../data/energy.json';
 import story from '../../content/story.json';
+import team from '../../content/team.json';
+import { memberList } from './colophon.js';
 import originalCode from '../../OriginalCode.txt?raw';
 import alteredCode from '../../AlteredCode.txt?raw';
 import { el, announce } from './dom.js';
@@ -39,7 +41,7 @@ export function renderReport(main, { store }) {
   }
 
   function downloadReport() {
-    const text = reportToText(buildReport(store.get(), SOURCES), { energy, closing: story.report.closing });
+    const text = reportToText(buildReport(store.get(), SOURCES), { energy, closing: story.report.closing, team });
     // Make a file in memory and "click" a link to it.
     const file = new Blob([text], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(file);
@@ -173,7 +175,8 @@ export function renderReport(main, { store }) {
       el('p', {}, `Re: Case #1, ${report.site}`),
       el('p', {}, `Opened: ${formatDateTime(report.startedAt)}   ·   Report: ${formatDateTime(report.generatedAt)}`)),
     timeline, evidence, forensics, signal, machine, caseTimeline, conclusion, assistance,
-    el('p', { class: 'report__signature' }, 'Signed: ', el('span', {}, `Agent ${report.agent.codename}`)));
+    el('p', { class: 'report__signature' }, 'Signed: ', el('span', {}, `Agent ${report.agent.codename}`)),
+    el('p', { class: 'report__colophon' }, `EXUN Case Terminal, made by Team ${team.team}: ${memberList()}.`));
 
   main.append(el('div', { class: 'report-desk' }, sheet, dispatch));
   drawDispatch();

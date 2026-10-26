@@ -134,7 +134,8 @@ function dateLabel(energy, date) {
 
 // The plain-text version, for downloading.
 // closing: the team's closing statement (from content/story.json)
-export function reportToText(report, { energy, closing = '' }) {
+// team:    who made the site (content/team.json), printed as the last line
+export function reportToText(report, { energy, closing = '', team = null }) {
   const out = [];
   const line = (text = '') => out.push(text);
   const heading = (text) => { line(); line(text.toUpperCase()); line('-'.repeat(text.length)); };
@@ -240,6 +241,15 @@ export function reportToText(report, { energy, closing = '' }) {
 
   line();
   line(`Signed: Agent ${report.agent.codename}`);
+
+  // Who made the case terminal (content/team.json), as a last line.
+  if (team) {
+    const names = team.members.length > 1
+      ? `${team.members.slice(0, -1).join(', ')} and ${team.members.at(-1)}`
+      : team.members.join('');
+    line();
+    line(`EXUN Case Terminal, made by Team ${team.team}: ${names}.`);
+  }
   return `${out.join('\n')}\n`;
 }
 
