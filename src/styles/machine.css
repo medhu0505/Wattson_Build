@@ -265,6 +265,7 @@ body[data-stage='machine'] {
 }
 .notes code { font-family: var(--font-agency); font-weight: 700; color: var(--exun-ink); }
 .notes__stamp { margin: 6px 0 16px; font-size: 18px; transform: rotate(-5deg); }
+.notes__log { display: block; margin-bottom: 10px; }
 
 /* ---------- Narrow screens ---------- */
 

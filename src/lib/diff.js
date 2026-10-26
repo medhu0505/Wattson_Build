@@ -1,6 +1,6 @@
 // A line-by-line "diff": which lines were removed from one text, which were
 // added, and which stayed the same. Used to compare the arcade game's
-// original code with the code installed in the cabinet now.
+// original code with the source code obtained on 24 October (Agent Nano's log).
 //
 // How it works: find the longest list of lines both texts share, in order
 // (the "longest common subsequence"). Every line that isn't part of that

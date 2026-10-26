@@ -2,7 +2,7 @@
 // The arcade cabinet's own screen. The agent types commands (or presses the
 // cabinet's buttons) to investigate:
 //   logs   – the cabinet's event log, cross-checked with the case files
-//   diff   – the game's original code against the code installed now
+//   diff   – the game's original code against the source code obtained on 24 October
 //   render – the game world drawn from both versions of the code
 // Once all three have been run, the screen breaks into the final reveal,
 // which clears the stage and opens the case report.
@@ -21,11 +21,12 @@ import { diffLines, diffSummary, withContext } from '../lib/diff.js';
 import { missingClasses, readGameSetup, renderWorld } from '../lib/arcade.js';
 import { analyseEnergy } from '../lib/anomalies.js';
 import { completeStage, isCompleted } from '../state/progress.js';
+import { setOpenDocument } from './casefiles.js';
 
 const COMMANDS = {
   help: 'list the commands',
   logs: 'read the cabinet’s event log',
-  diff: 'compare the game’s original code with the code installed now',
+  diff: `compare the game’s original code with the source code obtained ${canon.machine.sourceCodeObtained}`,
   render: 'draw the game world from both versions of the code',
   clear: 'clear the screen',
 };
@@ -33,11 +34,14 @@ const COMMANDS = {
 // The three checks that lead to the reveal, in the order the notes list them.
 const CHECKS = [
   { command: 'logs', note: 'Read the cabinet’s event log' },
-  { command: 'diff', note: 'Compare the original game code with what is installed' },
+  { command: 'diff', note: 'Compare the original game code with the source code obtained later' },
   { command: 'render', note: 'Draw the game world from both versions' },
 ];
 
 const LINE_DELAY = 45; // milliseconds between printed lines
+
+// When the altered code was obtained, from Agent Nano's log: "24 OCTOBER".
+const obtained = canon.machine.sourceCodeObtained.toUpperCase();
 
 export function renderMachine(main, { store, go }) {
   const saved = () => store.get().answers.machine ?? { ran: {} };
@@ -133,12 +137,12 @@ export function renderMachine(main, { store, go }) {
       }));
 
     return print([
-      'COMPARING OriginalCode.txt WITH AlteredCode.txt',
+      `COMPARING OriginalCode.txt WITH THE GAME SOURCE CODE OBTAINED ${obtained} (AlteredCode.txt)`,
       block,
       `${summary.removed} LINES REMOVED, ${summary.added} ADDED.`,
       ...missing.flatMap((c) => [
-        el('span', { class: 'crt__warn' }, `CLASS ${c.name} (ORIGINAL LINE ${c.line}) IS GONE FROM THE INSTALLED CODE.`),
-        el('span', { class: 'crt__warn' }, `THE INSTALLED CODE STILL USES ${c.name} ON LINE${c.stillUsedAt.length > 1 ? 'S' : ''} ${c.stillUsedAt.join(', ')}.`),
+        el('span', { class: 'crt__warn' }, `CLASS ${c.name} (ORIGINAL LINE ${c.line}) IS MISSING FROM THE OBTAINED SOURCE CODE.`),
+        el('span', { class: 'crt__warn' }, `THE OBTAINED CODE STILL USES ${c.name} ON LINE${c.stillUsedAt.length > 1 ? 'S' : ''} ${c.stillUsedAt.join(', ')}.`),
       ]),
       [storyLine('machine.diffComment', {}, 'span')],
     ], { instant });
@@ -160,7 +164,7 @@ export function renderMachine(main, { store, go }) {
     return print([
       `ORIGINAL BUILD (OriginalCode.txt): ${setup.width} x ${setup.height} WORLD`,
       world(setup.start),
-      `INSTALLED BUILD (AlteredCode.txt): ${setup.width} x ${setup.height} WORLD`,
+      `SOURCE CODE OBTAINED ${obtained} (AlteredCode.txt): ${setup.width} x ${setup.height} WORLD`,
       ...(playerGone
         ? [el('span', { class: 'crt__warn' }, `error: 'Character' does not name a type (lines ${missing[0].stillUsedAt.join(', ')})`)]
         : []),
@@ -179,12 +183,20 @@ export function renderMachine(main, { store, go }) {
     queue = queue.then(() => (instant ? null : wait(700))).then(() => {
       if (!instant && !closed) { burst(); play('reveal-sting'); }
     });
-    return print([
+    print([
       ' ',
       [storyLine('machine.case2Hook', {}, 'span')],
       ' ',
       el('span', { class: 'crt__alert' }, 'CASE #1: CLOSED     CASE #2: PENDING'),
     ], { instant, className: 'crt__line--glitch' });
+
+    // Agent Nano's log arrives in the case files (it was sealed until now).
+    const log = canon.documents.log;
+    return print([
+      ' ',
+      el('span', { class: 'crt__warn' }, `NEW FILE IN FOLDER 01: ${log.title.toUpperCase()}`),
+      el('span', { class: 'crt__warn' }, `FROM ${log.author.toUpperCase()}, WRITTEN ${log.written.toUpperCase()}`),
+    ], { instant });
   }
 
   const ACTIONS = { logs, diff, render };
@@ -279,6 +291,10 @@ export function renderMachine(main, { store, go }) {
           el('span', {}, check.note, ' ', el('code', {}, check.command)),
           el('span', { class: 'visually-hidden' }, hasRun(check.command) ? ' (done)' : ' (not done yet)')))),
       done && el('p', { class: 'stamp notes__stamp', 'aria-hidden': 'true' }, 'Case #2 pending'),
+      done && el('button', {
+        class: 'btn btn--ghost notes__log', type: 'button',
+        onClick: () => { setOpenDocument('log'); go('files'); },
+      }, 'Read Agent Nano’s log'),
       done && el('button', { class: 'btn', type: 'button', onClick: () => go('report') }, 'Open folder 05: Case Report'),
     ].filter(Boolean));
   }
