@@ -12,13 +12,17 @@ The case is a folder of six stages. Each one unlocks the next, and each uses the
 | Folder | What the agent does | What opens the next folder |
 |---|---|---|
 | 00 Intake | Picks a codename, gets an ID card, reads the briefing | Accepting the assignment |
-| 01 Case Files | Reads the Case Debrief, Transcript A and the Asset Integrity Report; pins details to a corkboard | Pinning all 7 key details, then filing |
+| 01 Case Files | Reads the Case Debrief, Transcript A and the Asset Integrity Report; pins details to a corkboard. A fourth document, Agent Nano's log, stays sealed until the case is cracked | Pinning all 7 key details, then filing |
 | 02 Energy Forensics | Runs an analysis of the Department of Electricity's meter data; reads the chart | A correct Discrepancy Referral (surge and mismatch) |
 | 03 Signal Decoder | Decodes the Machine ID with six tools or auto-detect | Entering the decoded key |
 | 04 Machine Terminal | Uses the cabinet's own screen: `logs`, `diff`, `render` | All three checks, which trigger the reveal |
 | 05 Case Report | Reads a report written from what they did | Printing it or downloading it files it |
 
-The twist: POI-1, the "cosplayer" in Transcript A, is a character who crossed out of *The Reckoning V: Origins*, and the 23 October power surge was the crossing. The machine terminal shows the evidence. Comparing `OriginalCode.txt` with `AlteredCode.txt` shows the whole `Character` class has been removed, and the game world drawn from the code has no player in it. The story text itself is the team's own and lives in `content/story.json`.
+The twist: POI-1, the "cosplayer" in Transcript A, is a character who crossed out of *The Reckoning V: Origins*, and the 23 October energy spike was the crossing. The machine terminal lets the agent find this for themselves:
+- Comparing `OriginalCode.txt` with the game source code obtained on 24 October (`AlteredCode.txt`) shows the whole `Character` class has been removed.
+- The game world drawn from the code has no player in it.
+
+Once the agent gets there, Agent Nano's **Progress Assesment Log** (canon, written 23:54 on 25 October) arrives in the case files. It reaches the same conclusion ("He WASN'T a cosplayer!!!"), and a red-pen note from Nano appears on Transcript A. The log ends on the question canon leaves open, *why* the character escaped, which is the hook for Case #2. The story text itself is the team's own and lives in `content/story.json`.
 
 As the case goes on, the arcade machine's glitches bleed into the agency's paper pages, and redactions in the case files lift as the agent's clearance grows.
 
@@ -35,6 +39,7 @@ As the case goes on, the arcade machine's glitches bleed into the agency's paper
 **Progression of storyline**
 - Sealed folders open in order.
 - Redactions in Transcript A and the Asset Integrity Report lift when later folders are cleared, and a lifted detail becomes new pinnable evidence.
+- Agent Nano's log is visible from the start as a sealed tab, and opens only after the reveal, so the canon confirmation never spoils the agent's own discovery. The report then gains a timeline built from the case files.
 - The glitch bleed grows with progress.
 - The reveal plays only after the agent has run all three checks, and ends on the hook for Case #2.
 - The case report is written from the agent's own run: what they pinned, what they filed, how long it took, how many hints they used.
@@ -48,7 +53,7 @@ As the case goes on, the arcade machine's glitches bleed into the agency's paper
 - **Case report**: print or save as PDF, or download as `.txt`.
 - **Hints**: three per stage, opened one at a time.
 - **Supervisor mode**: for judges (see below).
-- **192 automated tests** (see [Tests](#tests)).
+- **205 automated tests** (see [Tests](#tests)).
 
 ## Supervisor mode
 
@@ -115,7 +120,7 @@ Asset paths are relative (`base: './'` in `vite.config.js`), so it works whateve
 npm test
 ```
 
-192 tests in 11 files, covering:
+205 tests in 11 files, covering:
 
 - **Anomaly detection:** real data, made-up data, edge cases.
 - **Every decoder and auto-detect:** official RFC 4648 examples, padding, bad characters and lengths, URL-safe Base64, non-text bytes, emoji, empty input.
@@ -124,7 +129,7 @@ npm test
 - **The code diff and game-world reader.**
 - **The case report:** finished, unfinished, blank and supervisor runs, plus a check that it never prints "undefined", "null" or "NaN".
 - **Hints and codenames.**
-- **The integrity of `content/canon.json`.**
+- **The integrity of `content/canon.json`:** every pin is clickable, no key detail is redacted or sealed, Nano's log is sealed until the reveal, and the red-pen note quotes the log word for word.
 
 ## Project structure
 
@@ -152,14 +157,14 @@ scripts/list-todos.js   lists the remaining TODO-TEAM slots
 public/assets/          put artwork (art/) and audio (audio/) files here
 ```
 
-The official PDFs and the two code files (`OriginalCode.txt`, `AlteredCode.txt`) are in the project root. They are canon: the site quotes them and never contradicts them.
+The official PDFs (including `progress-assessment-log.pdf`) and the two code files (`OriginalCode.txt`, `AlteredCode.txt`) are in the project root. They are canon: the site quotes them and never contradicts them.
 
 ## Content: what is canon and what is ours
 
-- **Canon:** `content/canon.json` holds the text of the Case Debrief, Transcript A, the Asset Integrity Report and the Energy Usage Dossier, copied word for word (typos included). `data/energy.json` is the dossier's table; every row was checked against the PDF. The terminal reads the code files directly.
+- **Canon:** `content/canon.json` holds the text of the Case Debrief, Transcript A, the Asset Integrity Report, the Energy Usage Dossier and Agent Nano's Progress Assesment Log, copied word for word (typos included). It also holds a short timeline of dated events from those documents, and Nano's red-pen note, which quotes his log. `data/energy.json` is the dossier's table; every row was checked against the PDF. The terminal reads the code files directly.
 - **The team's own:** the narrative in `content/story.json`, plus the artwork and audio listed in `content/assets.json`. A file dropped at the listed path appears on the site by itself; until then a labelled empty slot shows. Unwritten story slots show on the page with a dashed red outline.
 - **Hints** (`content/hints.json`) point only at the case material. Any figures in them (dates, kWh, the decoded key) are filled in from the data, so they stay correct.
 
 ## Built with
 
-Vite, vanilla JavaScript, plain CSS and Vitest. There's no framework, UI kit or icon library, and no backend: it is a static site. The fonts are Roboto Mono (agency pages, matching the PDFs) and VT323 (the CRT screen), bundled through `@fontsource`.
+Vite, vanilla JavaScript, plain CSS and Vitest. There's no framework, UI kit or icon library, and no backend: it is a static site. The fonts are Roboto Mono (agency pages, matching the PDFs), VT323 (the CRT screen) and Indie Flower (Agent Nano's handwriting), bundled through `@fontsource`.

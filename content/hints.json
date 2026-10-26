@@ -10,7 +10,7 @@
   "files": [
     "Underlined words in the documents can be pinned to the board. You need the details that connect the arcade, the machine and POI-1.",
     "Look at where and what in the Case Debrief (the arcade, its power draw, the machine and its ID), and at when, who and what happened next in Transcript A.",
-    "The key details are: {keyDetails}. The Asset Integrity Report has none."
+    "The key details are: {keyDetails}. The Asset Integrity Report has none, and the sealed log isn't needed yet."
   ],
 
   "forensics": [
@@ -28,7 +28,7 @@
   "machine": [
     "Type help, or press the cabinet's buttons. The field notes list three checks.",
     "Run logs, diff and render. The diff compares the two versions of the game's code: look at what is missing.",
-    "Once logs, diff and render have all been run, the screen shows what happened."
+    "Once logs, diff and render have all been run, the screen shows what happened, and Agent Nano's log opens in folder 01."
   ],
 
   "report": [
