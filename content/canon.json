@@ -1,11 +1,20 @@
 {
-  "_readme": "Word-for-word text from the official PDFs. Do not edit the wording: it is canon. Typos in the PDFs are kept on purpose. A paragraph is a list of pieces: a plain string, or an object. {\"pin\": id} makes the words clickable onto the evidence board. {\"redacted\": true} is a black bar that never lifts (redacted in the PDF too). {\"clearance\": stageId} hides the words behind a bar until that stage is cleared. {\"strong\": true} is bold. {\"signature\": name} is a signature line (art slot). The two code files (OriginalCode.txt, AlteredCode.txt) stay in the project root and are loaded directly by the terminal.",
+  "_readme": "Word-for-word text from the official PDFs. Do not edit the wording: it is canon. Typos in the PDFs are kept on purpose. A paragraph is a list of pieces: a plain string, or an object. {\"pin\": id} makes the words clickable onto the evidence board. {\"redacted\": true} is a black bar that never lifts (redacted in the PDF too). {\"clearance\": stageId} hides the words behind a bar until that stage is cleared. {\"strong\": true} is bold. {\"signature\": name} is a signature line (art slot). {\"hand\": true} is handwriting. {\"penNote\": {...}} adds a red-pen note beside the words once a stage is cleared; the note's text must be quoted from a canon document. A document with \"sealedUntil\": stageId can't be opened until that stage is cleared. \"timeline\" lists dated events from the documents (\"source\" is the document id). The two code files (OriginalCode.txt, AlteredCode.txt) stay in the project root and are loaded directly by the terminal.",
 
   "machine": {
     "name": "The Reckoning V: Origins",
     "id": "MJWHKZLTNBUXE5A",
-    "location": "Wenoti Arcade, 92nd Avenue, nuxEland"
+    "location": "Wenoti Arcade, 92nd Avenue, nuxEland",
+    "sourceCodeObtained": "24 October"
   },
+
+  "timeline": [
+    { "when": "23 October",        "what": "A huge energy spike at Wenoti Arcade",                                   "source": "dossier" },
+    { "when": "23 October, 22:31", "what": "Agents Nano and Mega meet POI-1 at the arcade machine",                  "source": "transcript" },
+    { "when": "23 October",        "what": "The machine begins “warbling” and “reverberating” after POI-1 leaves", "source": "transcript" },
+    { "when": "24 October",        "what": "The game source code is obtained: one character class is missing",     "source": "log" },
+    { "when": "25 October, 23:54", "what": "Agent Nano writes the Progress Assesment Log: the character escaped",   "source": "log" }
+  ],
 
   "pins": {
     "location":        { "label": "Wenoti Arcade, 92nd Avenue",                 "doc": "debrief",    "key": true },
@@ -22,7 +31,11 @@
     "warbling":        { "label": "Machine warbling after POI-1 left",          "doc": "transcript", "key": true },
     "inconclusive":    { "label": "Nano & Mega: \"none of this data seems conclusive\"", "doc": "asset", "key": false },
     "panel-offset":    { "label": "Lower access panel slightly offset",         "doc": "asset",      "key": false },
-    "vent-darkening":  { "label": "Darkening near a ventilation aperture",      "doc": "asset",      "key": false }
+    "vent-darkening":  { "label": "Darkening near a ventilation aperture",      "doc": "asset",      "key": false },
+    "log-time":        { "label": "Nano’s log: 23:54, 25 October",              "doc": "log",        "key": false },
+    "not-cosplayer":   { "label": "Nano: POI-1 “WASN’T a cosplayer”",           "doc": "log",        "key": false },
+    "source-code":     { "label": "Source code (24th): a character class missing", "doc": "log",     "key": false },
+    "why":             { "label": "Nano’s open question: WHY?",                 "doc": "log",        "key": false }
   },
 
   "documents": {
@@ -67,7 +80,11 @@
           ["Participants:"],
           [{ "redacted": true, "text": "[REDACTED]" }, ", ", { "redacted": true, "text": "[REDACTED]" }, ", POI-1"],
           [""],
-          ["Two of our undercover agents, referred to here as agent Nano and agent Mega, had the following conversation with a suspicious person, a cosplayer, referred to here as POI-1, in the aforementioned arcade."],
+          [
+            "Two of our undercover agents, referred to here as agent Nano and agent Mega, had the following conversation with a suspicious person, ",
+            { "text": "a cosplayer", "penNote": { "text": "He WASN’T a cosplayer!!!", "by": "Agent Nano, 25 Oct", "quotes": "log", "after": "machine" } },
+            ", referred to here as POI-1, in the aforementioned arcade."
+          ],
           [""],
           ["Transcript submitted at the request of ", { "signature": "transcript" }, "."]
         ]},
@@ -154,6 +171,50 @@
         ]},
         { "type": "para", "text": ["No substantial thermal excursion was observed at the accessible measurement points during the event. The short duration of the peak may limit the extent to which a thermal response would be apparent at these locations. These findings do not exclude localised heating within inaccessible components. No conclusion can be drawn regarding internal semiconductor temperatures without additional instrumentation."] },
         { "type": "para", "text": ["It is uncompromisable that any relevant discrepancies identified in the accompanying data should be referred and forwarded with expedience to the Department for further verification."] }
+      ]
+    },
+
+    "log": {
+      "title": "Progress Assesment Log",
+      "pdf": "progress-assessment-log.pdf",
+      "sealedUntil": "machine",
+      "author": "Agent Nano",
+      "written": "23:54, 25 October",
+      "concern": "A VIDEO GAME CHARACTER HAS ESCAPED INTO THE REAL WORLD",
+      "question": "WHY?",
+      "blocks": [
+        { "type": "box", "rows": [
+          [{ "text": "ASSESSOR: ", "strong": true }, { "text": "Agent Nano", "hand": true }],
+          [{ "text": "STATUS: ", "strong": true }, { "text": "Major breakthrough???", "hand": true }]
+        ]},
+        { "type": "box", "rows": [
+          [{ "text": "IN-PROGRESS NOTES", "strong": true }],
+          [{ "text": "OK OK OK... listen, LISTEN. I know this is going to sound really insane and you guys probably think I have gone crazy, but it’s all clocking now.", "hand": true }],
+          [""],
+          [
+            { "text": "I’m writing this log at 23:54, October 25th.", "hand": true, "pin": "log-time" },
+            { "text": " The past few days have been full of random tests and experiments on that freaky arcade machine but I think I’ve finally cracked the code. LITERALLY, Let’s go all the way back for a minute. That electricity report energy dossier thing. There was a huge energy spike on the 23rd and that’s what started all of this.", "hand": true }
+          ],
+          [""],
+          [
+            { "text": "That’s the same night me and Agent Mega met POI-1 at the Reckoning machine, that weird cosplayer. BUT BUT BUT BUT BUT. ", "hand": true },
+            { "text": "He WASN’T a cosplayer!!!", "hand": true, "pin": "not-cosplayer" },
+            { "text": " It’s all making sense. ", "hand": true },
+            { "text": "When we finally got the game source code on the 24th, the code analysts reverted and told me that one of the character “classes” (coding thing) was completely missing.", "hand": true, "pin": "source-code" }
+          ],
+          [""],
+          [
+            { "text": "That could only mean one thing... The character. Escaped. But the bigger, more worrying question is ", "hand": true },
+            { "text": "WHY?", "hand": true, "pin": "why" }
+          ]
+        ]},
+        { "type": "box", "rows": [
+          [{ "text": "AREA OF CONCERN", "strong": true }],
+          [{ "text": "If my theory is correct, then A VIDEO GAME CHARACTER HAS ESCAPED INTO THE REAL WORLD!!!! CALL THE MILITARY!!", "hand": true }],
+          [""],
+          [""],
+          [{ "text": "STATUS: ", "strong": true }, { "text": "Immediate concern?? 10/10??? Code red? Blue? Green? All of them?!", "hand": true }]
+        ]}
       ]
     }
   }

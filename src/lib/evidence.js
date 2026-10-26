@@ -8,6 +8,14 @@
 // Using 0–1 instead of pixels means cards stay in place when the board
 // changes size (a phone vs a laptop, or a resized window).
 
+import { isCompleted } from '../state/progress.js';
+
+// Some documents arrive later in the case: "sealedUntil" names the stage
+// that must be cleared before they can be read.
+export function isDocumentOpen(doc, progress) {
+  return !doc.sealedUntil || isCompleted(progress, doc.sealedUntil);
+}
+
 // The details that must be on the board before the folder can be filed.
 export function keyPinIds(canonPins) {
   return Object.keys(canonPins).filter((id) => canonPins[id].key);

@@ -4,10 +4,11 @@
 import { describe, it, expect } from 'vitest';
 import {
   keyPinIds, isPinned, keyProgress, addPin, removePin, movePin, nudgePin,
-  nextSpot, clamp01, tiltFor,
+  nextSpot, clamp01, tiltFor, isDocumentOpen,
 } from '../src/lib/evidence.js';
 import canon from '../content/canon.json';
 import { STAGE_IDS } from '../src/state/stages.js';
+import { createProgress, completeStage } from '../src/state/progress.js';
 
 const pins = {
   a: { label: 'A', key: true },
@@ -142,5 +143,93 @@ describe('canon.json', () => {
     for (const s of segments.filter((piece) => piece.clearance)) {
       expect(STAGE_IDS.indexOf(s.clearance)).toBeGreaterThan(STAGE_IDS.indexOf('files'));
     }
+  });
+
+  it('no key detail is inside a document that is sealed', () => {
+    for (const id of keyPinIds(canon.pins)) {
+      expect(canon.documents[canon.pins[id].doc].sealedUntil).toBeUndefined();
+    }
+  });
+});
+
+// All the words of a document, joined up, for checking quotes against it.
+function documentText(doc) {
+  const words = [];
+  const take = (list) => list.forEach((piece) => words.push(typeof piece === 'string' ? piece : piece.text ?? ''));
+  for (const block of doc.blocks) {
+    if (Array.isArray(block.text)) take(block.text);
+    if (block.rows) block.rows.forEach(take);
+  }
+  return words.join('');
+}
+
+describe('Agent Nano’s Progress Assesment Log', () => {
+  const log = canon.documents.log;
+  const text = documentText(log);
+
+  it('is sealed until the Machine Terminal is cleared', () => {
+    let progress = createProgress();
+    for (const id of STAGE_IDS.slice(0, STAGE_IDS.indexOf('machine'))) progress = completeStage(progress, id);
+    expect(isDocumentOpen(log, progress)).toBe(false);
+    expect(isDocumentOpen(log, completeStage(progress, 'machine'))).toBe(true);
+  });
+
+  it('leaves the other documents open from the start', () => {
+    for (const id of ['debrief', 'transcript', 'asset', 'dossier']) {
+      expect(isDocumentOpen(canon.documents[id], createProgress())).toBe(true);
+    }
+  });
+
+  it('keeps the PDF’s wording, typos included', () => {
+    expect(log.title).toBe('Progress Assesment Log');
+    expect(text).toContain('the code analysts reverted and told me');
+    expect(text).toContain('BUT BUT BUT BUT BUT.');
+  });
+
+  it('quotes its concern and question word for word', () => {
+    expect(text).toContain(log.concern);
+    expect(text).toContain(log.question);
+    expect(text).toContain(log.written.split(',')[0]); // 23:54
+  });
+
+  it('is where the source code date comes from', () => {
+    expect(canon.machine.sourceCodeObtained).toBe('24 October');
+    expect(text).toContain('game source code on the 24th');
+  });
+});
+
+describe('red-pen notes', () => {
+  const notes = [];
+  for (const doc of Object.values(canon.documents)) {
+    for (const block of doc.blocks) {
+      for (const row of block.rows ?? [block.text ?? []]) {
+        for (const piece of row) if (piece?.penNote) notes.push(piece.penNote);
+      }
+    }
+  }
+
+  it('there is one, on Transcript A', () => {
+    expect(notes).toHaveLength(1);
+  });
+
+  it('every note is quoted word for word from a canon document', () => {
+    for (const note of notes) expect(documentText(canon.documents[note.quotes])).toContain(note.text);
+  });
+
+  it('every note appears at a real stage after the case files', () => {
+    for (const note of notes) expect(STAGE_IDS.indexOf(note.after)).toBeGreaterThan(STAGE_IDS.indexOf('files'));
+  });
+});
+
+describe('the canon timeline', () => {
+  it('names a real document as the source of each event', () => {
+    for (const event of canon.timeline) expect(canon.documents).toHaveProperty(event.source);
+  });
+
+  it('runs from 23 to 25 October in order', () => {
+    const days = canon.timeline.map((event) => Number(event.when.slice(0, 2)));
+    expect(days).toEqual([...days].sort((a, b) => a - b));
+    expect(days[0]).toBe(23);
+    expect(days.at(-1)).toBe(25);
   });
 });
