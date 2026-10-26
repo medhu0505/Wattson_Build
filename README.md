@@ -53,7 +53,7 @@ As the case goes on, the arcade machine's glitches bleed into the agency's paper
 - **Case report**: print or save as PDF, or download as `.txt`.
 - **Hints**: three per stage, opened one at a time.
 - **Supervisor mode**: for judges (see below).
-- **205 automated tests** (see [Tests](#tests)).
+- **207 automated tests** (see [Tests](#tests)).
 
 ## Supervisor mode
 
@@ -118,7 +118,7 @@ Asset paths are relative (`base: './'` in `vite.config.js`) and routing uses `#`
 npm test
 ```
 
-205 tests in 11 files, covering:
+207 tests in 11 files, covering:
 
 - **Anomaly detection:** real data, made-up data, edge cases.
 - **Every decoder and auto-detect:** official RFC 4648 examples, padding, bad characters and lengths, URL-safe Base64, non-text bytes, emoji, empty input.
