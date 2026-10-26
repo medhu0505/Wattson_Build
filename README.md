@@ -99,12 +99,9 @@ Other commands:
 
 The live site is hosted on **Vercel** at https://wattsonbuild.vercel.app/, built from this repository: Vercel runs `npm run build` and serves `dist/`.
 
-**GitHub Pages** also works. The workflow in `.github/workflows/deploy.yml` tests, builds and publishes the site whenever `main` is pushed, once Pages is switched on:
+Every push also runs the tests and the build on GitHub Actions (`.github/workflows/ci.yml`), so a broken change shows up as a red cross on the commit. That workflow doesn't publish anything.
 
-1. On GitHub: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-2. Push to `main`, or run the workflow from the **Actions** tab. The link is shown on the finished run.
-
-Asset paths are relative (`base: './'` in `vite.config.js`) and routing uses `#` addresses, so the site works on either host, under any folder name, without server settings.
+Asset paths are relative (`base: './'` in `vite.config.js`) and routing uses `#` addresses, so the built `dist/` folder works on any static host, under any folder name, without server settings.
 
 ## Accessibility
 

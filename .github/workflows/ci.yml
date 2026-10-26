@@ -1,0 +1,41 @@
+# Runs the tests and builds the site on every push (any branch), so a
+# broken change shows up as a red cross on the commit. It doesn't publish
+# anything: the live site is hosted on Vercel, which builds from this
+# repository by itself.
+
+name: Test and build
+
+on:
+  push:
+  workflow_dispatch: # also lets you run it by hand from the Actions tab
+
+# Only needs to read the code.
+permissions:
+  contents: read
+
+# If two pushes to the same branch happen close together, only check the newest.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v5
+
+      - name: Install Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install packages (exactly as in package-lock.json)
+        run: npm ci
+
+      - name: Run the tests
+        run: npm test
+
+      - name: Build the site into dist/
+        run: npm run build
