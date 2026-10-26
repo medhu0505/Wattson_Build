@@ -4,7 +4,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   keyPinIds, isPinned, keyProgress, addPin, removePin, movePin, nudgePin,
-  nextSpot, clamp01, tiltFor, isDocumentOpen,
+  nextSpot, clamp01, tiltFor, isDocumentOpen, tidyPins,
 } from '../src/lib/evidence.js';
 import canon from '../content/canon.json';
 import { STAGE_IDS } from '../src/state/stages.js';
@@ -84,6 +84,14 @@ describe('moving cards', () => {
     board = nudgePin(board, 'a', 0.05, -0.1);
     expect(board[0].x).toBe(1);
     expect(board[0].y).toBeCloseTo(0.4);
+  });
+
+  it('tidies a crowded board: same cards, same order, all in different places', () => {
+    const crowded = ['a', 'b', 'c', 'd', 'e', 'f'].map((id) => ({ id, x: 0.5, y: 0.5 }));
+    const tidy = tidyPins(crowded);
+    expect(tidy.map((pin) => pin.id)).toEqual(['a', 'b', 'c', 'd', 'e', 'f']);
+    expect(new Set(tidy.map((pin) => `${pin.x},${pin.y}`)).size).toBe(6);
+    expect(tidyPins([])).toEqual([]);
   });
 
   it('ignores a nudge for a card that is not pinned', () => {

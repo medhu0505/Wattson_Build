@@ -1,6 +1,6 @@
 # EXUN Case Terminal: Case #1, Wenoti Arcade
 
-An Exun 2026-27 Hackathon entry. The site is the case terminal of the Extradigital Exceptions and Unknowns Network (EXUN). You are a newly recruited agent working Case #1: the Wenoti Arcade on 92nd Avenue has been drawing many times its usual current, and the trail leads to the arcade machine *The Reckoning V: Origins*.
+An Exun 2026-27 Hackathon entry by **Team AFBBS** (Medhansh Sharma, Aryaveer Dalal, Mudit Shakya). The site is the case terminal of the Extradigital Exceptions and Unknowns Network (EXUN). You are a newly recruited agent working Case #1: the Wenoti Arcade on 92nd Avenue has been drawing many times its usual current, and the trail leads to the arcade machine *The Reckoning V: Origins*.
 
 - **Live site:** https://wattsonbuild.vercel.app/
 - **Judges:** https://wattsonbuild.vercel.app/?supervisor=1 opens every folder (see [Supervisor mode](#supervisor-mode)).
@@ -48,7 +48,7 @@ As the case goes on, the arcade machine's glitches bleed into the agency's paper
 - **Anomaly detection** (`src/lib/anomalies.js`): works out each day's metered usage from the meter readings. It flags surges with a median-based "modified z-score" and mismatches where the reported and metered figures differ. Nothing is hard-coded: the tests run it on made-up data with anomalies on other dates. On the dossier it finds the Oct 23 surge (2,684 kWh) and the Oct 24 mismatch (reported 503.2, metered 30.7).
 - **Hand-built SVG chart**: linear and logarithmic scales, flagged days ringed, with a text description for screen readers.
 - **Decoders** (`src/lib/decoders.js`): Base64 (including URL-safe), Base32, hex, ASCII codes (decimal or binary), Caesar (all 25 shifts) and reverse, each able to encode and decode, plus auto-detect ranked by a readability score. Decoding `MJWHKZLTNBUXE5A` (Base32) gives `blueshirt`, which opens the machine.
-- **Evidence board**: drag cards with mouse, touch or pen, or move them with the arrow keys.
+- **Evidence board**: drag cards with mouse, touch or pen, or move them with the arrow keys. "Tidy cards" spreads them out again.
 - **Progress** is saved in the browser (localStorage). If the browser blocks it, the site still works for that visit.
 - **Case report**: print or save as PDF, or download as `.txt`.
 - **Hints**: three per stage, opened one at a time.
@@ -152,7 +152,8 @@ content/
 data/energy.json        the dossier's table, copied and checked against the PDF
 tests/                  Vitest tests
 scripts/list-todos.js   lists the remaining TODO-TEAM slots
-public/assets/          put artwork (art/) and audio (audio/) files here
+src/assets/             put artwork (art/) and audio (audio/) files here
+public/favicon.svg      the browser-tab icon
 ```
 
 The official PDFs (including `progress-assessment-log.pdf`) and the two code files (`OriginalCode.txt`, `AlteredCode.txt`) are in the project root. They are canon: the site quotes them and never contradicts them.
@@ -160,9 +161,23 @@ The official PDFs (including `progress-assessment-log.pdf`) and the two code fil
 ## Content: what is canon and what is ours
 
 - **Canon:** `content/canon.json` holds the text of the Case Debrief, Transcript A, the Asset Integrity Report, the Energy Usage Dossier and Agent Nano's Progress Assesment Log, copied word for word (typos included). It also holds a short timeline of dated events from those documents, and Nano's red-pen note, which quotes his log. `data/energy.json` is the dossier's table; every row was checked against the PDF. The terminal reads the code files directly.
-- **The team's own:** the narrative in `content/story.json`, plus the artwork and audio listed in `content/assets.json`. A file dropped at the listed path appears on the site by itself; until then a labelled empty slot shows. Unwritten story slots show on the page with a dashed red outline.
+- **The team's own:** the narrative in `content/story.json`, plus the artwork and audio listed in `content/assets.json`.
+  - Put a picture in `src/assets/art/` (or a sound in `src/assets/audio/`) with the file name listed for its slot, and it appears on the site by itself. The site finds the files when it's built, so it never requests a file that isn't there.
+  - Until then, `npm run dev` shows a labelled frame naming the file to add, and the live site shows a plain stand-in.
+  - The Sound button only appears once at least one sound file exists.
+  - Unwritten story slots show on the page with a dashed red outline.
 - **Hints** (`content/hints.json`) point only at the case material. Any figures in them (dates, kWh, the decoded key) are filled in from the data, so they stay correct.
 
 ## Built with
 
 Vite, vanilla JavaScript, plain CSS and Vitest. There's no framework, UI kit or icon library, and no backend: it is a static site. The fonts are Roboto Mono (agency pages, matching the PDFs), VT323 (the CRT screen) and Indie Flower (Agent Nano's handwriting), bundled through `@fontsource`.
+
+## Team AFBBS
+
+Made for the Exun 2026-27 Hackathon by:
+
+- Medhansh Sharma
+- Aryaveer Dalal
+- Mudit Shakya
+
+The names also appear on every page and at the end of the case report; they come from `content/team.json`.

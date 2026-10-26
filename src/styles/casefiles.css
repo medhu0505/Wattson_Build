@@ -276,6 +276,7 @@
   color: #9fb0b8;
 }
 .board__count--complete { color: var(--marker); }
+.board__tidy { flex-basis: auto; }
 
 /* Cork in a wooden frame */
 .board__surface {

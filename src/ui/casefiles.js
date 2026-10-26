@@ -10,7 +10,7 @@ import { el, announce } from './dom.js';
 import { storyLine } from './story.js';
 import { renderDocument, syncPinned } from './document.js';
 import { createEvidenceBoard } from './evidenceBoard.js';
-import { addPin, removePin, isPinned, keyProgress, isDocumentOpen } from '../lib/evidence.js';
+import { addPin, removePin, isPinned, keyProgress, isDocumentOpen, tidyPins } from '../lib/evidence.js';
 import { completeStage, isCompleted } from '../state/progress.js';
 import { getStage } from '../state/stages.js';
 import { prefersReducedMotion } from './effects.js';
@@ -211,7 +211,17 @@ export function renderCaseFiles(main, { store, go }) {
       el('aside', { class: 'files__board', 'aria-labelledby': 'board-title' },
         el('header', { class: 'board__head' },
           el('h2', { id: 'board-title', class: 'board__title' }, 'Evidence board'),
-          counter
+          counter,
+          // Spread the cards out again (handy on phones, where they pile up).
+          el('button', {
+            class: 'switch board__tidy',
+            type: 'button',
+            onClick: () => {
+              store.update((progress) => ({ ...progress, pins: tidyPins(progress.pins) }));
+              board.refresh();
+              announce('Cards spread out across the board.');
+            },
+          }, 'Tidy cards')
         ),
         board.element,
         filing

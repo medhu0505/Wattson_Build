@@ -76,6 +76,12 @@ export function nudgePin(pins, id, dx, dy) {
   return movePin(pins, id, pin.x + dx, pin.y + dy);
 }
 
+// Spread every card out again, in the order they were pinned (the "Tidy"
+// button). Useful on small screens, where cards end up on top of each other.
+export function tidyPins(pins) {
+  return pins.reduce((board, pin) => addPin(board, pin.id), []);
+}
+
 // A small, fixed tilt for each card (between -3 and 3 degrees), so the
 // board looks hand-pinned. The same card always gets the same tilt.
 export function tiltFor(id) {

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- The EXUN mark in miniature: a blue block with an "E", and the dark year tab -->
+  <rect x="4" y="8" width="56" height="40" fill="#2a6ff0"/>
+  <rect x="30" y="44" width="30" height="12" fill="#1c262b"/>
+  <rect x="34" y="48.5" width="22" height="3" fill="#ffffff" opacity="0.8"/>
+  <rect x="17" y="16" width="6" height="24" fill="#ffffff"/>
+  <rect x="17" y="16" width="20" height="5" fill="#ffffff"/>
+  <rect x="17" y="25.5" width="15" height="5" fill="#ffffff"/>
+  <rect x="17" y="35" width="20" height="5" fill="#ffffff"/>
+</svg>
