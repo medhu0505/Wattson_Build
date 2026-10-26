@@ -2,8 +2,8 @@
 
 An Exun 2026-27 Hackathon entry. The site is the case terminal of the Extradigital Exceptions and Unknowns Network (EXUN). You are a newly recruited agent working Case #1: the Wenoti Arcade on 92nd Avenue has been drawing many times its usual current, and the trail leads to the arcade machine *The Reckoning V: Origins*.
 
-- **Live site:** TODO-TEAM: paste the GitHub Pages link here after the first deploy (it looks like https://USERNAME.github.io/REPOSITORY/)
-- **Judges:** add `?supervisor=1` to the link to open every folder (see [Supervisor mode](#supervisor-mode)).
+- **Live site:** https://wattsonbuild.vercel.app/
+- **Judges:** https://wattsonbuild.vercel.app/?supervisor=1 opens every folder (see [Supervisor mode](#supervisor-mode)).
 
 ## The concept
 
@@ -60,7 +60,7 @@ As the case goes on, the arcade machine's glitches bleed into the agency's paper
 Add `?supervisor=1` to the address, before the `#`:
 
 ```
-https://USERNAME.github.io/REPOSITORY/?supervisor=1#/forensics
+https://wattsonbuild.vercel.app/?supervisor=1#/forensics
 ```
 
 - Every folder is open, and stages can be cleared in any order.
@@ -95,15 +95,16 @@ Other commands:
 | `npm run preview` | Serves the built `dist/` to check it |
 | `npm run todo` | Lists every TODO-TEAM slot still to fill, with file and line |
 
-## Deploying to GitHub Pages
+## Deploying
 
-The workflow in `.github/workflows/deploy.yml` tests, builds and publishes the site whenever `main` is pushed.
+The live site is hosted on **Vercel** at https://wattsonbuild.vercel.app/, built from this repository: Vercel runs `npm run build` and serves `dist/`.
 
-1. Push this repository to GitHub.
-2. On GitHub: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-3. Push to `main`, or run the workflow from the **Actions** tab. The live link is shown on the finished run.
+**GitHub Pages** also works. The workflow in `.github/workflows/deploy.yml` tests, builds and publishes the site whenever `main` is pushed, once Pages is switched on:
 
-Asset paths are relative (`base: './'` in `vite.config.js`), so it works whatever the repository is called.
+1. On GitHub: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+2. Push to `main`, or run the workflow from the **Actions** tab. The link is shown on the finished run.
+
+Asset paths are relative (`base: './'` in `vite.config.js`) and routing uses `#` addresses, so the site works on either host, under any folder name, without server settings.
 
 ## Accessibility
 
