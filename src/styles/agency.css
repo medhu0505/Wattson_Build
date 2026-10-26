@@ -436,6 +436,18 @@ p.todo-team { padding: 2px 6px; }
   background: none;
 }
 
+/* On the live site, a missing picture is an empty frame marked "not on file" */
+.art-slot--missing { border-style: solid; border-width: 1px; }
+.art-slot__missing {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1.4;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
 /* An art slot inside a line of text (e.g. a signature). */
 .art-slot--inline {
   display: inline-block;
@@ -453,6 +465,60 @@ p.todo-team { padding: 2px 6px; }
   background: none;
 }
 .strip__mark img { max-height: 48px; width: auto; }
+
+/* ---------- Credits: a manila tag taped to the bottom of the desk ---------- */
+
+.colophon {
+  padding: 8px 16px 40px;
+}
+.colophon__tag {
+  position: relative;
+  display: inline-block;
+  margin-left: clamp(0px, 3vw, 48px);
+  padding: 14px 20px 12px 30px;
+  background-color: #e8d6ac;
+  background-image: var(--tex-grain);
+  border: 1px solid #a08a5b;
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.45);
+  color: var(--ink);
+  font-size: 12px;
+  line-height: 1.5;
+  transform: rotate(-1.2deg);
+}
+/* A strip of tape holding it down */
+.colophon__tag::before {
+  content: '';
+  position: absolute;
+  top: -9px;
+  left: 40%;
+  width: 70px;
+  height: 18px;
+  background: rgba(244, 238, 214, 0.75);
+  border: 1px solid rgba(160, 138, 91, 0.35);
+  transform: rotate(3deg);
+}
+/* The tag's punched hole */
+.colophon__tag::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  width: 9px;
+  height: 9px;
+  margin-top: -4px;
+  border-radius: 50%;
+  background: var(--desk);
+  box-shadow: inset 0 0 0 1px #a08a5b;
+}
+.colophon__label {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #5d4a25;
+}
+.colophon__made { margin-top: 2px; font-size: 13px; }
+.colophon__made strong { letter-spacing: 0.08em; }
+.colophon__names { font-weight: 500; }
 
 /* ---------- Small screens (down to 360px wide) ---------- */
 

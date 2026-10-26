@@ -1,29 +1,29 @@
 {
-  "_readme": "Slots for your own artwork and audio. Drop a file at the 'file' path inside /public and it appears on the site by itself. Until then a labelled empty frame is shown. Audio stays off until the agent switches it on.",
+  "_readme": "Slots for your own artwork and audio. Put artwork into src/assets/art/ and sound into src/assets/audio/, using the 'file' name listed for each slot, and it appears on the site by itself (the site finds the files when it is built). Until then: while developing, a labelled frame shows which file to add; on the live site a plain stand-in is shown. The Sound button only appears once at least one sound file exists, and sound stays off until the agent switches it on.",
 
   "art": {
     "agency-mark": {
-      "file": "assets/art/agency-mark.png",
+      "file": "agency-mark.png",
       "alt": "EXUN agency mark",
       "todo": "TODO-TEAM: agency mark for the top-left of every agency page, about 160 x 64 px, transparent PNG"
     },
     "id-photo": {
-      "file": "assets/art/id-photo.png",
-      "alt": "Agent ID photo",
+      "file": "id-photo.png",
+      "alt": "Agent ID photo", "missing": "No photo on file",
       "todo": "TODO-TEAM: portrait or silhouette for the agent ID card, 3:4 ratio, about 240 x 320 px"
     },
     "signature-transcript": {
-      "file": "assets/art/signature-transcript.png",
+      "file": "signature-transcript.png",
       "alt": "Signature",
       "todo": "TODO-TEAM: red handwritten signature on Transcript A's 'submitted at the request of' line, transparent PNG, about 200 x 60 px"
     },
     "signature-dossier": {
-      "file": "assets/art/signature-dossier.png",
+      "file": "signature-dossier.png",
       "alt": "Signature",
       "todo": "TODO-TEAM: handwritten signature on the Energy Dossier's 'submitted at the request of' line, transparent PNG, about 200 x 60 px"
     },
     "marquee": {
-      "file": "assets/art/marquee.png",
+      "file": "marquee.png",
       "alt": "The Reckoning V: Origins",
       "todo": "TODO-TEAM: the arcade cabinet's lit marquee for The Reckoning V: Origins, about 1200 x 240 px (5:1)"
     }
@@ -31,18 +31,18 @@
 
   "audio": {
     "crt-hum": {
-      "file": "assets/audio/crt-hum.mp3",
+      "file": "crt-hum.mp3",
       "loop": true,
       "volume": 0.25,
       "todo": "TODO-TEAM: quiet looping CRT / cabinet hum while the machine terminal is open, a few seconds long, loops cleanly"
     },
     "glitch-burst": {
-      "file": "assets/audio/glitch-burst.mp3",
+      "file": "glitch-burst.mp3",
       "volume": 0.5,
       "todo": "TODO-TEAM: short digital glitch / static burst (under 1 second), plays when the screen glitches"
     },
     "reveal-sting": {
-      "file": "assets/audio/reveal-sting.mp3",
+      "file": "reveal-sting.mp3",
       "volume": 0.7,
       "todo": "TODO-TEAM: the sting for the final reveal in the machine terminal (2 to 5 seconds)"
     }

@@ -79,8 +79,10 @@ function renderPiece(piece, options) {
     return artSlot(`signature-${piece.signature}`, {
       inline: true,
       className: 'signature',
+      // Until the signature artwork is added: a blank signature line. While
+      // developing, it's labelled so the team can see where the art goes.
       fallback: el('span', { class: 'signature__line' },
-        el('span', { class: 'signature__slot' }, 'signature slot')),
+        import.meta.env.DEV ? el('span', { class: 'signature__slot' }, 'signature slot') : ' '),
     });
   }
 

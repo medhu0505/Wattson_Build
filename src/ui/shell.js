@@ -8,6 +8,7 @@ import { STAGES } from '../state/stages.js';
 import { isUnlocked, isCompleted } from '../state/progress.js';
 import { hintsUsed, HINTS_PER_STAGE } from '../lib/hints.js';
 import { prefersReducedMotion } from './effects.js';
+import { hasAudio } from './audio.js';
 
 // controls (from main.js):
 //   toggleGlitch(), toggleAudio(), openHints(stageId),
@@ -73,7 +74,8 @@ function settingsSwitches(progress, activeId, controls) {
       title: reduced ? 'Off because your device asks for reduced motion' : null,
       onClick: controls.toggleGlitch,
     }, 'Glitch ', el('span', { class: 'switch__state' }, glitchOn ? 'on' : 'off')),
-    el('button', {
+    // Only shown once the team has added at least one sound file.
+    hasAudio() && el('button', {
       class: 'switch',
       type: 'button',
       'data-setting': 'audio',
