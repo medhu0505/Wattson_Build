@@ -2,11 +2,13 @@
 // and draws the right screen.
 
 // Fonts are bundled with the site (no outside font service).
-// Roboto Mono matches the official PDFs; VT323 is the arcade/CRT screen font.
+// Roboto Mono matches the official PDFs; VT323 is the arcade/CRT screen font;
+// Indie Flower is handwriting (Agent Nano's log and red-pen notes).
 import '@fontsource/roboto-mono/400.css';
 import '@fontsource/roboto-mono/500.css';
 import '@fontsource/roboto-mono/700.css';
 import '@fontsource/vt323/400.css';
+import '@fontsource/indie-flower/400.css';
 
 import './styles/base.css';
 import './styles/agency.css';

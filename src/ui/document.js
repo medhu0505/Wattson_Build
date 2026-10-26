@@ -29,8 +29,11 @@ function renderBlock(block, options) {
 
   switch (block.type) {
     case 'box':
+      // A row that is just [""] is a blank line, as in the PDFs.
       return el('div', { class: `doc-box${block.small ? ' doc-box--small' : ''}` },
-        block.rows.map((row) => el('p', {}, pieces(row))));
+        block.rows.map((row) => (row.length === 1 && row[0] === ''
+          ? el('div', { class: 'doc-box__gap', 'aria-hidden': 'true' })
+          : el('p', {}, pieces(row)))));
 
     case 'para':
       return el('p', { class: 'doc-para' }, pieces(block.text));
@@ -88,6 +91,9 @@ function renderPiece(piece, options) {
 
   let content = piece.strong ? el('strong', {}, piece.text) : piece.text;
 
+  // Handwritten words (Agent Nano's notes)
+  if (piece.hand) content = el('span', { class: 'hand' }, content);
+
   if (piece.pin && options.onPin) {
     content = pinnable(piece.pin, content, options);
   }
@@ -96,6 +102,19 @@ function renderPiece(piece, options) {
   if (piece.clearance) {
     content = el('span', { class: 'declassified', title: 'Declassified' },
       content, el('span', { class: 'visually-hidden' }, ' (declassified)'));
+  }
+
+  // A red-pen note written beside the words, once its stage is cleared.
+  if (piece.penNote && isCompleted(options.progress, piece.penNote.after)) {
+    return [
+      el('span', { class: 'pen-mark' }, content),
+      ' ',
+      el('span', { class: 'pen-note' },
+        el('span', { class: 'visually-hidden' }, '(Handwritten note: '),
+        piece.penNote.text,
+        el('span', { class: 'pen-note__by' }, ` – ${piece.penNote.by}`),
+        el('span', { class: 'visually-hidden' }, ')')),
+    ];
   }
 
   return content;

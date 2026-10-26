@@ -10,15 +10,19 @@ import { el, announce } from './dom.js';
 import { storyLine } from './story.js';
 import { renderDocument, syncPinned } from './document.js';
 import { createEvidenceBoard } from './evidenceBoard.js';
-import { addPin, removePin, isPinned, keyProgress } from '../lib/evidence.js';
+import { addPin, removePin, isPinned, keyProgress, isDocumentOpen } from '../lib/evidence.js';
 import { completeStage, isCompleted } from '../state/progress.js';
+import { getStage } from '../state/stages.js';
 import { prefersReducedMotion } from './effects.js';
 
 // The documents in this folder, in tab order, with the stamp each one carries.
+// Agent Nano's log is sealed until the Machine Terminal is cleared (see
+// "sealedUntil" in canon.json), so it shows as a sealed tab until then.
 const FOLDER = [
   { id: 'debrief', stamp: 'Confidential' },
   { id: 'transcript', stamp: 'Eyes only' },
   { id: 'asset', stamp: 'Inconclusive' },
+  { id: 'log', stamp: 'Immediate concern' },
 ];
 
 const DOCUMENT_NAMES = Object.fromEntries(
@@ -27,6 +31,12 @@ const DOCUMENT_NAMES = Object.fromEntries(
 
 // Remember which document was open, while the site stays open.
 let openDocId = 'debrief';
+
+// Other screens can ask for a document to be open next time the case files
+// are shown (the machine terminal does this for Agent Nano's log).
+export function setOpenDocument(docId) {
+  if (FOLDER.some((entry) => entry.id === docId)) openDocId = docId;
+}
 
 export function renderCaseFiles(main, { store, go }) {
   const pinnedNow = (id) => isPinned(store.get().pins, id);
@@ -47,29 +57,45 @@ export function renderCaseFiles(main, { store, go }) {
 
     const doc = canon.documents[docId];
     const entry = FOLDER.find((item) => item.id === docId);
+    const open = isDocumentOpen(doc, store.get());
     panel.setAttribute('aria-labelledby', `doc-tab-${docId}`);
+    panel.classList.toggle('doc--sealed', !open);
     panel.replaceChildren(
       el('header', { class: 'doc__header' },
         el('span', { class: 'mark mark--small', 'aria-hidden': 'true' },
           el('span', { class: 'mark__word' }, 'EXUN'),
           el('span', { class: 'mark__year' }, '2026')),
         el('h2', { class: 'doc__title' }, doc.title),
-        el('p', { class: 'stamp doc__stamp', 'aria-hidden': 'true' }, entry.stamp)
+        el('p', { class: 'stamp doc__stamp', 'aria-hidden': 'true' }, open ? entry.stamp : 'Sealed')
       ),
-      renderDocument(doc, { progress: store.get(), isPinned: pinnedNow, onPin: togglePin })
+      open
+        ? renderDocument(doc, { progress: store.get(), isPinned: pinnedNow, onPin: togglePin })
+        : sealedNotice(doc)
     );
   }
 
-  FOLDER.forEach((entry) => {
-    tabList.append(el('button', {
-      class: 'doc-tab',
-      type: 'button',
-      role: 'tab',
-      id: `doc-tab-${entry.id}`,
-      'data-doc': entry.id,
-      onClick: () => showDocument(entry.id),
-    }, canon.documents[entry.id].title));
-  });
+  // What a sealed document shows instead of its text.
+  function sealedNotice(doc) {
+    const stage = getStage(doc.sealedUntil);
+    return el('div', { class: 'doc__sealed' },
+      el('p', {}, `This document is sealed. It opens when folder ${stage.tab}, ${stage.title}, is cleared.`),
+      el('p', { class: 'doc__sealed-meta' }, `Filed by ${doc.author}.`));
+  }
+
+  function drawTabs() {
+    tabList.replaceChildren(...FOLDER.map((entry) => {
+      const sealed = !isDocumentOpen(canon.documents[entry.id], store.get());
+      return el('button', {
+        class: `doc-tab${sealed ? ' doc-tab--sealed' : ''}`,
+        type: 'button',
+        role: 'tab',
+        id: `doc-tab-${entry.id}`,
+        'data-doc': entry.id,
+        onClick: () => showDocument(entry.id),
+      }, canon.documents[entry.id].title, sealed && el('span', { class: 'doc-tab__status' }, ' sealed'));
+    }));
+  }
+  drawTabs();
 
   // Arrow keys move between the divider tabs (the usual way tabs work).
   tabList.addEventListener('keydown', (event) => {

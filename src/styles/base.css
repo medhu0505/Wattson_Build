@@ -28,6 +28,7 @@
   /* Fonts. Plain "monospace" is only a last resort if a font fails to load. */
   --font-agency: 'Roboto Mono', monospace;
   --font-crt: 'VT323', monospace;
+  --font-hand: 'Indie Flower', cursive;  /* handwriting: Agent Nano's notes, red-pen notes */
 
   /* Textures, drawn with SVG noise filters (no image files needed). */
 
