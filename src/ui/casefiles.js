@@ -10,7 +10,7 @@ import { el, announce } from './dom.js';
 import { storyLine } from './story.js';
 import { renderDocument, syncPinned } from './document.js';
 import { createEvidenceBoard } from './evidenceBoard.js';
-import { addPin, removePin, isPinned, keyProgress, isDocumentOpen, tidyPins } from '../lib/evidence.js';
+import { addPin, removePin, isPinned, keyProgress, isDocumentOpen, tidyPins, nextSpot } from '../lib/evidence.js';
 import { completeStage, isCompleted } from '../state/progress.js';
 import { getStage } from '../state/stages.js';
 import { prefersReducedMotion } from './effects.js';
@@ -144,7 +144,7 @@ export function renderCaseFiles(main, { store, go }) {
     const wasPinned = pinnedNow(id);
     store.update((progress) => ({
       ...progress,
-      pins: wasPinned ? removePin(progress.pins, id) : addPin(progress.pins, id),
+      pins: wasPinned ? removePin(progress.pins, id) : addPin(progress.pins, id, nextSpot(progress.pins, board.columns(progress.pins.length + 1))),
     }));
     board.refresh(wasPinned ? null : id);
     syncPinned(panel, pinnedNow);
@@ -228,7 +228,7 @@ export function renderCaseFiles(main, { store, go }) {
             class: 'switch board__tidy',
             type: 'button',
             onClick: () => {
-              store.update((progress) => ({ ...progress, pins: tidyPins(progress.pins) }));
+              store.update((progress) => ({ ...progress, pins: tidyPins(progress.pins, board.columns(progress.pins.length)) }));
               board.refresh();
               announce('Cards spread out across the board.');
             },

@@ -4,7 +4,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   keyPinIds, isPinned, keyProgress, addPin, removePin, movePin, nudgePin,
-  nextSpot, clamp01, tiltFor, isDocumentOpen, tidyPins,
+  nextSpot, clamp01, tiltFor, isDocumentOpen, tidyPins, gridSpots, bestColumns,
 } from '../src/lib/evidence.js';
 import canon from '../content/canon.json';
 import { STAGE_IDS } from '../src/state/stages.js';
@@ -92,6 +92,41 @@ describe('moving cards', () => {
     expect(tidy.map((pin) => pin.id)).toEqual(['a', 'b', 'c', 'd', 'e', 'f']);
     expect(new Set(tidy.map((pin) => `${pin.x},${pin.y}`)).size).toBe(6);
     expect(tidyPins([])).toEqual([]);
+  });
+
+  it('tidies into a grid that fits the board, with no two cards overlapping', () => {
+    const seven = ['a', 'b', 'c', 'd', 'e', 'f', 'g'].map((id) => ({ id, x: 0.5, y: 0.5 }));
+    const tidy = tidyPins(seven, 3);
+    // 3 across and 3 down: x is 0, 0.5 or 1, and y is 0, 0.5 or 1.
+    expect(tidy.map((pin) => [pin.x, pin.y])).toEqual([
+      [0, 0], [0.5, 0], [1, 0], [0, 0.5], [0.5, 0.5], [1, 0.5], [0, 1],
+    ]);
+    // On a narrow board with room for one card across, they stack in one column.
+    expect(new Set(tidyPins(seven, 1).map((pin) => pin.x))).toEqual(new Set([0]));
+  });
+
+  it('adds rows when there are more cards than the grid holds', () => {
+    expect(gridSpots(4, 3)).toHaveLength(9);
+    expect(gridSpots(12, 3)).toHaveLength(12);
+    expect(gridSpots(12, 3).at(-1)).toEqual({ x: 1, y: 1 });
+  });
+
+  it('picks the number of columns with the least overlap for the board', () => {
+    const card = { cardWidth: 150, cardHeight: 112 };
+    // A laptop-sized board: 8 cards fit 3 across and 3 down.
+    expect(bestColumns(8, { width: 440, height: 360, ...card })).toBe(3);
+    // A wide board still uses 3 across for 9 cards (plenty of room, no overlap).
+    expect(bestColumns(9, { width: 840, height: 520, ...card })).toBe(3);
+    // A phone-sized board: 2 across.
+    expect(bestColumns(8, { width: 300, height: 460, cardWidth: 132, cardHeight: 106 })).toBe(2);
+    // A board too narrow for two cards: 1 across.
+    expect(bestColumns(4, { width: 160, height: 600, ...card })).toBe(1);
+  });
+
+  it('puts a new card in the first free place in the grid', () => {
+    let board = [];
+    for (const id of ['a', 'b', 'c', 'd']) board = addPin(board, id, nextSpot(board, 3));
+    expect(board.map((pin) => [pin.x, pin.y])).toEqual([[0, 0], [0.5, 0], [1, 0], [0, 0.5]]);
   });
 
   it('ignores a nudge for a card that is not pinned', () => {

@@ -37,20 +37,52 @@ export function clamp01(value) {
   return Math.min(1, Math.max(0, value));
 }
 
-// Places a new card can land, spread over the board. They are tried in
-// order; a place already covered by a card is skipped.
-const SPOTS = [
-  [0.04, 0.03], [0.62, 0.02], [0.30, 0.20], [0.96, 0.17],
-  [0.02, 0.40], [0.58, 0.37], [0.28, 0.58], [0.94, 0.55],
-  [0.03, 0.78], [0.62, 0.74], [0.33, 0.97], [0.97, 0.93],
-  [0.00, 0.99], [0.80, 0.40], [0.48, 0.86],
-];
+// Places for cards in a tidy grid, read left to right, top to bottom.
+// columns: how many cards fit side by side on the board (the board works
+// this out from its width). There are as many rows as the cards need, and at
+// least three, so a handful of cards stays near the top instead of spreading
+// to the corners.
+export function gridSpots(count, columns = 3) {
+  const across = Math.max(1, Math.floor(columns));
+  const rows = Math.max(3, Math.ceil(count / across));
+  const spots = [];
+  for (let row = 0; row < rows; row += 1) {
+    for (let col = 0; col < across; col += 1) {
+      spots.push({ x: across === 1 ? 0 : col / (across - 1), y: row / (rows - 1) });
+    }
+  }
+  return spots;
+}
+
+// How many columns lay out this many cards with the least overlap, on a
+// board of this size (all in pixels). Too few columns and the rows squash
+// together; too many and the columns do. Ties go to fewer columns.
+export function bestColumns(count, { width, height, cardWidth, cardHeight }) {
+  let best = 1;
+  let bestOverlap = Infinity;
+  const most = Math.max(1, Math.floor(width / (cardWidth / 2)));
+  for (let across = 1; across <= most; across += 1) {
+    const rows = Math.max(3, Math.ceil(count / across));
+    const stepX = across > 1 ? (width - cardWidth) / (across - 1) : Infinity;
+    const stepY = (height - cardHeight) / (rows - 1);
+    // How much of a card is hidden by its neighbour to the right, and below
+    const overlap = Math.max(0, 1 - stepX / cardWidth) + Math.max(0, 1 - stepY / cardHeight);
+    if (overlap < bestOverlap - 1e-9) {
+      best = across;
+      bestOverlap = overlap;
+    }
+  }
+  return best;
+}
+
+// Where a newly pinned card lands: the first place in the grid not already
+// covered by a card.
 const TOO_CLOSE = 0.14;
 
-export function nextSpot(pins) {
-  const isFree = ([x, y]) => pins.every((pin) => Math.hypot(pin.x - x, pin.y - y) > TOO_CLOSE);
-  const spot = SPOTS.find(isFree) ?? SPOTS[pins.length % SPOTS.length];
-  return { x: spot[0], y: spot[1] };
+export function nextSpot(pins, columns = 3) {
+  const isFree = (spot) => pins.every((pin) => Math.hypot(pin.x - spot.x, pin.y - spot.y) > TOO_CLOSE);
+  const grid = gridSpots(pins.length + 1, columns);
+  return grid.find(isFree) ?? grid[pins.length % grid.length];
 }
 
 // Each function below returns a NEW list of pins and leaves the old one alone.
@@ -76,10 +108,11 @@ export function nudgePin(pins, id, dx, dy) {
   return movePin(pins, id, pin.x + dx, pin.y + dy);
 }
 
-// Spread every card out again, in the order they were pinned (the "Tidy"
-// button). Useful on small screens, where cards end up on top of each other.
-export function tidyPins(pins) {
-  return pins.reduce((board, pin) => addPin(board, pin.id), []);
+// Lay every card out in the grid again, in the order they were pinned (the
+// "Tidy cards" button), so none of them sits on top of another.
+export function tidyPins(pins, columns = 3) {
+  const spots = gridSpots(pins.length, columns);
+  return pins.map((pin, index) => ({ ...pin, ...spots[index] }));
 }
 
 // A small, fixed tilt for each card (between -3 and 3 degrees), so the

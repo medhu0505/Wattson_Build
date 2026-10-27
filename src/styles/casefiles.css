@@ -280,6 +280,8 @@
 
 /* Cork in a wooden frame */
 .board__surface {
+  --card-w: 150px;   /* the size of one index card (the board uses it to fit them in a grid) */
+  --card-h: 112px;
   position: relative;
   overflow: hidden;
   min-height: 380px;
@@ -320,10 +322,9 @@
 }
 
 /* One index card. --x and --y (0 to 1) say where it sits; the sums keep
-   the whole card inside the board. Its size is fixed so the sums work. */
+   the whole card inside the board. Its size (--card-w, --card-h) is set on
+   the board, so the sums work. */
 .evidence-card {
-  --card-w: 150px;
-  --card-h: 112px;
   position: absolute;
   left: calc(var(--x) * (100% - var(--card-w)));
   top: calc(var(--y) * (100% - var(--card-h)));
@@ -437,5 +438,6 @@
   .doc-photos { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
   .doc-photos__captions { grid-column: 1 / -1; }
   .files__board { margin-left: 0; grid-template-rows: auto 480px auto; }
-  .evidence-card { --card-w: 132px; --card-h: 106px; font-size: 10.5px; }
+  .board__surface { --card-w: 132px; --card-h: 106px; }
+  .evidence-card { font-size: 10.5px; }
 }

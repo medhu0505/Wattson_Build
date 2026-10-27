@@ -7,7 +7,7 @@
 // Removing a card: its "unpin" button, or Delete / Backspace on the keyboard.
 
 import { el } from './dom.js';
-import { movePin, nudgePin, removePin, tiltFor, clamp01 } from '../lib/evidence.js';
+import { movePin, nudgePin, removePin, tiltFor, clamp01, bestColumns } from '../lib/evidence.js';
 
 const SVG = 'http://www.w3.org/2000/svg';
 const SMALL_STEP = 0.03;
@@ -173,9 +173,24 @@ export function createEvidenceBoard({ store, canonPins, documentNames, onUnpin }
     (next ?? surface).focus();
   }
 
+  // How many columns lay out this many cards best on the board as it is
+  // right now. The card size comes from the board's CSS (--card-w, --card-h),
+  // so it stays right on small screens, where the cards are smaller.
+  // The grid is planned for at least 9 cards (the 7 key details and a couple
+  // more), so it keeps the same shape while the agent pins things.
+  function columns(count) {
+    const style = getComputedStyle(surface);
+    return bestColumns(Math.max(count, 9), {
+      width: surface.clientWidth,
+      height: surface.clientHeight,
+      cardWidth: parseFloat(style.getPropertyValue('--card-w')) || 150,
+      cardHeight: parseFloat(style.getPropertyValue('--card-h')) || 112,
+    });
+  }
+
   surface.setAttribute('tabindex', '-1'); // so focus can land here when the board empties
   refresh();
 
   // destroy() stops watching the board's size once the screen closes.
-  return { element: surface, refresh, destroy: () => resizeWatcher.disconnect() };
+  return { element: surface, refresh, columns, destroy: () => resizeWatcher.disconnect() };
 }
