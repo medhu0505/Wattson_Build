@@ -77,6 +77,8 @@
 }
 .notebook .doc__body { margin-top: var(--rule); }
 .notebook .hand { font-size: 19px; line-height: var(--rule); }
+/* Handwriting isn't justified or hyphenated, unlike the typed documents */
+.notebook .doc-para { text-align: left; hyphens: manual; }
 
 /* It slides out from behind the notice (only when it has just appeared). */
 .notebook--new { animation: note-slide 600ms ease-out both; }
