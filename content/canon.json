@@ -1,5 +1,5 @@
 {
-  "_readme": "Word-for-word text from the official PDFs. Do not edit the wording: it is canon. Typos in the PDFs are kept on purpose. A paragraph is a list of pieces: a plain string, or an object. {\"pin\": id} makes the words clickable onto the evidence board. {\"redacted\": true} is a black bar that never lifts (redacted in the PDF too). {\"clearance\": stageId} hides the words behind a bar until that stage is cleared. {\"strong\": true} is bold. {\"signature\": name} is a signature line (art slot). {\"hand\": true} is handwriting. {\"penNote\": {...}} adds a red-pen note beside the words once a stage is cleared; the note's text must be quoted from a canon document. A document with \"sealedUntil\": stageId can't be opened until that stage is cleared. \"timeline\" lists dated events from the documents (\"source\" is the document id). The two code files (OriginalCode.txt, AlteredCode.txt) stay in the project root and are loaded directly by the terminal.",
+  "_readme": "Word-for-word text from the official PDFs. Do not edit the wording: it is canon. Typos in the PDFs are kept on purpose. A paragraph is a list of pieces: a plain string, or an object. {\"pin\": id} makes the words clickable onto the evidence board. {\"redacted\": true} is a black bar that never lifts (redacted in the PDF too). {\"clearance\": stageId} hides the words behind a bar until that stage is cleared. {\"strong\": true} is bold. {\"signature\": name} is a signature line (art slot). {\"hand\": true} is handwriting. {\"penNote\": {...}} adds a red-pen note beside the words once a stage is cleared; the note's text must be quoted from a canon document. A document with \"sealedUntil\": stageId can't be opened until that stage is cleared; with \"hideWhileSealed\": true it isn't even listed until then (so its tab doesn't give away what's coming). \"timeline\" lists dated events from the documents (\"source\" is the document id). The two code files (OriginalCode.txt, AlteredCode.txt) stay in the project root and are loaded directly by the terminal.",
 
   "machine": {
     "name": "The Reckoning V: Origins",
@@ -13,7 +13,8 @@
     { "when": "23 October, 22:31", "what": "Agents Nano and Mega meet POI-1 at the arcade machine",                  "source": "transcript" },
     { "when": "23 October",        "what": "The machine begins “warbling” and “reverberating” after POI-1 leaves", "source": "transcript" },
     { "when": "24 October",        "what": "The game source code is obtained: one character class is missing",     "source": "log" },
-    { "when": "25 October, 23:54", "what": "Agent Nano writes the Progress Assesment Log: the character escaped",   "source": "log" }
+    { "when": "25 October, 23:54", "what": "Agent Nano writes the Progress Assesment Log: the character escaped",   "source": "log" },
+    { "when": "27 October",        "what": "EXUN is suspended by order of the Government of Nuxeland",           "source": "suspension" }
   ],
 
   "pins": {
@@ -35,7 +36,9 @@
     "log-time":        { "label": "Nano’s log: 23:54, 25 October",              "doc": "log",        "key": false },
     "not-cosplayer":   { "label": "Nano: POI-1 “WASN’T a cosplayer”",           "doc": "log",        "key": false },
     "source-code":     { "label": "Source code (24th): a character class missing", "doc": "log",     "key": false },
-    "why":             { "label": "Nano’s open question: WHY?",                 "doc": "log",        "key": false }
+    "why":             { "label": "Nano’s open question: WHY?",                 "doc": "log",        "key": false },
+    "suspended":       { "label": "EXUN suspended, effective 27 October 2026",  "doc": "suspension", "key": false },
+    "official-finding": { "label": "Official finding: “remain inconclusive”",   "doc": "suspension", "key": false }
   },
 
   "documents": {
@@ -214,6 +217,47 @@
           [""],
           [""],
           [{ "text": "STATUS: ", "strong": true }, { "text": "Immediate concern?? 10/10??? Code red? Blue? Green? All of them?!", "hand": true }]
+        ]}
+      ]
+    },
+
+    "suspension": {
+      "title": "Suspension Notice",
+      "pdf": "SuspensionNotice.pdf",
+      "sealedUntil": "report",
+      "hideWhileSealed": true,
+      "reference": "EIA/EXUN/SUS-01",
+      "effective": "27 October 2026",
+      "warning": "Unauthorised execution of suspended duties shall be treated as a breach of Agency protocol.",
+      "blocks": [
+        { "type": "box", "rows": [
+          ["DOCUMENT CLASSIFICATION: Restricted"],
+          ["NOTICE REFERENCE: EIA/EXUN/SUS-01"],
+          [{ "text": "EFFECTIVE: 27 October 2026", "pin": "suspended" }],
+          ["SUBJECT: IMMEDIATE SUSPENSION OF OPERATIONAL AUTHORITY — EXTRADIGITAL EXCEPTIONS AND UNKNOWNS NETWORK"]
+        ]},
+        { "type": "para", "text": ["By order of the competent authority of the Government of Nuxeland, all operational duties, investigative mandates, and field authorisations previously assigned to the Extradigital Exceptions and Unknowns Network (EXUN), a specialised branch of the etiNuxe Intelligence Agency, are hereby suspended with immediate effect."] },
+        { "type": "para", "text": [
+          "This directive follows a preliminary administrative review of the circumstances surrounding the Wenoti Arcade incident and the subsequent investigation into the anomalous activity associated with the arcade machine designated The Reckoning V: Origins. ",
+          { "text": "The findings available to the Agency remain inconclusive", "pin": "official-finding" },
+          ", and the nature, extent, and origin of the reported irregularities have yet to be conclusively established."
+        ]},
+        { "type": "para", "text": ["All personnel attached to EXUN are directed to acknowledge receipt of this notice and comply fully with the terms set forth herein."] },
+        { "type": "para", "text": ["BY ORDER OF THE GOVERNMENT OF NUXELAND"] },
+        { "type": "para", "text": ["This document is an official administrative directive. Unauthorised execution of suspended duties shall be treated as a breach of Agency protocol."] }
+      ]
+    },
+
+    "note": {
+      "title": "A goodbye from an old friend :)",
+      "pdf": "NoteFromNano.pdf",
+      "sealedUntil": "report",
+      "hideWhileSealed": true,
+      "author": "Agent Nano",
+      "question": "What are you going to do now?",
+      "blocks": [
+        { "type": "para", "text": [
+          { "text": "Hey, hey, hey... They really can’t know I’m writing this. I mean, it counts at the least as treason and breach of protocol, but after the work you’ve been doing over the past 4 days with these random anomalies and updates, you deserve the truth, even if it jeopardises my future here. I’m sticking my head out for you buddy! Anyways, the situation out here has gotten way worse... Remember my little theory?? Turns out I was right. Obviously. A little too right... Forget the Wenoti arcade, our POI was just the first of a digital jailbreak. Countries all around the world have been contacting the etiNuxe Intelligence Agency with reports of video game characters disappearing from arcades without a trace??? The Government doesn’t want news of this getting out. Maybe they know something? Or its another way to get a quick buck. Either way, that’s the real reason why EXUN got suspended. Don’t listen to their fancy jargon... That’s all from my end. Agents like us are being relocated, so I guess I better get packing. What are you going to do now?", "hand": true }
         ]}
       ]
     }

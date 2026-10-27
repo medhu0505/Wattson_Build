@@ -234,10 +234,52 @@ describe('the canon timeline', () => {
     for (const event of canon.timeline) expect(canon.documents).toHaveProperty(event.source);
   });
 
-  it('runs from 23 to 25 October in order', () => {
+  it('runs from 23 to 27 October in order', () => {
     const days = canon.timeline.map((event) => Number(event.when.slice(0, 2)));
     expect(days).toEqual([...days].sort((a, b) => a - b));
     expect(days[0]).toBe(23);
-    expect(days.at(-1)).toBe(25);
+    expect(days.at(-1)).toBe(27);
+  });
+});
+
+describe('the Suspension Notice and Agent Nano’s goodbye note', () => {
+  const notice = canon.documents.suspension;
+  const note = canon.documents.note;
+  const noticeText = documentText(notice);
+  const noteText = documentText(note);
+
+  // Everything except the report cleared: the moment before filing.
+  let beforeFiling = createProgress();
+  for (const id of STAGE_IDS.slice(0, -1)) beforeFiling = completeStage(beforeFiling, id);
+  const afterFiling = completeStage(beforeFiling, 'report');
+
+  it('both arrive only once the report is filed, and stay hidden until then', () => {
+    for (const doc of [notice, note]) {
+      expect(isDocumentOpen(doc, beforeFiling)).toBe(false);
+      expect(isDocumentOpen(doc, afterFiling)).toBe(true);
+      expect(doc.hideWhileSealed).toBe(true);
+    }
+  });
+
+  it('keep the PDFs’ wording, spelling included', () => {
+    expect(notice.title).toBe('Suspension Notice');
+    expect(noticeText).toContain('are hereby suspended with immediate effect');
+    expect(noticeText).toContain('Government of Nuxeland');
+    expect(noticeText).toContain('BY ORDER OF THE GOVERNMENT OF NUXELAND');
+    expect(note.title).toBe('A goodbye from an old friend :)');
+    expect(noteText).toContain('our POI was just the first of a digital jailbreak');
+    expect(noteText).toContain('Or its another way to get a quick buck.');
+  });
+
+  it('quote their reference, date, warning and question word for word', () => {
+    expect(noticeText).toContain(`NOTICE REFERENCE: ${notice.reference}`);
+    expect(noticeText).toContain(`EFFECTIVE: ${notice.effective}`);
+    expect(noticeText).toContain(notice.warning);
+    expect(noteText.trim().endsWith(note.question)).toBe(true);
+  });
+
+  it('put the suspension on the timeline on its effective date', () => {
+    const event = canon.timeline.find((entry) => entry.source === 'suspension');
+    expect(notice.effective.startsWith(event.when)).toBe(true);
   });
 });
