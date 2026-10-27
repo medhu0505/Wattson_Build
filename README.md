@@ -28,15 +28,37 @@ Filing the report isn't quite the end. Two more canon documents arrive, and they
 
 1. **The Suspension Notice** (canon, effective 27 October) lands in an in tray above the report. The Government of Nuxeland suspends EXUN, calling the findings "inconclusive". The notice tells all personnel to acknowledge receipt, so the agent has to.
 2. Acknowledging it puts a suspension bar on every page and files the notice in the case files.
-3. **Agent Nano's goodbye note** then slides out from behind it, in handwriting. It isn't filed anywhere because it's off the record. It says the agent's case was "just the first of a digital jailbreak": characters are vanishing from arcades worldwide, and that is the real reason EXUN was shut down.
+3. **Agent Nano's goodbye note** then slides out from behind it, in handwriting. It isn't filed anywhere because it's off the record. It says the agent's case was "just the first of a digital jailbreak": characters are vanishing from arcades worldwide, the Government doesn't want the news getting out, and that, says Nano, is the real reason EXUN was suspended.
 4. The note ends "What are you going to do now?", and the agent answers: comply with the suspension, or keep investigating off the record. The choice is final, and it shows in the report and on the suspension bar.
 
 As the case goes on, the arcade machine's glitches bleed into the agency's paper pages, and redactions in the case files lift as the agent's clearance grows.
 
+## Screenshots
+
+**00 Intake.** The briefing, and the agent's ID card stamped Admitted.
+
+![The briefing memo beside the agent's ID card](docs/screenshots/briefing.jpg)
+
+**01 Case Files.** The official documents on the left; the seven key details pinned to the corkboard on the right.
+
+![The case files and the evidence board with seven index cards on red string](docs/screenshots/case-files.jpg)
+
+**02 Energy Forensics.** The meter data, worked out day by day: the 23 October surge and the 24 October mismatch ringed in red.
+
+![The energy chart with the surge of 2,684 kWh and the mismatch of 472.5 kWh ringed](docs/screenshots/forensics.jpg)
+
+**04 Machine Terminal.** RENDER draws the game world from the code: the player belongs at (12, 6), and isn't there.
+
+![The arcade cabinet's green screen showing an empty game world](docs/screenshots/machine.jpg)
+
+**The ending.** After the Suspension Notice, Agent Nano's goodbye note slides out from behind it.
+
+![Agent Nano's handwritten note on a page torn from a notebook](docs/screenshots/ending.jpg)
+
 ## Features, by judging criterion
 
 **Creativity**
-- An in-world desk instead of a website: paper sheets with grain and creases, overlapping folder tabs, worn red stamps, a paperclip, a corkboard with index cards and red string, a pink carbon-copy referral form, ticker tape, a manila access card, and an arcade cabinet with a green CRT and a deck of arcade buttons.
+- An in-world desk instead of a website: paper sheets with grain and creases, overlapping folder tabs, worn red stamps, a paperclip, a corkboard with index cards and red string, a pink carbon-copy referral form, ticker tape, a manila access card, an arcade cabinet with a green CRT and a deck of arcade buttons, and for the ending, a manila in tray and a page torn from a notebook.
 - The glitch "bleed": three levels, one per stage cleared from Energy Forensics on. Stamps misprint, headings tear, tabs flicker, then scanlines and a rolling green bar spread over the agency pages.
 
 **Originality**
@@ -56,12 +78,12 @@ As the case goes on, the arcade machine's glitches bleed into the agency's paper
 - **Anomaly detection** (`src/lib/anomalies.js`): works out each day's metered usage from the meter readings. It flags surges with a median-based "modified z-score" and mismatches where the reported and metered figures differ. Nothing is hard-coded: the tests run it on made-up data with anomalies on other dates. On the dossier it finds the Oct 23 surge (2,684 kWh) and the Oct 24 mismatch (reported 503.2, metered 30.7).
 - **Hand-built SVG chart**: linear and logarithmic scales, flagged days ringed, with a text description for screen readers.
 - **Decoders** (`src/lib/decoders.js`): Base64 (including URL-safe), Base32, hex, ASCII codes (decimal or binary), Caesar (all 25 shifts) and reverse, each able to encode and decode, plus auto-detect ranked by a readability score. Decoding `MJWHKZLTNBUXE5A` (Base32) gives `blueshirt`, which opens the machine.
-- **Evidence board**: drag cards with mouse, touch or pen, or move them with the arrow keys. "Tidy cards" spreads them out again.
+- **Evidence board**: drag cards with mouse, touch or pen, or move them with the arrow keys. New cards land in a grid sized to the board, and "Tidy cards" lays them all out again with none overlapping.
 - **Progress** is saved in the browser (localStorage). If the browser blocks it, the site still works for that visit.
 - **Case report**: print or save as PDF, or download as `.txt`.
 - **Hints**: three per stage, opened one at a time.
 - **Supervisor mode**: for judges (see below).
-- **227 automated tests** (see [Tests](#tests)).
+- **231 automated tests** (see [Tests](#tests)).
 
 ## Supervisor mode
 
@@ -126,7 +148,7 @@ Asset paths are relative (`base: './'` in `vite.config.js`) and routing uses `#`
 npm test
 ```
 
-227 tests in 12 files, covering:
+231 tests in 12 files, covering:
 
 - **Anomaly detection:** real data, made-up data, edge cases.
 - **Every decoder and auto-detect:** official RFC 4648 examples, padding, bad characters and lengths, URL-safe Base64, non-text bytes, emoji, empty input.
@@ -164,6 +186,8 @@ tests/                  Vitest tests
 scripts/list-todos.js   lists the remaining TODO-TEAM slots
 src/assets/             put artwork (art/) and audio (audio/) files here
 public/favicon.svg      the browser-tab icon
+public/og-image.jpg     the picture chat apps show when the link is shared
+docs/screenshots/       the screenshots in this README
 ```
 
 The official PDFs (including `progress-assessment-log.pdf`, `SuspensionNotice.pdf` and `NoteFromNano.pdf`) and the two code files (`OriginalCode.txt`, `AlteredCode.txt`) are in the project root. They are canon: the site quotes them and never contradicts them.
