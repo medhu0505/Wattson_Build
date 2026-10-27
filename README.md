@@ -16,13 +16,20 @@ The case is a folder of six stages. Each one unlocks the next, and each uses the
 | 02 Energy Forensics | Runs an analysis of the Department of Electricity's meter data; reads the chart | A correct Discrepancy Referral (surge and mismatch) |
 | 03 Signal Decoder | Decodes the Machine ID with six tools or auto-detect | Entering the decoded key |
 | 04 Machine Terminal | Uses the cabinet's own screen: `logs`, `diff`, `render` | All three checks, which trigger the reveal |
-| 05 Case Report | Reads a report written from what they did | Printing it or downloading it files it |
+| 05 Case Report | Reads a report written from what they did | Printing it or downloading it files it, and the ending arrives (below) |
 
 The twist: POI-1, the "cosplayer" in Transcript A, is a character who crossed out of *The Reckoning V: Origins*, and the 23 October energy spike was the crossing. The machine terminal lets the agent find this for themselves:
 - Comparing `OriginalCode.txt` with the game source code obtained on 24 October (`AlteredCode.txt`) shows the whole `Character` class has been removed.
 - The game world drawn from the code has no player in it.
 
 Once the agent gets there, Agent Nano's **Progress Assesment Log** (canon, written 23:54 on 25 October) arrives in the case files. It reaches the same conclusion ("He WASN'T a cosplayer!!!"), and a red-pen note from Nano appears on Transcript A. The log ends on the question canon leaves open, *why* the character escaped, which is the hook for Case #2. The story text itself is the team's own and lives in `content/story.json`.
+
+Filing the report isn't quite the end. Two more canon documents arrive, and they turn the ending around:
+
+1. **The Suspension Notice** (canon, effective 27 October) lands in an in tray above the report. The Government of Nuxeland suspends EXUN, calling the findings "inconclusive". The notice tells all personnel to acknowledge receipt, so the agent has to.
+2. Acknowledging it puts a suspension bar on every page and files the notice in the case files.
+3. **Agent Nano's goodbye note** then slides out from behind it, in handwriting. It isn't filed anywhere because it's off the record. It says the agent's case was "just the first of a digital jailbreak": characters are vanishing from arcades worldwide, and that is the real reason EXUN was shut down.
+4. The note ends "What are you going to do now?", and the agent answers: comply with the suspension, or keep investigating off the record. The choice is final, and it shows in the report and on the suspension bar.
 
 As the case goes on, the arcade machine's glitches bleed into the agency's paper pages, and redactions in the case files lift as the agent's clearance grows.
 
@@ -42,6 +49,7 @@ As the case goes on, the arcade machine's glitches bleed into the agency's paper
 - Agent Nano's log is visible from the start as a sealed tab, and opens only after the reveal, so the canon confirmation never spoils the agent's own discovery. The report then gains a timeline built from the case files.
 - The glitch bleed grows with progress.
 - The reveal plays only after the agent has run all three checks, and ends on the hook for Case #2.
+- After the report is filed, the Suspension Notice arrives. It isn't listed in the case files before then, so its tab can't give the ending away. Acknowledging it suspends EXUN on every page, and Agent Nano's note leads to the agent's final choice.
 - The case report is written from the agent's own run: what they pinned, what they filed, how long it took, how many hints they used.
 
 **Functionality**
@@ -53,7 +61,7 @@ As the case goes on, the arcade machine's glitches bleed into the agency's paper
 - **Case report**: print or save as PDF, or download as `.txt`.
 - **Hints**: three per stage, opened one at a time.
 - **Supervisor mode**: for judges (see below).
-- **207 automated tests** (see [Tests](#tests)).
+- **227 automated tests** (see [Tests](#tests)).
 
 ## Supervisor mode
 
@@ -70,7 +78,7 @@ https://wattsonbuild.vercel.app/?supervisor=1#/forensics
   - **Reset this session:** wipes the supervisor save only.
   - **Leave supervisor mode:** returns to the same page in normal mode.
 - A report made in supervisor mode is stamped "Supervisor override".
-- After marking everything cleared, run `logs`, `diff` and `render` in the Machine Terminal to see the reveal.
+- After marking everything cleared, run `logs`, `diff` and `render` in the Machine Terminal to see the reveal. The Suspension Notice and the rest of the ending wait at the top of the Case Report.
 
 ## Run it locally
 
@@ -118,16 +126,17 @@ Asset paths are relative (`base: './'` in `vite.config.js`) and routing uses `#`
 npm test
 ```
 
-207 tests in 11 files, covering:
+227 tests in 12 files, covering:
 
 - **Anomaly detection:** real data, made-up data, edge cases.
 - **Every decoder and auto-detect:** official RFC 4648 examples, padding, bad characters and lengths, URL-safe Base64, non-text bytes, emoji, empty input.
 - **The unlock rules:** order, tampered saves, blocked storage, supervisor mode.
 - **The referral form and the access key.**
 - **The code diff and game-world reader.**
-- **The case report:** finished, unfinished, blank and supervisor runs, plus a check that it never prints "undefined", "null" or "NaN".
+- **The case report:** finished, unfinished, blank, supervisor and suspended runs, plus a check that it never prints "undefined", "null" or "NaN".
+- **The ending:** the notice only after filing, no choice before acknowledging, a final choice, and saves edited to skip ahead.
 - **Hints and codenames.**
-- **The integrity of `content/canon.json`:** every pin is clickable, no key detail is redacted or sealed, Nano's log is sealed until the reveal, and the red-pen note quotes the log word for word.
+- **The integrity of `content/canon.json`:** every pin is clickable, no key detail is redacted or sealed, Nano's log is sealed until the reveal, the red-pen note quotes the log word for word, and the Suspension Notice and Nano's note stay hidden until the report is filed and keep the PDFs' wording.
 
 ## Project structure
 
@@ -139,14 +148,15 @@ src/
   state/                progress, unlock rules, saving (progress.js, store.js, stages.js)
   lib/                  logic with no page code (all tested): anomalies, decoders, diff,
                         arcade code reader, evidence board, referral, machine key, report,
-                        hints, codename, chart scales
+                        the ending (epilogue), hints, codename, chart scales
   ui/                   one file per screen (intake, casefiles, forensics, signal, terminal,
-                        report) plus shared pieces (shell, document, evidenceBoard,
-                        energyChart, hints, artSlot, audio, effects, dom)
+                        report) plus the ending (epilogue) and shared pieces (shell,
+                        document, evidenceBoard, energyChart, hints, artSlot, audio,
+                        effects, dom)
   styles/               base, agency (paper), bleed (glitch spread), one file per screen, print
 content/
   canon.json            the official documents, word for word
-  story.json            the team's story text (TODO-TEAM slots)
+  story.json            the team's story text
   assets.json           slots for the team's artwork and audio
   hints.json            three hints per stage
 data/energy.json        the dossier's table, copied and checked against the PDF
@@ -156,11 +166,11 @@ src/assets/             put artwork (art/) and audio (audio/) files here
 public/favicon.svg      the browser-tab icon
 ```
 
-The official PDFs (including `progress-assessment-log.pdf`) and the two code files (`OriginalCode.txt`, `AlteredCode.txt`) are in the project root. They are canon: the site quotes them and never contradicts them.
+The official PDFs (including `progress-assessment-log.pdf`, `SuspensionNotice.pdf` and `NoteFromNano.pdf`) and the two code files (`OriginalCode.txt`, `AlteredCode.txt`) are in the project root. They are canon: the site quotes them and never contradicts them.
 
 ## Content: what is canon and what is ours
 
-- **Canon:** `content/canon.json` holds the text of the Case Debrief, Transcript A, the Asset Integrity Report, the Energy Usage Dossier and Agent Nano's Progress Assesment Log, copied word for word (typos included). It also holds a short timeline of dated events from those documents, and Nano's red-pen note, which quotes his log. `data/energy.json` is the dossier's table; every row was checked against the PDF. The terminal reads the code files directly.
+- **Canon:** `content/canon.json` holds the text of the Case Debrief, Transcript A, the Asset Integrity Report, the Energy Usage Dossier, Agent Nano's Progress Assesment Log, the Suspension Notice and Agent Nano's goodbye note, copied word for word (typos included). It also holds a short timeline of dated events from those documents, and Nano's red-pen note, which quotes his log. `data/energy.json` is the dossier's table; every row was checked against the PDF. The terminal reads the code files directly.
 - **The team's own:** the narrative in `content/story.json`, plus the artwork and audio listed in `content/assets.json`.
   - Put a picture in `src/assets/art/` (or a sound in `src/assets/audio/`) with the file name listed for its slot, and it appears on the site by itself. The site finds the files when it's built, so it never requests a file that isn't there.
   - Until then, `npm run dev` shows a labelled frame naming the file to add, and the live site shows a plain stand-in.
