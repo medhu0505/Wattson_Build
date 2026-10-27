@@ -18,11 +18,15 @@ import { prefersReducedMotion } from './effects.js';
 // The documents in this folder, in tab order, with the stamp each one carries.
 // Agent Nano's log is sealed until the Machine Terminal is cleared (see
 // "sealedUntil" in canon.json), so it shows as a sealed tab until then.
+// The Suspension Notice isn't listed at all until the report is filed
+// ("hideWhileSealed"), so its tab can't give the ending away.
+// (Agent Nano's goodbye note is never filed here: it's off the record.)
 const FOLDER = [
   { id: 'debrief', stamp: 'Confidential' },
   { id: 'transcript', stamp: 'Eyes only' },
   { id: 'asset', stamp: 'Inconclusive' },
   { id: 'log', stamp: 'Immediate concern' },
+  { id: 'suspension', stamp: 'Restricted' },
 ];
 
 const DOCUMENT_NAMES = Object.fromEntries(
@@ -40,6 +44,13 @@ export function setOpenDocument(docId) {
 
 export function renderCaseFiles(main, { store, go }) {
   const pinnedNow = (id) => isPinned(store.get().pins, id);
+
+  // The documents with a tab right now (leaving out any still hidden).
+  const listed = () => FOLDER.filter((entry) => {
+    const doc = canon.documents[entry.id];
+    return !doc.hideWhileSealed || isDocumentOpen(doc, store.get());
+  });
+  if (!listed().some((entry) => entry.id === openDocId)) openDocId = 'debrief';
 
   // ---------- Documents with divider tabs ----------
 
@@ -83,7 +94,7 @@ export function renderCaseFiles(main, { store, go }) {
   }
 
   function drawTabs() {
-    tabList.replaceChildren(...FOLDER.map((entry) => {
+    tabList.replaceChildren(...listed().map((entry) => {
       const sealed = !isDocumentOpen(canon.documents[entry.id], store.get());
       return el('button', {
         class: `doc-tab${sealed ? ' doc-tab--sealed' : ''}`,
@@ -99,7 +110,7 @@ export function renderCaseFiles(main, { store, go }) {
 
   // Arrow keys move between the divider tabs (the usual way tabs work).
   tabList.addEventListener('keydown', (event) => {
-    const ids = FOLDER.map((entry) => entry.id);
+    const ids = listed().map((entry) => entry.id);
     const index = ids.indexOf(openDocId);
     const targets = {
       ArrowRight: ids[(index + 1) % ids.length],

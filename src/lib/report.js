@@ -7,11 +7,12 @@ import { STAGES } from '../state/stages.js';
 import { isCompleted } from '../state/progress.js';
 import { agentNumber } from './codename.js';
 import { analyseEnergy } from './anomalies.js';
-import { keyProgress } from './evidence.js';
+import { keyProgress, isDocumentOpen } from './evidence.js';
 import { expectedKey } from './machineKey.js';
 import { diffLines, diffSummary } from './diff.js';
 import { missingClasses, readGameSetup } from './arcade.js';
 import { hintsUsed } from './hints.js';
+import { epilogueState } from './epilogue.js';
 
 // 3,900,000 ms -> "1 h 05 min"
 export function formatDuration(ms) {
@@ -65,6 +66,10 @@ export function buildReport(progress, { canon, energy, originalCode, alteredCode
   const lines = diffLines(originalCode, alteredCode);
   const removedLines = lines.filter((line) => line.type === 'removed').map((line) => line.oldLine);
 
+  const closed = isCompleted(progress, 'machine');
+  const ending = epilogueState(progress);
+  const notice = canon.documents.suspension;
+
   return {
     caseName: 'Case #1, Wenoti Arcade',
     site: canon.machine.location,
@@ -72,7 +77,11 @@ export function buildReport(progress, { canon, energy, originalCode, alteredCode
     startedAt: progress.startedAt,
     generatedAt: now.toISOString(),
     supervisor: Boolean(progress.supervisor), // true: made in supervisor mode, not an agent's own run
-    closed: isCompleted(progress, 'machine'),
+    closed,
+    // One line for the top of the report.
+    status: !closed ? 'INVESTIGATION IN PROGRESS'
+      : ending.acknowledgedAt ? 'CASE #1 CLOSED; EXUN SUSPENDED'
+        : 'CASE #1 CLOSED; CASE #2 PENDING',
     timeline,
     totalTime: sinceStart(progress.completed.machine),
 
@@ -110,9 +119,15 @@ export function buildReport(progress, { canon, energy, originalCode, alteredCode
     },
 
     // What happened when, from the case files themselves (canon.json "timeline").
-    caseTimeline: canon.timeline.map((event) => ({
-      when: event.when, what: event.what, source: canon.documents[event.source].title,
-    })),
+    // Only events from documents the agent can open: nothing from a sealed one.
+    caseTimeline: canon.timeline
+      .filter((event) => isDocumentOpen(canon.documents[event.source], progress))
+      .map((event) => ({ when: event.when, what: event.what, source: canon.documents[event.source].title })),
+
+    // The Suspension Notice, once the agent has acknowledged it (null before then).
+    suspension: ending.acknowledgedAt
+      ? { reference: notice.reference, effective: notice.effective, choice: ending.choice }
+      : null,
 
     // Agent Nano's log, which reaches the same finding as the agent.
     nanoLog: {
@@ -144,7 +159,7 @@ export function reportToText(report, { energy, closing = '', team = null }) {
   line('EXUN · EXTRADIGITAL EXCEPTIONS AND UNKNOWNS NETWORK');
   line(`CASE REPORT · ${report.caseName.toUpperCase()}`);
   line('='.repeat(56));
-  line(`STATUS: ${report.closed ? 'CASE #1 CLOSED; CASE #2 PENDING' : 'INVESTIGATION IN PROGRESS'}`);
+  line(`STATUS: ${report.status}`);
   if (report.supervisor) line('MODE:   SUPERVISOR OVERRIDE (folders opened by a supervisor, not cleared in order)');
   line();
   line('To:      Extradigital Exceptions and Unknowns Network');
@@ -229,6 +244,7 @@ export function reportToText(report, { energy, closing = '', team = null }) {
     line(`  ${closing}`);
     line(`  ${log.author}'s ${log.title} (${log.written}) reaches the same finding: "${log.concern}".`);
     line(`  Case #2: pending. Open question from ${log.author}: ${log.question}`);
+    if (report.suspension) line(`  ${suspensionLine(report.suspension)}`);
   } else {
     notDone();
   }
@@ -251,6 +267,12 @@ export function reportToText(report, { energy, closing = '', team = null }) {
     line(`EXUN Case Terminal, made by Team ${team.team}: ${names}.`);
   }
   return `${out.join('\n')}\n`;
+}
+
+// The last line of the conclusion once EXUN is suspended (on the page and in the text copy).
+export function suspensionLine({ reference, effective, choice }) {
+  const after = { comply: ' The agent has complied.', continue: ' The agent has not stood down.' }[choice] ?? '';
+  return `EXUN suspended by notice ${reference}, effective ${effective}.${after}`;
 }
 
 // A safe file name: "exun-case-1-report-night-owl.txt"

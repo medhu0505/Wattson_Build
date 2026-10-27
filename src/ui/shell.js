@@ -1,6 +1,7 @@
 // The parts of the page that stay put on every screen: the dark case strip
-// along the top (with the Hints, Glitch and Sound buttons, and the
-// supervisor bar in ?supervisor=1 mode) and the row of folder tabs.
+// along the top (with the Hints, Glitch and Sound buttons, the suspension
+// bar once EXUN is suspended, and the supervisor bar in ?supervisor=1 mode)
+// and the row of folder tabs.
 
 import { el } from './dom.js';
 import { artSlot } from './artSlot.js';
@@ -9,6 +10,8 @@ import { isUnlocked, isCompleted } from '../state/progress.js';
 import { hintsUsed, HINTS_PER_STAGE } from '../lib/hints.js';
 import { prefersReducedMotion } from './effects.js';
 import { hasAudio } from './audio.js';
+import { epilogueState } from '../lib/epilogue.js';
+import canon from '../../content/canon.json';
 
 // controls (from main.js):
 //   toggleGlitch(), toggleAudio(), openHints(stageId),
@@ -42,6 +45,7 @@ function renderStrip(progress, activeId, controls) {
       ' ', progress.codename || 'unassigned'
     ),
     settingsSwitches(progress, activeId, controls),
+    suspensionBar(progress),
     progress.supervisor && supervisorBar(controls),
   ].filter(Boolean));
 
@@ -83,6 +87,20 @@ function settingsSwitches(progress, activeId, controls) {
       onClick: controls.toggleAudio,
     }, 'Sound ', el('span', { class: 'switch__state' }, audioOn ? 'on' : 'off'))
   );
+}
+
+// Once the agent has acknowledged the Suspension Notice, every page carries
+// it (the notice's own words). An agent who chose to keep investigating is
+// marked as working off the record. Returns null before then.
+function suspensionBar(progress) {
+  const { acknowledgedAt, choice } = epilogueState(progress);
+  if (!acknowledgedAt) return null;
+  const notice = canon.documents.suspension;
+  return el('div', { class: 'suspension-bar', role: 'note', 'aria-label': 'EXUN suspended' },
+    el('span', { class: 'suspension-bar__label' }, 'Suspended'),
+    choice === 'continue' && el('span', { class: 'suspension-bar__label suspension-bar__label--rogue' }, 'Off the record'),
+    el('span', { class: 'suspension-bar__note' },
+      `Notice ${notice.reference}, effective ${notice.effective}. ${notice.warning}`));
 }
 
 // Shown only in supervisor mode (?supervisor=1), for judges.

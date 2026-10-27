@@ -2,9 +2,10 @@
 
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { buildReport, reportToText, formatDuration, formatDateTime, reportFileName } from '../src/lib/report.js';
+import { buildReport, reportToText, formatDuration, formatDateTime, reportFileName, suspensionLine } from '../src/lib/report.js';
+import { acknowledgeNotice, chooseNext } from '../src/lib/epilogue.js';
 import { agentNumber } from '../src/lib/codename.js';
-import { createProgress } from '../src/state/progress.js';
+import { createProgress, completeStage } from '../src/state/progress.js';
 import canon from '../content/canon.json';
 import energy from '../data/energy.json';
 import team from '../content/team.json';
@@ -133,6 +134,40 @@ describe('report from a finished case', () => {
       expect(credited.trim().split('\n').at(-1))
         .toBe('EXUN Case Terminal, made by Team AFBBS: Medhansh Sharma, Aryaveer Dalal and Mudit Shakya.');
     });
+  });
+});
+
+describe('report once EXUN is suspended', () => {
+  const filed = completeStage(finishedAgent(), 'report', new Date('2026-10-27T08:00:00.000Z'));
+  const NOW = new Date('2026-10-27T09:00:00.000Z');
+
+  it('leaves the suspension off the case timeline until the report is filed', () => {
+    const before = buildReport(finishedAgent(), sources);
+    expect(before.caseTimeline.some((event) => event.when === '27 October')).toBe(false);
+    expect(buildReport(filed, sources).caseTimeline.at(-1))
+      .toEqual({ when: '27 October', what: 'EXUN is suspended by order of the Government of Nuxeland', source: 'Suspension Notice' });
+  });
+
+  it('keeps the status as Case #2 pending until the notice is acknowledged', () => {
+    expect(buildReport(filed, sources).status).toBe('CASE #1 CLOSED; CASE #2 PENDING');
+    expect(buildReport(filed, sources).suspension).toBeNull();
+  });
+
+  it('says EXUN is suspended, and what the agent chose, once acknowledged', () => {
+    const acknowledged = acknowledgeNotice(filed, NOW);
+    const report = buildReport(chooseNext(acknowledged, 'continue'), sources);
+    const text = reportToText(report, { energy, closing: 'Closed.' });
+    expect(report.status).toBe('CASE #1 CLOSED; EXUN SUSPENDED');
+    expect(text).toContain('STATUS: CASE #1 CLOSED; EXUN SUSPENDED');
+    expect(text).toContain('EXUN suspended by notice EIA/EXUN/SUS-01, effective 27 October 2026. The agent has not stood down.');
+    expect(text).not.toMatch(/undefined|null|NaN/);
+    expect(buildReport(acknowledged, sources).suspension.choice).toBeNull();
+  });
+
+  it('words each choice', () => {
+    const base = { reference: 'EIA/EXUN/SUS-01', effective: '27 October 2026' };
+    expect(suspensionLine({ ...base, choice: null })).toBe('EXUN suspended by notice EIA/EXUN/SUS-01, effective 27 October 2026.');
+    expect(suspensionLine({ ...base, choice: 'comply' })).toContain('The agent has complied.');
   });
 });
 

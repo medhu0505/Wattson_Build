@@ -38,5 +38,14 @@
 
   "report": {
     "closing": "Agent {codename} finds, on the evidence of the meter records, the decoded Machine ID and the machine’s own code, that the anomaly at Wenoti Arcade was no fault. POI-1 is the character missing from The Reckoning V: Origins, and the surge of 23 October marks his crossing into the real world."
+  },
+
+  "epilogue": {
+    "arrival": "Report filed, Agent {codename}. Before the out tray is even empty, an envelope from the etiNuxe Intelligence Agency lands in the in tray. It is marked Restricted.",
+    "found": "Receipt acknowledged. As you set the notice down, a folded page slides out from behind it: torn from a notebook, in handwriting you have seen before.",
+    "chooseComply": "Comply with the suspension",
+    "chooseContinue": "Keep investigating",
+    "comply": "You sign for the notice and close the case file, Agent {codename}. The Reckoning V: Origins stays switched off, and EXUN goes quiet. Somewhere, another arcade cabinet is missing its character, and nobody official is looking.",
+    "continue": "You keep the case file, Agent {codename}. Officially, EXUN is suspended, and this counts as a breach of Agency protocol. Unofficially, one character is loose, others have followed, and someone has to find out why."
   }
 }
