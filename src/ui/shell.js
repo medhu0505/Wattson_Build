@@ -14,7 +14,7 @@ import { epilogueState } from '../lib/epilogue.js';
 import canon from '../../content/canon.json';
 
 // controls (from main.js):
-//   toggleGlitch(), toggleAudio(), openHints(stageId),
+//   toggleGlitch(), toggleAudio(), openHints(stageId), resetAll(),
 //   markAllCleared(), resetSupervisor(), exitSupervisorHref
 export function renderShell(progress, activeId, controls) {
   renderStrip(progress, activeId, controls);
@@ -45,6 +45,7 @@ function renderStrip(progress, activeId, controls) {
       ' ', progress.codename || 'unassigned'
     ),
     settingsSwitches(progress, activeId, controls),
+    resetSwitch(progress, controls),
     suspensionBar(progress),
     progress.supervisor && supervisorBar(controls),
   ].filter(Boolean));
@@ -87,6 +88,36 @@ function settingsSwitches(progress, activeId, controls) {
       onClick: controls.toggleAudio,
     }, 'Sound ', el('span', { class: 'switch__state' }, audioOn ? 'on' : 'off'))
   );
+}
+
+// The small Reset button. It asks first, so nobody erases their progress by
+// accident. It only appears once there is something to erase, and not in
+// supervisor mode (the supervisor bar has its own reset).
+function resetSwitch(progress, controls) {
+  const started = Boolean(progress.codename) || Object.keys(progress.completed).length > 0;
+  if (progress.supervisor || !started) return null;
+
+  const box = el('div', { class: 'strip__reset', role: 'group', 'aria-label': 'Reset all progress' });
+  const ask = el('button', { class: 'switch', type: 'button', 'data-setting': 'reset', onClick: confirm }, 'Reset');
+
+  function confirm() {
+    const no = el('button', { class: 'switch', type: 'button', onClick: cancel }, 'Cancel');
+    box.replaceChildren(
+      el('span', { class: 'strip__reset-question' }, 'Erase all progress?'),
+      el('button', { class: 'switch switch--danger', type: 'button', onClick: controls.resetAll }, 'Erase'),
+      no);
+    no.focus(); // the safe choice gets the keyboard, so a stray Enter erases nothing
+  }
+  function cancel() {
+    box.replaceChildren(ask);
+    ask.focus();
+  }
+  box.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !box.contains(ask)) cancel();
+  });
+
+  box.append(ask);
+  return box;
 }
 
 // Once the agent has acknowledged the Suspension Notice, every page carries

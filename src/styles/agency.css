@@ -47,6 +47,12 @@
 .switch[disabled] { opacity: 0.5; cursor: not-allowed; }
 .switch__state { font-weight: 700; }
 .switch--hints { border-color: var(--marker); color: var(--marker); }
+
+/* The Reset button, and its "are you sure?" step */
+.strip__reset { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.strip__reset-question { color: var(--paper); font-size: 12px; }
+.switch--danger { border-color: #ff6b61; color: #ff6b61; }
+.switch--danger:hover { border-color: #ffb3ad; color: #ffb3ad; }
 .switch--hints:hover { border-color: #fff3a6; color: #fff3a6; }
 
 /* The typed stand-in for the agency mark (until the team's artwork is added).

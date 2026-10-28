@@ -25,6 +25,7 @@ import { openHints } from './ui/hints.js';
 import { renderColophon } from './ui/colophon.js';
 import { applyEffects, onReducedMotionChange } from './ui/effects.js';
 import { setAudioEnabled } from './ui/audio.js';
+import { announce } from './ui/dom.js';
 
 // The router decides where each screen scrolls to. Without this the browser
 // jumps back to wherever the page was scrolled before a reload.
@@ -42,6 +43,13 @@ const controls = {
   toggleGlitch: () => store.update((p) => ({ ...p, settings: { ...p.settings, glitch: !p.settings.glitch } })),
   toggleAudio: () => store.update((p) => ({ ...p, settings: { ...p.settings, audio: !p.settings.audio } })),
   openHints: (stageId) => openHints(store, stageId),
+
+  // The Reset button in the top bar, once the agent has said yes.
+  resetAll: () => {
+    store.reset();
+    announce('All progress erased. The case starts again from intake.');
+    router.go('intake');
+  },
 
   // Supervisor bar only:
   markAllCleared: () => {

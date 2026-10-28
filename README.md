@@ -80,7 +80,7 @@ As the case goes on, the arcade machine's glitches bleed into the agency's paper
 - **Hand-built SVG chart**: linear and logarithmic scales, flagged days ringed, with a text description for screen readers.
 - **Decoders** (`src/lib/decoders.js`): Base64 (including URL-safe), Base32, hex, ASCII codes (decimal or binary), Caesar (all 25 shifts) and reverse, each able to encode and decode, plus auto-detect ranked by a readability score. Decoding `MJWHKZLTNBUXE5A` (Base32) gives `blueshirt`, which opens the machine.
 - **Evidence board**: drag cards with mouse, touch or pen, or move them with the arrow keys. New cards land in a grid sized to the board, and "Tidy cards" lays them all out again with none overlapping.
-- **Progress** is saved in the browser (localStorage). If the browser blocks it, the site still works for that visit.
+- **Progress** is saved in the browser (localStorage). If the browser blocks it, the site still works for that visit. A small **Reset** button in the top bar erases it, after asking to be sure.
 - **Case report**: print or save as PDF, or download as `.txt`.
 - **Hints**: three per stage, opened one at a time.
 - **Supervisor mode**: for judges (see below).
