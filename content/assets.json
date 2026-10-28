@@ -8,9 +8,8 @@
       "todo": "TODO-TEAM: agency mark for the top-left of every agency page, about 160 x 64 px, transparent PNG"
     },
     "id-photo": {
-      "file": "id-photo.png",
-      "alt": "Agent ID photo", "missing": "No photo on file",
-      "todo": "TODO-TEAM: portrait or silhouette for the agent ID card, 3:4 ratio, about 240 x 320 px"
+      "file": "id-photo.jpg",
+      "alt": "Agent ID photo", "missing": "No photo on file"
     },
     "signature-transcript": {
       "file": "signature-transcript.png",
