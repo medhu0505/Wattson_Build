@@ -1,8 +1,4 @@
-# Runs the tests and builds the site on every push (any branch), so a
-# broken change shows up as a red cross on the commit. It doesn't publish
-# anything: the live site is hosted on Vercel, which builds from this
-# repository by itself.
-
+#uhh
 name: Test and build
 
 on:
