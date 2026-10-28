@@ -4,6 +4,7 @@ An Exun 2026-27 Hackathon entry by **Team AFBBS** (Medhansh Sharma, Aryaveer Dal
 
 - **Live site:** https://wattsonbuild.vercel.app/
 - **Judges:** https://wattsonbuild.vercel.app/?supervisor=1 opens every folder (see [Supervisor mode](#supervisor-mode)).
+- **Ideation:** [docs/Ideation.pdf](docs/Ideation.pdf)
 
 ## The concept
 
@@ -187,10 +188,12 @@ scripts/list-todos.js   lists the remaining TODO-TEAM slots
 src/assets/             put artwork (art/) and audio (audio/) files here
 public/favicon.svg      the browser-tab icon
 public/og-image.jpg     the picture chat apps show when the link is shared
+case-files/             the official case PDFs and the two arcade code files
+docs/Ideation.pdf       the Ideation deliverable
 docs/screenshots/       the screenshots in this README
 ```
 
-The official PDFs (including `progress-assessment-log.pdf`, `SuspensionNotice.pdf` and `NoteFromNano.pdf`) and the two code files (`OriginalCode.txt`, `AlteredCode.txt`) are in the project root. They are canon: the site quotes them and never contradicts them.
+The official PDFs (including `progress-assessment-log.pdf`, `SuspensionNotice.pdf` and `NoteFromNano.pdf`) and the two code files (`OriginalCode.txt`, `AlteredCode.txt`) are in `case-files/`. They are canon: the site quotes them and never contradicts them.
 
 ## Content: what is canon and what is ours
 

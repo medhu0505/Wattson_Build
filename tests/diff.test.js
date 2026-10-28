@@ -1,13 +1,13 @@
 // Tests for the line diff and for reading the arcade game's code.
-// The real files are read straight from the project root.
+// The real files are read straight from case-files/.
 
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { diffLines, diffSummary, splitLines, withContext } from '../src/lib/diff.js';
 import { definedClasses, missingClasses, readGameSetup, renderWorld } from '../src/lib/arcade.js';
 
-const original = readFileSync(new URL('../OriginalCode.txt', import.meta.url), 'utf8');
-const altered = readFileSync(new URL('../AlteredCode.txt', import.meta.url), 'utf8');
+const original = readFileSync(new URL('../case-files/OriginalCode.txt', import.meta.url), 'utf8');
+const altered = readFileSync(new URL('../case-files/AlteredCode.txt', import.meta.url), 'utf8');
 
 describe('splitting lines', () => {
   it('treats Windows and Unix line endings the same', () => {

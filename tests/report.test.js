@@ -13,8 +13,8 @@ import team from '../content/team.json';
 const sources = {
   canon,
   energy,
-  originalCode: readFileSync(new URL('../OriginalCode.txt', import.meta.url), 'utf8'),
-  alteredCode: readFileSync(new URL('../AlteredCode.txt', import.meta.url), 'utf8'),
+  originalCode: readFileSync(new URL('../case-files/OriginalCode.txt', import.meta.url), 'utf8'),
+  alteredCode: readFileSync(new URL('../case-files/AlteredCode.txt', import.meta.url), 'utf8'),
 };
 
 const KEY_PINS = ['location', 'power-draw', 'machine-name', 'machine-id', 'encounter-time', 'poi-description', 'warbling'];

@@ -8,8 +8,8 @@
 // which clears the stage and opens the case report.
 
 import '../styles/machine.css';
-import originalCode from '../../OriginalCode.txt?raw';
-import alteredCode from '../../AlteredCode.txt?raw';
+import originalCode from '../../case-files/OriginalCode.txt?raw';
+import alteredCode from '../../case-files/AlteredCode.txt?raw';
 import canon from '../../content/canon.json';
 import energy from '../../data/energy.json';
 import { el, announce } from './dom.js';
