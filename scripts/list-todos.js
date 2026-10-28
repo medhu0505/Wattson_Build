@@ -1,18 +1,11 @@
-// Lists every TODO-TEAM slot still waiting to be filled, with its file and
-// line number. Run it with:   npm run todo
-//
-// It reads content/story.json (story text), content/assets.json (artwork
-// and audio) and README.md (the live link). A slot is any value that starts
-// with "TODO-TEAM:". Once you replace a slot's text, it disappears from
-// this list.
-
+//todofile
 import { readFileSync } from 'node:fs';
 
 const FILES = ['content/story.json', 'content/assets.json'];
 
 let total = 0;
 
-// README.md: any line with "TODO-TEAM:" in it.
+// README.md
 readFileSync(new URL('../README.md', import.meta.url), 'utf8').split(/\r?\n/).forEach((line, index) => {
   const slot = line.match(/TODO-TEAM:\s*(.*)$/);
   if (slot) {
