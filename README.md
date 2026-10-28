@@ -1,10 +1,21 @@
 # EXUN Case Terminal: Case #1, Wenoti Arcade
 
-An Exun 2026-27 Hackathon entry by **Team AFBBS** (Medhansh Sharma, Aryaveer Dalal, Mudit Shakya). The site is the case terminal of the Extradigital Exceptions and Unknowns Network (EXUN). You are a newly recruited agent working Case #1: the Wenoti Arcade on 92nd Avenue has been drawing many times its usual current, and the trail leads to the arcade machine *The Reckoning V: Origins*.
+An Exun 2026-27 Hackathon entry by **Team AFBBS** (Air Force Bal Bharti School): Medhansh Sharma, Aryaveer Dalal and Mudit Shakya. The site is the case terminal of the Extradigital Exceptions and Unknowns Network (EXUN). You are a newly recruited agent working Case #1: the Wenoti Arcade on 92nd Avenue has been drawing many times its usual current, and the trail leads to the arcade machine *The Reckoning V: Origins*.
 
-- **Live site:** https://wattsonbuild.vercel.app/
-- **Judges:** https://wattsonbuild.vercel.app/?supervisor=1 opens every folder (see [Supervisor mode](#supervisor-mode)).
+[![Watch the walkthrough on Loom](docs/video-thumbnail.jpg)](https://www.loom.com/share/62d780c85c6d4909afe6a9e5997b7867)
+
+- **Watch:** [the video walkthrough on Loom](https://www.loom.com/share/62d780c85c6d4909afe6a9e5997b7867) (3 min 51 s)
+- **Play:** https://wattsonbuild.vercel.app/
+- **Judges:** https://wattsonbuild.vercel.app/?supervisor=1 opens every folder (see [Supervisor mode](#supervisor-mode))
 - **Ideation:** [docs/Ideation.pdf](docs/Ideation.pdf)
+- **Code:** this repository: a static site with no backend, and 231 automated tests
+
+### Judging it in four minutes
+
+1. Watch the video, or open the judges' link above.
+2. In the red supervisor bar, press **Mark every folder cleared**.
+3. Open **04 Machine Terminal** and press **LOGS**, **DIFF** and **RENDER** to see the reveal.
+4. Open **05 Case Report**, press **Download (.txt)** to file the report, then **Acknowledge receipt** to see the ending.
 
 ## The concept
 
@@ -197,7 +208,7 @@ The official PDFs (including `progress-assessment-log.pdf`, `SuspensionNotice.pd
 
 ## Content: what is canon and what is ours
 
-- **Canon:** `content/canon.json` holds the text of the Case Debrief, Transcript A, the Asset Integrity Report, the Energy Usage Dossier, Agent Nano's Progress Assesment Log, the Suspension Notice and Agent Nano's goodbye note, copied word for word (typos included). It also holds a short timeline of dated events from those documents, and Nano's red-pen note, which quotes his log. `data/energy.json` is the dossier's table; every row was checked against the PDF. The terminal reads the code files directly.
+- **Canon:** `content/canon.json` holds the text of the Case Debrief, Transcript A, the Asset Integrity Report, the Energy Usage Dossier, Agent Nano's Progress Assesment Log, the Suspension Notice and Agent Nano's goodbye note, copied word for word (typos included). It also holds a short timeline of dated events from those documents, and Nano's red-pen note, which quotes the log. `data/energy.json` is the dossier's table; every row was checked against the PDF. The terminal reads the code files directly.
 - **The team's own:** the narrative in `content/story.json`, plus the artwork and audio listed in `content/assets.json`.
   - Put a picture in `src/assets/art/` (or a sound in `src/assets/audio/`) with the file name listed for its slot, and it appears on the site by itself. The site finds the files when it's built, so it never requests a file that isn't there.
   - Until then, `npm run dev` shows a labelled frame naming the file to add, and the live site shows a plain stand-in.
@@ -211,7 +222,7 @@ Vite, vanilla JavaScript, plain CSS and Vitest. There's no framework, UI kit or 
 
 ## Team AFBBS
 
-Made for the Exun 2026-27 Hackathon by:
+Made for the Exun 2026-27 Hackathon by Team AFBBS, Air Force Bal Bharti School:
 
 - Medhansh Sharma
 - Aryaveer Dalal
