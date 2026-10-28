@@ -1,15 +1,9 @@
-// Tests for the energy anomaly detector.
-// The first group runs on the real dossier data; the rest use made-up data
-// to prove the detector isn't just remembering the right answers.
-
 import { describe, it, expect } from 'vitest';
 import {
   analyseEnergy, median, medianAbsoluteDeviation, surgeScores, round2,
 } from '../src/lib/anomalies.js';
 import energy from '../data/energy.json';
 
-// Build rows from a starting meter reading and a list of daily usages.
-// reported can override what was "reported" for particular days.
 function makeRows(start, usages, reported = {}) {
   let reading = start;
   return usages.map((usage, index) => {
